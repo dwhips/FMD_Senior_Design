@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Clip SonoVersion="003.004" Schema="0x83000001">
+   <ClipMetadata>
+      <AggregateLFSR>1487125</AggregateLFSR>
+      <PatientMetadataPath>.\PT_PPS.XML</PatientMetadataPath>
+      <ClipDataPath>.\C0011700</ClipDataPath>
+      <ClipName>C0011700</ClipName>
+      <ClipType>9</ClipType>
+      <LoopReference>0</LoopReference>
+      <AcquisitionRate/>
+      <State>
+         <IsExpired>FALSE</IsExpired>
+         <IsDataValid>FALSE</IsDataValid>
+      </State>
+      <RWaveVector/>
+      <FrameMapSeq>
+         <Item>
+            <FrameOffset>2456</FrameOffset>
+            <FrameLength>72100</FrameLength>
+            <FrameCRC>0</FrameCRC>
+         </Item></FrameMapSeq>
+   </ClipMetadata>
+   <InstanceNumber>11700</InstanceNumber>
+   <ContentDate>20171208</ContentDate>
+   <ContentTime>141143</ContentTime>
+   <NumberofFrames>1</NumberofFrames>
+   <FrameTime/>
+   <Rows>480</Rows>
+   <Columns>640</Columns>
+   <UltrasoundColorDataPresent>0</UltrasoundColorDataPresent>
+   <HeartRate/>
+   <BPSystolic/>
+   <BPDiastolic/>
+   <TransducerData>30.80.305.011\\</TransducerData>
+   <ScanheadName>HFL</ScanheadName>
+   <SOPInstanceUID>1.2.840.114340.03.000008251016055008.3.20171208.141144.0011700</SOPInstanceUID>
+   <ARMVersion>30.80.306.019</ARMVersion>
+</Clip>
