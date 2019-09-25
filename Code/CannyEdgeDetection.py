@@ -36,16 +36,22 @@ if artery_vid.isOpened() == False:
 #3 generate binary image by removing non max pixels
 #4 hysteresis thresholding, detect true edges
 
-print("Filtering the image")
-# capture video
-ret, frame = artery_vid.read()
-gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-edges = cv2.Canny(gray, 20, 30)
-edges_high_thresh = cv2.Canny(gray, 60, 120)
-images = np.hstack((gray, edges, edges_high_thresh))
-cv2.imshow('Frame', images)
-cv2.waitKey(0) # close windows if any key is pressed
-# artery_vid.release()
-cv2.destroyAllWindows()
+for i_lower in range(10, 30):
+    for i_upper in range(10, 30):
+        hi_lo_param = "high ["+str(i_upper)+"] low ["+str(i_lower)+"]"
+        print("Filtering the image :" + hi_lo_param)
+        # capture video
+        ret, frame = artery_vid.read()
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        edges = cv2.Canny(gray, i_lower, i_upper) #image, lower, upper
+        edges_high_thresh = cv2.Canny(gray, 60, 120)
+        images = np.hstack((gray, edges, edges_high_thresh))
+        cv2.imshow("filtering with " + hi_lo_param, images)
+        #cv2.waitKey(0) # wait until key is pressed
+        # artery_vid.release()
+        # cv2.destroyAllWindows()
+        # print("Filtered Image Wiped")
 
+cv2.waitKey(0) # wait until key is pressed
+cv2.destroyAllWindows()
 print("Filtered Image Wiped")
