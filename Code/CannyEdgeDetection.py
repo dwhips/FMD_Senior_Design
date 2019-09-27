@@ -1,4 +1,5 @@
 # Marquette Brachial FMD Automated Calculator
+# Python 3.7.4
 #
 # This program uses a dual doppler flow and vessel ultrasound image
 # of the Brachial artery to detect FMD (Flow Modulated Dilation). FMD detects
@@ -11,7 +12,7 @@
 # !!!!!!!!! image paths and local outputs until imaging process is consistent and
 # !!!!!!!!! can be pushed to actual user case tests
 #
-# last edit: Daniel Whipple 9/23/2019
+# last edit: Daniel Whipple 9/27/2019
 # https://blog.sicara.com/opencv-edge-detection-tutorial-7c3303f10788
 
 import numpy as np
@@ -36,8 +37,12 @@ if artery_vid.isOpened() == False:
 #3 generate binary image by removing non max pixels
 #4 hysteresis thresholding, detect true edges
 
-for i_lower in range(10, 30):
-    for i_upper in range(10, 30):
+#https://www.pyimagesearch.com/2015/04/06/zero-parameter-automatic-canny-edge-detection-with-python-and-opencv/
+# automatic canny edge detection
+
+for i_lower in range(10, 20):
+    #for i_upper in range(30):
+        i_upper = 30
         hi_lo_param = "high ["+str(i_upper)+"] low ["+str(i_lower)+"]"
         print("Filtering the image :" + hi_lo_param)
         # capture video
@@ -45,7 +50,8 @@ for i_lower in range(10, 30):
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         edges = cv2.Canny(gray, i_lower, i_upper) #image, lower, upper
         edges_high_thresh = cv2.Canny(gray, 60, 120)
-        images = np.hstack((gray, edges, edges_high_thresh))
+        #images = np.hstack((gray, edges, edges_high_thresh))
+        images = np.hstack((edges, edges_high_thresh))
         cv2.imshow("filtering with " + hi_lo_param, images)
         #cv2.waitKey(0) # wait until key is pressed
         # artery_vid.release()
@@ -54,4 +60,4 @@ for i_lower in range(10, 30):
 
 cv2.waitKey(0) # wait until key is pressed
 cv2.destroyAllWindows()
-print("Filtered Image Wiped")
+print("All Filtered Image Wiped")
