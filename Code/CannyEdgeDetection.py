@@ -2,7 +2,7 @@
 # Python 3.7.4
 #
 # This program uses a dual doppler flow and vessel ultrasound image
-# of the Brachial artery to detect FMD (Flow Modulated Dilation). FMD detects
+# of the Brachial artery to detect FMD (Flow Mediated Dilation). FMD detects
 # the change in shear stress on the artery and indicates the cardiac health
 # of an individual.
 #
