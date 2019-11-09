@@ -18,13 +18,13 @@
 import numpy as np
 import cv2
 import sys
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import time
 
 # Trying some simple image processing with the artery .avi files
 # this file path won't work on your computer id its not the same
 print("Opening .avi file")
-artery_vid = cv2.VideoCapture('C:\\Git\\FMD_Senior_Design\\Sample_Images\\2017Dec08 Study__[0001464]\\14.05.25 hrs '
+artery_vid = cv2.VideoCapture('C:\\Senior Design\\git\\FMD_Senior_Design\\Sample_Images\\2017Dec08 Study__[0001464]\\14.05.25 hrs '
                               '__[0011697].avi')
 if artery_vid.isOpened() == False:
     print("Couldn't open the .avi file")
