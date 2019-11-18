@@ -8,26 +8,20 @@
 #
 # Main.py is the intended startup executable for Marquette FMD Calculator
 
-# !!!!!!!!! This current version will not support complex GUI, only hardcoded
-# !!!!!!!!! image paths and local outputs until imaging process is consistent and
-# !!!!!!!!! can be pushed to actual user case tests
-#
-# last edit: Daniel Whipple 9/27/2019
 # https://blog.sicara.com/opencv-edge-detection-tutorial-7c3303f10788
 
 import numpy as np
 import cv2
 import sys
-# from matplotlib import pyplot as plt
-import time
 
-# Trying some simple image processing with the artery .avi files
-# this file path won't work on your computer id its not the same
+from FileSupport import *
+
+image_file_name = '14.05.25 hrs __[0011697].avi'
+
 print("Opening .avi file")
-artery_vid = cv2.VideoCapture('C:\\Senior Design\\git\\FMD_Senior_Design\\Sample_Images\\2017Dec08 Study__[0001464]\\14.05.25 hrs '
-                              '__[0011697].avi')
+artery_vid = cv2.VideoCapture(ReturnImageFilePath(image_file_name))
 if artery_vid.isOpened() == False:
-    print("Couldn't open the .avi file")
+    print("Couldn't open file")
     sys.exit()
 
 ## stages of edge detection (CANNY EDGE DETECTION)
