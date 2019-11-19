@@ -19,7 +19,7 @@ from FileSupport import *
 image_file_name = '14.05.25 hrs __[0011697].avi'
 
 print("Opening .avi file")
-artery_vid = cv2.VideoCapture(ReturnImageFilePath(image_file_name))
+artery_vid = cv2.VideoCapture(ReturnImagePath(image_file_name))
 if artery_vid.isOpened() == False:
     print("Couldn't open file")
     sys.exit()
