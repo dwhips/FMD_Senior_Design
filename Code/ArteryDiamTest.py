@@ -1,6 +1,7 @@
 # this assumes the files are 640x480 and match the cropped range of the sample image
-
+# import contours as contours
 import cv2
+import numpy
 
 from FileSupport import *
 
@@ -32,6 +33,18 @@ while success:  # this is where big files might mess up if every frame is saved
     # faster, but im not sure how well it will work with GUI?
 
     # start processing the image
+    # -----Just trying to draw around artery-------
+    img = cv2.imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
+    _, threshold = cv2.threshold(img, 150, 200, cv2.THRESH_BINARY)
+    contours, _ = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) # SIMPLE vs NONE
+
+    for cnt in contours:
+        cv2.drawContours(img, [cnt], 0, (168, 50, 50), 5) # (168, 50, 50) is red
+        cv2.imshow("image", img)
+        cv2.imshow("thresh", threshold)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+    # ---------------------------------------------
 
     print("File %i finished" % i_frame)
     i_frame += 1
