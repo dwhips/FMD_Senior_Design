@@ -15,8 +15,9 @@ sample_end_row = 408
 sample_start_col = 159
 sample_end_col = 518
 # colors
-RED = (0, 0, 255)
+RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
+BLUE = (255, 0, 0)
 
 # Pull image ###################################
 print("Getting image from ", image_file_name, "\n")
@@ -28,7 +29,6 @@ if not artery_vid.isOpened():
 
 success, image = artery_vid.read()
 i_frame = 0
-# success = True
 while success:  # this is where big files might mess up if every frame is saved
     # crop the image before saving it (using user generated values?)
     image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
@@ -43,13 +43,12 @@ while success:  # this is where big files might mess up if every frame is saved
     hierarchy, threshold = cv2.threshold(img, 120, 200, cv2.THRESH_BINARY)
     contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
     print("n Contours found : ", str(len(contours)))
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)  # add this line
 
-    # for cnt in contours:
     cv2.imshow("Image Without Contours", image)  # contour is also destructive
     cv2.drawContours(img, contours, -1, GREEN, 2)  # this image should be showing lines around high contrast areas
     cv2.imshow("Image With Contours", img)
     cv2.imshow("Threshold Image", threshold)
-    # cv2.imshow("contour", threshold)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     # ---------------------------------------------
