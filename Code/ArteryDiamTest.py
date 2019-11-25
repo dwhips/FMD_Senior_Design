@@ -1,5 +1,7 @@
 # this assumes the files are 640x480 and match the cropped range of the sample image
 # import contours as contours
+# copyright Marquette University 11/25/2019
+
 import cv2
 import numpy
 
@@ -37,18 +39,21 @@ while success:  # this is where big files might mess up if every frame is saved
 
     # start processing the image
     # -----Just trying to draw around artery-------
-
-    # might want to greyscale the image, see if it improves contours once they work
     img = cv2.imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
-    hierarchy, threshold = cv2.threshold(img, 120, 200, cv2.THRESH_BINARY)
-    contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
+    hierarchy, threshold = cv2.threshold(img, 0, 255, cv2.THRESH_OTSU)
+    contours, _ = cv2.findContours(threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
     print("n Contours found : ", str(len(contours)))
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)  # add this line
 
     cv2.imshow("Image Without Contours", image)  # contour is also destructive
-    cv2.drawContours(img, contours, -1, GREEN, 2)  # this image should be showing lines around high contrast areas
+    cv2.drawContours(img, contours, -1, GREEN, 1)  # this image should be showing lines around high contrast areas
     cv2.imshow("Image With Contours", img)
     cv2.imshow("Threshold Image", threshold)
+
+    # ==================== Trace Inner Artery
+    # try to print child contours in blue over contoured img
+    # ====================
+
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     # ---------------------------------------------
