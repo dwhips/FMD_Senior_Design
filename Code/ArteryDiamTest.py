@@ -72,6 +72,11 @@ while success:
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     intense_img = img  # to show algorithm removing small shapes
 
+    # Display images
+    cv2.drawContours(img, otsu_contours, -1, GREEN, 1)  # draws contours on an image
+    cv2.imshow("Image Without Contours", image)
+    cv2.imshow("Image With Otsu Contours", img)
+    cv2.imshow("Image with Otsu Thresholding", otsu_threshold)
     # --------intensive detection----------------
     min_c_size = LargestContourPerim(otsu_contours) * .1
 
@@ -83,10 +88,6 @@ while success:
             cv2.drawContours(intense_img, otsu_contours, i_shape, RED, 1)
 
     # Display images
-    cv2.imshow("Image Without Contours", image)
-    cv2.drawContours(img, otsu_contours, -1, GREEN, 1)  # draws contours on an image
-    cv2.imshow("Image With Otsu Contours", img)
-    cv2.imshow("Image with Otsu Thresholding", otsu_threshold)
     cv2.imshow("Intense Filtered Shapes", intense_img)
 
     # wait until a key is pressed, then delete current images and generate next frame
