@@ -9,6 +9,24 @@ import cv2
 import numpy
 from FileSupport import *
 
+# ------------------ Variables ----------------------
+im_x, im_y, click_allowed = 1, 1, True
+
+# file vars ------
+image_file_name = '14.05.25 hrs __[0011697].avi'  # this will be given through some file selection of the user
+# image_file_name = '14.13.37 hrs __[0011703].avi' # different .avi file to test
+# image_file_name = '14.05.51 hrs __[0011699].avi'
+temp_image_file_path = ReturnTempImagePath()  # gives file path for .avi files to be stored
+# image vars -------
+sample_start_row = 144  # measurements are based off the 640x480 sample image
+sample_end_row = 408
+sample_start_col = 159
+sample_end_col = 518
+# colors --------
+RED = (0, 0, 255)  # opencv uses BGR not RGB
+GREEN = (0, 255, 0)
+BLUE = (255, 0, 0)
+
 # ------------------Functions-----------------------------------
 # Example algorithm for removing non artery shapes that removes small shapes
 def VerifyContour(contour, min_size):
@@ -28,23 +46,23 @@ def LargestContourPerim(c_arr):
             largest_c = temp
     return largest_c
 
+# left click saves x,y coordinate and right click resets the x,y and allows a reclick
+def click_event(event, x, y, flags, param):
+    global im_x, im_y, click_allowed
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if click_allowed:
+            click_allowed = False # only should allow click once
+            print("clicked on [", x, " ", y, "]")
+            cv2.circle(image, (x, y), 2, RED, -1)
+            cv2.imshow("Pre Processing", image)
+            im_x, im_y = x, y
+            # call populate fucnt
+    if event == cv2.EVENT_RBUTTONDOWN:
+        click_allowed = True
+        im_x, im_y = -1, -1
 
-# ------------------ Variables ----------------------
-# file vars ------
-image_file_name = '14.05.25 hrs __[0011697].avi'  # this will be given through some file selection of the user
-# image_file_name = '14.13.37 hrs __[0011703].avi' # different .avi file to test
-# image_file_name = '14.05.51 hrs __[0011699].avi'
-temp_image_file_path = ReturnTempImagePath()  # gives file path for .avi files to be stored
-# image vars -------
-sample_start_row = 144  # measurements are based off the 640x480 sample image
-sample_end_row = 408
-sample_start_col = 159
-sample_end_col = 518
-# colors --------
-RED = (0, 0, 255)  # opencv uses BGR not RGB
-GREEN = (0, 255, 0)
-BLUE = (255, 0, 0)
-
+def Populate():
+    return
 # -------------------Code-------------------------------
 # Pull image =======================================================
 print("Getting image from ", image_file_name, "\n")
@@ -62,8 +80,23 @@ while success:
     image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
     cv2.imwrite(temp_image_file_path + "frame%i.jpg" % i_frame, image)
 
+    cv2.imshow("Pre Processing", image)
+    # clickable event. if is redundant, but meant to reduce resource usage
+    if (click_allowed):
+        cv2.setMouseCallback("Pre Processing", click_event)
+    else:
+        a = 1
+        # call the populate function
+        # have wait key after this
+
+    # all this shit should be in the populate filtered image funct. So if the click_allowed is true
+    # then populate() is called once image is clicked
+    # other wise they will populate automatically as the center hasnt been detected
+
     # Convert image to grayscale
     img = cv2.imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
+    # Invert Image
+    img = numpy.invert(img)
     # Perform Threshold
     otsu_hierarchy, otsu_threshold = cv2.threshold(img, 0, 255, cv2.THRESH_OTSU)
     # Find contours (edges)
@@ -74,9 +107,9 @@ while success:
 
     # Display images
     cv2.drawContours(img, otsu_contours, -1, GREEN, 1)  # draws contours on an image
-    cv2.imshow("Image Without Contours", image)
     cv2.imshow("Image With Otsu Contours", img)
     cv2.imshow("Image with Otsu Thresholding", otsu_threshold)
+
     # --------intensive detection----------------
     min_c_size = LargestContourPerim(otsu_contours) * .1
 
@@ -89,6 +122,15 @@ while success:
 
     # Display images
     cv2.imshow("Intense Filtered Shapes", intense_img)
+
+    # ---------Use Coordinate Shape-------------------
+    # until the populate func is done, this wont work for the very first images
+    detected_img = image
+    for i_shape in range(len(otsu_contours)):
+        # are the coordinates contained within the shape
+        if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
+            cv2.drawContours(detected_img, otsu_contours, i_shape, GREEN, 1)
+    cv2.imshow("Detected Shape", detected_img)
 
     # wait until a key is pressed, then delete current images and generate next frame
     cv2.waitKey(0)
