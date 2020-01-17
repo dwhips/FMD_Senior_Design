@@ -9,25 +9,10 @@ import cv2
 import numpy
 from FileSupport import *
 
-# ------------------Functions-----------------------------------
-def draw_circle(event,x,y,flags,param):
-    global mouseX,mouseY
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        mouseX,mouseY = x,y
-        print(x)
-        print(y)
-        click_true = True
-
-def click_event(event, x, y, flags, param):
-    if event == cv2.EVENT_LBUTTONDOWN:
-        print ("clicked on [", x," ", y,"]")
-        cv2.circle(artery_im, (x, y), 2, RED, -1)
-        cv2.imshow("Pre Processing", artery_im)
-        im_x, im_y = x, y
 
 # ------------------ Variables ----------------------
-global click_true, im_x, im_y
-click_true = False
+im_x, im_y, click_allowed = -1, -1, True
+
 # file vars ------
 image_file_name = '14.05.25 hrs __[0011697].avi'  # this will be given through some file selection of the user
 # image_file_name = '14.13.37 hrs __[0011703].avi' # different .avi file to test
@@ -42,6 +27,22 @@ sample_end_col = 518
 RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
 BLUE = (255, 0, 0)
+
+# ------------------Functions-----------------------------------
+# left click saves x,y coordinate and right click resets the x,y and allows a reclick
+def click_event(event, x, y, flags, param):
+    global im_x, im_y, click_allowed
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if click_allowed:
+            click_allowed = False # only should allow click once
+            print("clicked on [", x, " ", y, "]")
+            cv2.circle(artery_im, (x, y), 2, RED, -1)
+            cv2.imshow("Pre Processing", artery_im)
+            im_x, im_y = x, y
+    if event == cv2.EVENT_RBUTTONDOWN:
+        click_allowed = True
+        im_x, im_y = -1, -1
+
 
 # -------------------Code-------------------------------
 # Pull image =======================================================
@@ -70,7 +71,8 @@ while success:
     # Perform Threshold
     otsu_hierarchy, otsu_threshold = cv2.threshold(artery_im, 0, 255, cv2.THRESH_OTSU)
     # Find contours (edges)
-    otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
+    otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE,
+                                        cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
     # Convert image to color so contours can be printed in color
     artery_im = cv2.cvtColor(artery_im, cv2.COLOR_GRAY2BGR)
 
@@ -80,6 +82,7 @@ while success:
     # wait until a key is pressed, then delete current images and generate next frame
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    print("clicked on [", im_x, " ", im_y, "]")
 
     print("Image %i Complete" % i_frame, "\n")
     i_frame += 1
