@@ -27,14 +27,16 @@ RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
 BLUE = (255, 0, 0)
 
+
 # ------------------Functions-----------------------------------
 # Example algorithm for removing non artery shapes that removes small shapes
 def VerifyContour(contour, min_size):
     # -------- Detect Small Shapes --------
-    if cv2.arcLength(otsu_contours[i_shape], True) < min_size: # hardcoded for now
+    if cv2.arcLength(contour, True) < min_size:  # hardcoded for now
         return False
     else:
         return True
+
 
 # Finds the largest perimeter in a contour object
 def LargestContourPerim(c_arr):
@@ -46,49 +48,26 @@ def LargestContourPerim(c_arr):
             largest_c = temp
     return largest_c
 
+
 # left click saves x,y coordinate and right click resets the x,y and allows a reclick
 def click_event(event, x, y, flags, param):
     global im_x, im_y, click_allowed
     if event == cv2.EVENT_LBUTTONDOWN:
         if click_allowed:
-            click_allowed = False # only should allow click once
+            click_allowed = False  # only should allow click once
             print("clicked on [", x, " ", y, "]")
             cv2.circle(image, (x, y), 2, RED, -1)
             cv2.imshow("Pre Processing", image)
             im_x, im_y = x, y
             # call populate fucnt
+            Populate(image)
     if event == cv2.EVENT_RBUTTONDOWN:
         click_allowed = True
         im_x, im_y = -1, -1
 
-def Populate():
-    return
-# -------------------Code-------------------------------
-# Pull image =======================================================
-print("Getting image from ", image_file_name, "\n")
-artery_vid = cv2.VideoCapture(ReturnImagePath(image_file_name))
 
-if not artery_vid.isOpened():
-    print("Couldn't open file")
-    sys.exit()
-success, image = artery_vid.read()
-
-# Process and contour each .avi frame ===============================
-i_frame = 0
-while success:
-    # saves the current frame. Not necessary but may be used in final product
-    image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
-    cv2.imwrite(temp_image_file_path + "frame%i.jpg" % i_frame, image)
-
-    cv2.imshow("Pre Processing", image)
-    # clickable event. if is redundant, but meant to reduce resource usage
-    if (click_allowed):
-        cv2.setMouseCallback("Pre Processing", click_event)
-    else:
-        a = 1
-        # call the populate function
-        # have wait key after this
-
+# populates all of the filtered/detected shape images. This function performs all aspects of their generation
+def Populate(img):
     # all this shit should be in the populate filtered image funct. So if the click_allowed is true
     # then populate() is called once image is clicked
     # other wise they will populate automatically as the center hasnt been detected
@@ -100,7 +79,8 @@ while success:
     # Perform Threshold
     otsu_hierarchy, otsu_threshold = cv2.threshold(img, 0, 255, cv2.THRESH_OTSU)
     # Find contours (edges)
-    otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
+    otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE,
+                                        cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
     # Convert image to color so contours can be printed in color
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     intense_img = img  # to show algorithm removing small shapes
@@ -131,6 +111,34 @@ while success:
         if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
             cv2.drawContours(detected_img, otsu_contours, i_shape, GREEN, 1)
     cv2.imshow("Detected Shape", detected_img)
+
+
+# -------------------Code-------------------------------
+# Pull image =======================================================
+print("Getting image from ", image_file_name, "\n")
+artery_vid = cv2.VideoCapture(ReturnImagePath(image_file_name))
+
+if not artery_vid.isOpened():
+    print("Couldn't open file")
+    sys.exit()
+success, image = artery_vid.read()
+
+# Process and contour each .avi frame ===============================
+i_frame = 0
+while success:
+    # saves the current frame. Not necessary but may be used in final product
+    image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
+    cv2.imwrite(temp_image_file_path + "frame%i.jpg" % i_frame, image)
+
+    cv2.imshow("Pre Processing", image)
+    # clickable event. if is redundant, but meant to reduce resource usage
+    if (click_allowed):
+        cv2.setMouseCallback("Pre Processing", click_event)
+    else:
+        Populate(image)
+        # call the populate function
+        # have wait key after this
+
 
     # wait until a key is pressed, then delete current images and generate next frame
     cv2.waitKey(0)
