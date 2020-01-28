@@ -31,6 +31,24 @@ def click_event(event, x, y, flags, param):
         click_allowed = True
 
 
+# boxpoints does lowest corner first, then goes clockwise
+# This assumes the centerline we want is longer than the vertical centerline. So this could
+# cause bugs if the defined box has artifact or problem causing it to be tall/skinny
+def box_centerline(rec):
+    # first try any centerline
+    c0 = rec[0]  # corner 1 (this one is very bottom corner)
+    c1 = rec[1]
+    c2 = rec[2]
+    c3 = rec[3]
+
+    # find longer centerline for rec as that is relevant center line
+    x1 = np.mean([c0[0], c3[0]])
+    y1 = np.mean([c0[1], c3[1]])
+    x2 = np.mean([c2[0], c1[0]])
+    y2 = np.mean([c2[1], c1[1]])
+    return np.array([[x1, y1], [x2, y2]])
+
+
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
 def Populate(img):
     # Convert image to grayscale
@@ -48,6 +66,7 @@ def Populate(img):
     # Convert image to color so contours can be printed in color
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
+    # If multiple shapes contain coordinate this will break. Need case
     for i_shape in range(len(otsu_contours)):
         # are the coordinates contained within the shape
         if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
@@ -55,9 +74,13 @@ def Populate(img):
             # enclose box around the
             simp_box = cv2.minAreaRect(otsu_contours[i_shape])
             simp_box = cv2.boxPoints(simp_box)
-            simp_box = np.int0(simp_box)
-            cv2.drawContours(img, [simp_box], 0, BLUE, 2)
-            # need a case if more than one shape detected
+            cv2.drawContours(img, [np.int0(simp_box)], 0, BLUE, 2)
+            # cv2.drawContours(img, )
+            print(simp_box)
+            center_xy = box_centerline(simp_box)
+            print(center_xy[0])
+            print(center_xy[1])
+            cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
     cv2.imshow("Image with detected contours", img)
 
 
