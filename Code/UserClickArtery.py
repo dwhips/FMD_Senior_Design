@@ -3,6 +3,7 @@
 import cv2
 import numpy as np
 from FileSupport import *
+import math
 
 # ------------------ Variables ----------------------
 # file
@@ -31,6 +32,12 @@ def click_event(event, x, y, flags, param):
         click_allowed = True
 
 
+def coord_dist(c0, c1):
+    dx2 = (c0[0] - c1[0]) ** 2
+    dy2 = (c0[1] - c1[1]) ** 2
+    return math.sqrt(dx2 + dy2)
+
+
 # boxpoints does lowest corner first, then goes clockwise
 # This assumes the centerline we want is longer than the vertical centerline. So this could
 # cause bugs if the defined box has artifact or problem causing it to be tall/skinny
@@ -40,13 +47,20 @@ def box_centerline(rec):
     c1 = rec[1]
     c2 = rec[2]
     c3 = rec[3]
-
+    # xy coord assuming bottom right is c0
+    x1 = np.mean([c0[0], c1[0]])
+    y1 = np.mean([c0[1], c1[1]])
+    x2 = np.mean([c2[0], c3[0]])
+    y2 = np.mean([c2[1], c3[1]])
+    # xy coord assuming bottom left is c0
+    xa = np.mean([c0[0], c3[0]])
+    ya = np.mean([c0[1], c3[1]])
+    xb = np.mean([c2[0], c1[0]])
+    yb = np.mean([c2[1], c1[1]])
     # find longer centerline for rec as that is relevant center line
-    x1 = np.mean([c0[0], c3[0]])
-    y1 = np.mean([c0[1], c3[1]])
-    x2 = np.mean([c2[0], c1[0]])
-    y2 = np.mean([c2[1], c1[1]])
-    return np.array([[x1, y1], [x2, y2]])
+    if coord_dist([x1, x2], [y1, y2]) > coord_dist([xa, xa], [yb, yb]):
+        return np.array([[x1, y1], [x2, y2]])
+    return np.array([[xa, ya], [xb, yb]])
 
 
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
