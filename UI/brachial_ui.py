@@ -10,7 +10,32 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
+# from PyQt5.QtWidgets import  QApplication, QMainWindow
+
+def succClick():
+    print("works")
+
+def dan():
+    print("dan")
+
+# Should increment the image every time acceptable is run
+# i assume it will take in an image object and change the source image
+# assumes object from Ui_Banalyzer
+def UpdateImage(image_obj):
+    image_obj.setPixmap(QtGui.QPixmap("frame5.jpg"))
+
 class Ui_Banalyzer(object):
+    def setupMain(self, Banalyzer):
+        Banalyzer.setObjectName("Banalyzer")
+        Banalyzer.resize(800, 600)
+        Banalyzer.setAutoFillBackground(False)
+        Banalyzer.setStyleSheet("background:rgb(177, 185, 199)")
+        self.label = QtWidgets.QLabel(Banalyzer)
+        self.label.setText('Main Page')
+
+#        self.retranslateUi(Banalyzer)
+ #       QtCore.QMetaObject.connectSlotsByName(Banalyzer)
+
     def setupUi(self, Banalyzer):
         Banalyzer.setObjectName("Banalyzer")
         Banalyzer.resize(800, 600)
@@ -58,6 +83,8 @@ class Ui_Banalyzer(object):
         self.layout.addWidget(self.fmd_screen)
         Banalyzer.setCentralWidget(self.main_screen)
 
+        self.accept_btn.clicked.connect(lambda: UpdateImage(self.crop_image))  # !!!!!!!!!!!!!!!
+
         self.retranslateUi(Banalyzer)
         self.layout.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(Banalyzer)
@@ -70,11 +97,15 @@ class Ui_Banalyzer(object):
         self.manual_btn.setText(_translate("Banalyzer", "Manual"))
         self.pushButton.setText(_translate("Banalyzer", "Back"))
 
+
 if __name__ == "__main__":
     import sys
-    app = QtWidgets.QApplication(sys.argv)
+
+    app = QtWidgets.QApplication([])  # sys.argv is for command line (maybe use for tests?)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_Banalyzer()
     ui.setupUi(MainWindow)
+   # ui.setupMain(MainWindow)
+
     MainWindow.show()
     sys.exit(app.exec_())
