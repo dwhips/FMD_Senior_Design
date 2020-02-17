@@ -16,8 +16,8 @@ temp_image_file_path = ReturnTempImagePath()
 RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
 BLUE = (255, 0, 0)
-# UI
-im_x, im_y, click_allowed = 1, 1, True
+# UI   REOMVE THE CLICK STUFF
+im_x, im_y, click_allowed = 164, 150, True
 
 
 # ------------------Functions-----------------------------------
@@ -138,12 +138,13 @@ def Populate(img, img_obj):
     OpenCv2QImage(img, img_obj)
     #cv2.imshow("Image with detected contours", img)
 
-
+# to set up widget class ... https://stackoverflow.com/questions/32226074/display-opencv-window-on-top-of-pyqts-main-window
 # should update pyqt5 label
-def OpenCv2QImage(opencv_img, image_obj):
-    opencv_img = QtGui.QImage(opencv_img.data, opencv_img.shape[1], opencv_img.shape[0],
-                              QtGui.QImage.Format_RGB888).rgbSwapped()
-    image_obj.setPixmap(QtGui.QPixmap.fromImage(opencv_img))
+def OpenCv2QImage(opcv_img, image_obj):
+    height, width, channel = opcv_img.shape
+    bytes_per_line = 3 * width
+    pix_img = QtGui.QImage(opcv_img.data, width, height, bytes_per_line, QtGui.QImage.Format_RGB888)
+    image_obj.setPixmap(QtGui.QPixmap.fromImage(pix_img))
     image_obj.repaint()
 
 
@@ -165,8 +166,6 @@ def PerformFMD(image_path, image_obj):
         sample_start_col = 159
         sample_end_col = 518
         image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
-        im_x = 164
-        im_y = 150
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         # saves the current frame. Not necessary but may be used in final product
@@ -177,7 +176,7 @@ def PerformFMD(image_path, image_obj):
         # !!!!!!!! the coord should already be saved by user, this func shouldnt happen until
         # the user clicks 'accept' or 'run'
 
-        time.sleep(.1)
+        # time.sleep(.1)
         Populate(image, image_obj)
 
         print("Image %i Complete" % i_frame, "\n")
