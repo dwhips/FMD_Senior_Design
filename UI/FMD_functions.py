@@ -7,7 +7,8 @@ from brachial_ui import UpdateImage
 from FileSupport import *
 from PyQt5 import QtCore, QtGui, QtWidgets
 import time
-
+# note for later. have each fmd iteration have its own class and calss name
+# so it can store n_frames, fmd, other info
 # ------------------ Variables ----------------------
 # file
 image_file_name = '14.05.25 hrs __[0011697].avi'
@@ -176,7 +177,7 @@ def PerformFMD(image_path, image_obj):
         # !!!!!!!! the coord should already be saved by user, this func shouldnt happen until
         # the user clicks 'accept' or 'run'
 
-        # time.sleep(.1)
+        time.sleep(.01)
         Populate(image, image_obj)
 
         print("Image %i Complete" % i_frame, "\n")
