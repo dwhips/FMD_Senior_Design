@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<Patient_PPS SonoVersion="003.004" Schema="0x83000001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="PT_PPS.XSD">
+   <AccessionNumber/>
+   <PatientsName>PRACTICE^1</PatientsName>
+   <PatientID>(_No_ID_)</PatientID>
+   <OtherPatientIDs/>
+   <PatientsBirthDate/>
+   <PatientsSex/>
+   <PatientsSize/>
+   <PatientsWeight/>
+   <AdditionalPatientHistory/>
+   <EthnicGroup/>
+   <ReferringPhysiciansName/>
+   <StudyInstanceUID/>
+   <SonoStudyInstanceUID>1.2.840.114340.03.000008251016055008.1.20171208.140148.0001464</SonoStudyInstanceUID>
+   <StudyID/>
+   <NameofPhysiciansReadingStudy/>
+   <StudyDate>20171208</StudyDate>
+   <StudyTime>140148</StudyTime>
+   <PpsID>1</PpsID>
+   <PpsDescription/>
+   <PpsStartDate>20171208</PpsStartDate>
+   <PpsStartTime>140148</PpsStartTime>
+   <OperatorsName/>
+   <SeriesInstanceUID>1.2.840.114340.03.000008251016055008.2.20171208.140148.0001464</SeriesInstanceUID>
+   <SRSeriesInstanceUID>1.2.840.114340.03.000008251016055008.5.20171208.140148.0001464</SRSeriesInstanceUID>
+   <SeriesDate>20171208</SeriesDate>
+   <SeriesTime>140148</SeriesTime>
+   <SoftwareVersions>30.80.306.019</SoftwareVersions>
+   <InstitutionName/>
+   <LastMenstrualDate/>
+   <SonoMetadata>
+      <PatientInstanceUID>0000082510160550080000963</PatientInstanceUID>
+      <ExamName>Vascular</ExamName>
+      <BSAHeight>0.000000</BSAHeight>
+      <BSAWeight>0.000000</BSAWeight>
+      <BSAUnits>1</BSAUnits>
+      <NumFetus>1</NumFetus>
+      <EstimatedDueDate/>
+      <IsLmpByEdd>FALSE</IsLmpByEdd>
+   </SonoMetadata>
+</Patient_PPS>
