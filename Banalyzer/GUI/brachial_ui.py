@@ -5,14 +5,15 @@
 # Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
-
-
+import sys
+sys.path.append('../') # could be hacky
+import GUIHelper
+import FMD.FMDProcessing as FMD
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FMD_functions import *
 
 # ------------------ Variables ----------------------
 # file
-image_file_path = 'C:\\Senior Design\\git\\FMD_Senior_Design\\Sample_Images\\2017Dec08 Study__[0001464]\\14.05.25 hrs __[0011697].avi'
+image_file_path = 'C:\\Senior Design\\git\\BanalyzerProject\\Resources\\14.05.25 hrs __[0011697].avi'
 # colors
 RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
@@ -20,14 +21,6 @@ BLUE = (255, 0, 0)
 # UI
 im_x, im_y, click_allowed = 1, 1, True
 
-
-# from PyQt5.QtWidgets import  QApplication, QMainWindow
-
-def succClick():
-    print("works")
-
-def dan():
-    print("dan")
 
 # Should increment the image every time acceptable is run
 # i assume it will take in an image object and change the source image
@@ -94,7 +87,7 @@ class Ui_Banalyzer(object):
         self.layout.addWidget(self.fmd_screen)
         Banalyzer.setCentralWidget(self.main_screen)
 
-        self.accept_btn.clicked.connect(lambda: PerformFMD(image_file_path, self.crop_image))  # !!!!!!!!!!!!!!!
+        self.accept_btn.clicked.connect(lambda: FMD.PerformFMD(image_file_path, self.crop_image))  # !!!!!!!!!!!!!!!
 
         self.retranslateUi(Banalyzer)
         self.layout.setCurrentIndex(1)
