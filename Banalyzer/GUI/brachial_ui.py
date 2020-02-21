@@ -10,10 +10,14 @@ sys.path.append('../') # could be hacky
 import GUIHelper
 import FMD.FMDProcessing as FMD
 from PyQt5 import QtCore, QtGui, QtWidgets
+import pathlib
 
 # ------------------ Variables ----------------------
 # file
-image_file_path = 'C:\\Senior Design\\git\\BanalyzerProject\\Resources\\14.05.25 hrs __[0011697].avi'
+curr_path = pathlib.Path().absolute().parents[1]
+print(curr_path)
+image_file_path = str(curr_path/'Resources\\14.05.25 hrs __[0011697].avi')
+print(image_file_path)
 # colors
 RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
