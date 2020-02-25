@@ -1,6 +1,8 @@
 import FMD
 import numpy as np
 import math
+import cv2
+
 
 # outputs the difference between two coordinates
 # c = [x y]
@@ -35,6 +37,7 @@ def BoxCenterLine(rec):
         return np.array([[x1, y1], [x2, y2]])
     return np.array([[xa, ya], [xb, yb]])
 
+
 # checks for points that are perpendicular to the center-line
 # tang is tangent coord [[xa ya] [xb yb]] so two coord
 def TangDiamMean(contour, tang):
@@ -65,3 +68,7 @@ def TangDiamMean(contour, tang):
         # dont have this working so return is not important
     return y_int
 
+
+# this dose the center line area thing brian talked about
+def ContourMean(contour, length):
+    return cv2.contourArea(contour) / length

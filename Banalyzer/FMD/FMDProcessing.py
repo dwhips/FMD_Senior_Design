@@ -2,7 +2,7 @@ import FMD.FMDCalcs as FMDCalcs
 import GUI.GUIHelper as GUI
 import cv2
 import numpy as np
-import time # just for delay, ill probably delete this
+import time  # just for delay, ill probably delete this
 
 ############Remove the im_x and such and change colors to resources file##############
 RED = (0, 0, 255)  # opencv uses BGR not RGB
@@ -10,12 +10,15 @@ GREEN = (0, 255, 0)
 BLUE = (255, 0, 0)
 # UI
 im_x, im_y, click_allowed = 150, 150, True
+
+
 ########################
 
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
 def Populate(img, img_obj):
     # Convert image to grayscale
-    img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
+    img = cv2.cvtColor(img,
+                       cv2.COLOR_BGR2GRAY)  # imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
     # Gaussian smooth (need to investigate if we need)
     img = cv2.GaussianBlur(img, (7, 7), 0)
     # Invert Image
@@ -40,13 +43,14 @@ def Populate(img, img_obj):
             # cv2.drawContours(img, )
             # print(simp_box)
             center_xy = FMDCalcs.BoxCenterLine(simp_box)
-            # print(center_xy[0])
-            # print(center_xy[1])
-            dead = FMDCalcs.TangDiamMean(otsu_contours, center_xy)
-            cv2.circle(img, tuple([0, dead]), 3, RED, 2)
+            #          dead = FMDCalcs.TangDiamMean(otsu_contours, center_xy)
+            #         cv2.circle(img, tuple([0, dead]), 3, RED, 2)
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
+            length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
+            print("Diam:\t", FMDCalcs.ContourMean(otsu_contours[i_shape], length))
     GUI.OpenCv2QImage(img, img_obj)
-    #cv2.imshow("Image with detected contours", img)
+    # cv2.imshow("Image with detected contours", img)
+
 
 # this will run the FMD process once an image has been verified.
 def PerformFMD(image_path, image_obj):
