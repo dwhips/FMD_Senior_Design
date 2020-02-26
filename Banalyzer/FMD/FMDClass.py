@@ -1,27 +1,33 @@
 # This class will calculate the flow-mediated dilation for a user-input test (test_name) and
 # user-input file (file_path).
 
-
-
+# stores information for each .avi file being processed (ie baseline name, diameter array etc)
+# this will only be used to store and retrieve information, it will not directly interact with the GUI
+# since the number of classes will be user generated, i think we need to have a list of classes
 class classFMD:
     def __init__(self, test_name, file_path):
-        self.test_name = test_name
+        self.test_name = test_name  # name of user (baseline, 1mn ....)
         self.file_path = file_path
+        self.diameter_arr = []
+        self.conf_arr = []
 
-        def AddArteryArray(self, artery_array):
-            self.artery_array = artery_array
+    # Replaces class artery diameter array with input
+    def AddDiameterArr(self, diameter_arr):
+        self.diameter_arr = diameter_arr
 
-        c = classFMD("baseline", "C:/User/Users")
-        print (c.test_name)
-        print(c.file_path)
+    # adds element to the class diameter array
+    def Add2DiameterArr(self, diameter):
+        self.diameter_arr.append(diameter)
 
-        d = classFMD("One Minute After", "C:/User/Users")
-        print (d.test_name)
-        print(d.file_path)
+    # Replaces class confidence array with input
+    def AddConfidenceArr(self, conf_arr):
+        self.conf_arr = conf_arr
 
-        c.AddArteryArray([567, 8910, 2210, 50])
-        print(c.artery_array)
+    # adds confidence element to class confidence array
+    def Add2ConfidenceArr(self, conf):
+        self.conf_arr.append(conf)
 
+# practice class. not used in our final product
 class classSTUDENT(classFMD):
 
     def InputGpa(self, gpa):
@@ -38,3 +44,19 @@ class classSTUDENT(classFMD):
         print(c.gpa)
         print(c.student_id)
 
+
+# example of dynamically making classes with a list
+class_list = []
+class_list.append(classFMD("One Minute After", "C:/User/Users"))
+
+print(class_list[0].test_name)
+print(class_list[0].file_path)
+
+class_list.append(classFMD("baseline", "C:/User/Users"))
+print(class_list[1].test_name)
+print(class_list[1].file_path)
+class_list[1].AddDiameterArr([567, 8910, 2210, 50])
+print(class_list[1].diameter_arr)
+class_list[1].Add2DiameterArr(1000)
+class_list[1].Add2DiameterArr(2323)
+print(class_list[1].diameter_arr)
