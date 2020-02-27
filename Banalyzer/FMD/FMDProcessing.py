@@ -1,5 +1,7 @@
 import FMD.FMDCalcs as FMDCalcs
 import GUI.GUIHelper as GUI
+import GUI.brachial_ui as GUIbr
+import FMD.FMDClass as FMDclass
 import cv2
 import numpy as np
 import time  # just for delay, ill probably delete this
@@ -47,7 +49,8 @@ def Populate(img, img_obj):
             #         cv2.circle(img, tuple([0, dead]), 3, RED, 2)
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
             length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
-            print("Diam:\t", FMDCalcs.ContourMean(otsu_contours[i_shape], length))
+            GUIbr.gbl_class_list[-1].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
+            print("Diam:\t", GUIbr.gbl_class_list[-1].GetRecentDiam(), " pixels")
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 

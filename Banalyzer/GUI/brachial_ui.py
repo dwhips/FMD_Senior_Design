@@ -5,10 +5,15 @@
 # Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
+
+# !!!!!!!!!!!!!!!! THIS FILE IS CURRENTLY SEEN AS THE MAIN FILE!!!!!!!!!!!!!!!!!!!!!!
+
 import sys
-sys.path.append('../') # could be hacky
+
+sys.path.append('../')  # could be hacky, need to figure out how to share between files
 import GUIHelper
 import FMD.FMDProcessing as FMD
+import FMD.FMDClass as FMDclass
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
 
@@ -16,7 +21,7 @@ import pathlib
 # file
 curr_path = pathlib.Path().absolute().parents[1]
 print(curr_path)
-image_file_path = str(curr_path/'Resources\\14.05.25 hrs __[0011697].avi')
+image_file_path = str(curr_path / 'Resources\\14.05.25 hrs __[0011697].avi')
 print(image_file_path)
 # colors
 RED = (0, 0, 255)  # opencv uses BGR not RGB
@@ -24,13 +29,19 @@ GREEN = (0, 255, 0)
 BLUE = (255, 0, 0)
 # UI
 im_x, im_y, click_allowed = 1, 1, True
+# imagine this list is declared once the user has selected all the file paths, fmd names on moved to this page
+global gbl_class_list
+gbl_class_list = [FMDclass.classFMD("Test FMD", image_file_path)]
+print(gbl_class_list[-1].name)
 
+# ----------------------------------------------------
 
 # Should increment the image every time acceptable is run
 # i assume it will take in an image object and change the source image
 # assumes object from Ui_Banalyzer
 def UpdateImage(image_obj, image_path):
     image_obj.setPixmap(QtGui.QPixmap(image_path))
+
 
 class Ui_Banalyzer(object):
     def setupMain(self, Banalyzer):
@@ -41,8 +52,8 @@ class Ui_Banalyzer(object):
         self.label = QtWidgets.QLabel(Banalyzer)
         self.label.setText('Main Page')
 
-#        self.retranslateUi(Banalyzer)
- #       QtCore.QMetaObject.connectSlotsByName(Banalyzer)
+    #        self.retranslateUi(Banalyzer)
+    #       QtCore.QMetaObject.connectSlotsByName(Banalyzer)
 
     def setupUi(self, Banalyzer):
         Banalyzer.setObjectName("Banalyzer")
@@ -113,7 +124,7 @@ if __name__ == "__main__":
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_Banalyzer()
     ui.setupUi(MainWindow)
-   # ui.setupMain(MainWindow)
+    # ui.setupMain(MainWindow)
 
     MainWindow.show()
     sys.exit(app.exec_())
