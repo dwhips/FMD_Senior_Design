@@ -119,13 +119,18 @@ class Ui_Banalyzer(object):
         self.pushButton.setText(_translate("Banalyzer", "Back"))
 
     # i dont want this here. I need to break it out
+    # THIS SHIT DONT WORK
     def GetPos(self, event):
         x = event.pos().x()
         y = event.pos().y()
         gbl_class_list[-1].UpdateXY(x, y)
         print(gbl_class_list[-1].GetXY())
-        GUIHelper.AddPixmapCircle(self.crop_image, gbl_class_list[-1].GetXY(), "add color later", 10)
-
+        color = (0, 255, 0)
+ #       GUIHelper.AddPixmapCircle(self.crop_image, gbl_class_list[-1].GetXY(), color)
+        paint = QtGui.QPainter(self.crop_image.pixmap())
+        paint.setPen(QtGui.QColor(color[0], color[1], color[2]))
+        paint.drawPoint(x, y)
+        self.crop_image.repaint()
 
 
 if __name__ == "__main__":

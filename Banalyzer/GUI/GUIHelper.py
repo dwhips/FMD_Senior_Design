@@ -10,11 +10,11 @@ def OpenCv2QImage(opcv_img, image_obj):
     image_obj.repaint()
 
 # adds a circle to a pixmap image
-def AddPixmapCircle(image_obj, coord, circle_color, circle_size):
+def AddPixmapCircle(image_obj, coord, circle_color):
     paint = QtGui.QPainter(image_obj)
-    green = (0, 255, 0)
-    paint.setBrush(QtGui.QColor(green[0], green[1], green[2]))
-    paint.drawEllipse(coord[0], coord[1], circle_size, circle_size)
-    image_obj.repaint()
+    paint.setPen(QtGui.QColor(circle_color[0], circle_color[1], circle_color[2]))
+    paint.drawPoint(coord[0], coord[1])
+#    paint.repaint()
+#    image_obj.repaint()
     # need to have x and y relative to the widget, not relative to the window.
     # this will get fucked if the user resizes the window so keep in mind
