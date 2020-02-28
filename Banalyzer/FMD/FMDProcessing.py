@@ -57,42 +57,45 @@ def Populate(img, img_obj):
 
 
 # When the GUI UI is clicked, populate the gui with a FMD measurement based on the click location
-def VerifyFMDClick(image_path, image_obj):
-    # need to update that the image can be accepted. i think update user xy to null
-    delete_me = 9  # dummy
-
+# def GUIFMDClick(image_obj, x_coord, y_coord):
+#    print(x_coord," ", y_coord)
+#   # need to update that the image can be accepted. i think update user xy to null
 
 # this will run the FMD process once an image has been verified.
 def PerformFMD(image_path, image_obj):
-    artery_avi = cv2.VideoCapture(image_path)
-    if not artery_avi.isOpened():
-        print("Couldn't open file")
-        # change to a button alert
-        return
-    success, image = artery_avi.read()
-
-    # Process and contour each .avi frame ===============================
-    i_frame = 0
-    while success:
-        # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
-        sample_start_row = 144  # measurements are based off the 640x480 sample image
-        sample_end_row = 408
-        sample_start_col = 159
-        sample_end_col = 518
-        image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
-        # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-        # saves the current frame. Not necessary but may be used in final product
-        # image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
-        cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image)
-
-        # !!!!!!!! need to implement a clicking opportunity within the GUI
-        # !!!!!!!! the coord should already be saved by user, this func shouldnt happen until
-        # the user clicks 'accept' or 'run'
-
-        time.sleep(.01)
-        Populate(image, image_obj)
-
-        print("Image %i Complete" % i_frame, "\n")
-        i_frame += 1
+    if GUIbr.gbl_class_list[-1].CheckXY():
+        artery_avi = cv2.VideoCapture(image_path)
+        if not artery_avi.isOpened():
+            print("Couldn't open file")
+            # change to a button alert
+            return
         success, image = artery_avi.read()
+
+        # Process and contour each .avi frame ===============================
+        i_frame = 0
+        while success:
+            # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
+            sample_start_row = 144  # measurements are based off the 640x480 sample image
+            sample_end_row = 408
+            sample_start_col = 159
+            sample_end_col = 518
+            image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
+            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            # saves the current frame. Not necessary but may be used in final product
+            # image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
+            cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image)
+
+            # !!!!!!!! need to implement a clicking opportunity within the GUI
+            # !!!!!!!! the coord should already be saved by user, this func shouldnt happen until
+            # the user clicks 'accept' or 'run'
+
+            time.sleep(.01)
+            Populate(image, image_obj)
+
+            print("Image %i Complete" % i_frame, "\n")
+            i_frame += 1
+            success, image = artery_avi.read()
+    else:
+         print("user has not defined xy click")
+         # have a popup or some error indication that they should click the gui

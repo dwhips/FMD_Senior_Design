@@ -41,6 +41,9 @@ class classFMD:
         else:
             return True
 
+    def GetXY(self):
+        return self.xy_user_click
+
 # practice class. not used in our final product
 class classSTUDENT(classFMD):
 
@@ -61,18 +64,19 @@ class classSTUDENT(classFMD):
 
 # example of dynamically making classes with a list
 # ill need to look into this more as best option because its leading to a lot of namespace length
-class_list = []
-class_list.append(classFMD("One Minute After", "C:/User/Users"))
+if False:
+    class_list = []
+    class_list.append(classFMD("One Minute After", "C:/User/Users"))
 
-print(class_list[0].name)
-print(class_list[0].file_path)
-print("Can the user click the accept button?: ", class_list[0].CheckXY())
+    print(class_list[0].name)
+    print(class_list[0].file_path)
+    print("Can the user click the accept button?: ", class_list[0].CheckXY())
 
-class_list.append(classFMD("baseline", "C:/User/Users"))
-print(class_list[1].name)
-print(class_list[1].file_path)
-class_list[1].AddDiameterArr([567, 8910, 2210, 50])
-print(class_list[1].diameter_arr)
-class_list[1].Add2DiameterArr(1000)
-class_list[1].Add2DiameterArr(2323)
-print(class_list[1].diameter_arr)
+    class_list.append(classFMD("baseline", "C:/User/Users"))
+    print(class_list[1].name)
+    print(class_list[1].file_path)
+    class_list[1].AddDiameterArr([567, 8910, 2210, 50])
+    print(class_list[1].diameter_arr)
+    class_list[1].Add2DiameterArr(1000)
+    class_list[1].Add2DiameterArr(2323)
+    print(class_list[1].diameter_arr)

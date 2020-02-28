@@ -95,6 +95,7 @@ class Ui_Banalyzer(object):
         self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
         self.crop_image.setScaledContents(False)
         self.crop_image.setObjectName("crop_image")
+        self.crop_image.mousePressEvent = self.GetPos #!!!!!!!!!!!!!
         self.pushButton = QtWidgets.QPushButton(self.fmd_screen)
         self.pushButton.setGeometry(QtCore.QRect(0, 10, 62, 19))
         self.pushButton.setStyleSheet("background:rgb(255, 255, 255)")
@@ -116,6 +117,15 @@ class Ui_Banalyzer(object):
         self.retry_btn.setText(_translate("Banalyzer", "Retry"))
         self.manual_btn.setText(_translate("Banalyzer", "Manual"))
         self.pushButton.setText(_translate("Banalyzer", "Back"))
+
+    # i dont want this here. I need to break it out
+    def GetPos(self, event):
+        x = event.pos().x()
+        y = event.pos().y()
+        gbl_class_list[-1].UpdateXY(x, y)
+        print(gbl_class_list[-1].GetXY())
+        GUIHelper.AddPixmapCircle(self.crop_image, gbl_class_list[-1].GetXY(), "add color later", 10)
+
 
 
 if __name__ == "__main__":
