@@ -10,6 +10,7 @@ class classFMD:
         self.file_path = file_path
         self.diameter_arr = []
         self.conf_arr = []
+        self.xy_user_click = [None, None] # if [None, None] then user doesnt have click saved
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
@@ -30,6 +31,16 @@ class classFMD:
     def Add2ConfidenceArr(self, conf):
         self.conf_arr.append(conf)
 
+    def UpdateXY(self, x, y):
+        self.xy_user_click = [x, y]
+
+    # if self.xy is [Null,Null] return false
+    def CheckXY(self):
+        if(self.xy_user_click[0] == None and self.xy_user_click[1] == None):
+            return False
+        else:
+            return True
+
 # practice class. not used in our final product
 class classSTUDENT(classFMD):
 
@@ -49,11 +60,13 @@ class classSTUDENT(classFMD):
 
 
 # example of dynamically making classes with a list
+# ill need to look into this more as best option because its leading to a lot of namespace length
 class_list = []
 class_list.append(classFMD("One Minute After", "C:/User/Users"))
 
 print(class_list[0].name)
 print(class_list[0].file_path)
+print("Can the user click the accept button?: ", class_list[0].CheckXY())
 
 class_list.append(classFMD("baseline", "C:/User/Users"))
 print(class_list[1].name)

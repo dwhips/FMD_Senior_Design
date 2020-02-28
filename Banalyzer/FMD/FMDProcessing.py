@@ -49,10 +49,17 @@ def Populate(img, img_obj):
             #         cv2.circle(img, tuple([0, dead]), 3, RED, 2)
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
             length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
+            # might need to create namespaces to shorthand these calls
             GUIbr.gbl_class_list[-1].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
             print("Diam:\t", GUIbr.gbl_class_list[-1].GetRecentDiam(), " pixels")
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
+
+
+# When the GUI UI is clicked, populate the gui with a FMD measurement based on the click location
+def VerifyFMDClick(image_path, image_obj):
+    # need to update that the image can be accepted. i think update user xy to null
+    delete_me = 9  # dummy
 
 
 # this will run the FMD process once an image has been verified.

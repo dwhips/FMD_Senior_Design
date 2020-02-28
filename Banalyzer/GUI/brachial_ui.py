@@ -102,6 +102,7 @@ class Ui_Banalyzer(object):
         self.layout.addWidget(self.fmd_screen)
         Banalyzer.setCentralWidget(self.main_screen)
 
+        # need to verify the image has been clicked on
         self.accept_btn.clicked.connect(lambda: FMD.PerformFMD(image_file_path, self.crop_image))  # !!!!!!!!!!!!!!!
 
         self.retranslateUi(Banalyzer)
