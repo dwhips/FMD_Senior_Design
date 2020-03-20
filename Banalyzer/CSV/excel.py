@@ -1,10 +1,25 @@
 #Putting Variables Into Excel
 
-import xlwt
+import xlsxwriter
+
+#Variables
+FMD1 = 15
+
+#Creating workbook wb
+wb = xlsxwriter.Workbook('example.xlsx')
+
+#Creating Sheet for Subject Summary
+subsum = wb.add_worksheet("Subject Summary")
+
+#Filling in the Cells for the subject summary sheet
+
+header_format = subsum.add_format()
+header_format.set_bold()
 
 
-wb = xlwt.Workbook()
-ws = wb.add_sheet("Test Sheet!")
-ws.write(0, 0,
 
-wb.save('example.xls')
+subsum.write('A1', 'Study Name')
+
+
+
+wb.close()

@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5d34086-c6f4-4757-8ca3-4debc5532597" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banalyzer/FMD/FMDClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/FMD/FMDClass.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banalyzer/FMD/FMDProcessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/FMD/FMDProcessing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banalyzer/FMD/FMD_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/FMD/FMD_functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banalyzer/GUI/brachial_ui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/GUI/brachial_ui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Banalyzer/CSV/excel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/CSV/excel.py" afterDir="false" />
     </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +36,19 @@
       <recent name="C:\Users\User\Documents\GitHub\testFMD" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.UI_Setup">
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
     <configuration name="UI_Setup" type="PythonConfigurationType" factoryName="Python">
       <module name="BanalyzerProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -47,30 +56,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\danie\AppData\Local\Programs\Python\Python37\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Banalyzer/GUI" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Banalyzer/GUI/brachial_ui.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="testing classes" type="PythonConfigurationType" factoryName="Python">
-      <module name="BanalyzerProject" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="C:\Users\danie\AppData\Local\Programs\Python\Python37\python.exe" />
+      <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Banalyzer/FMD" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Banalyzer/FMD/FMDClass.py" />
@@ -82,22 +70,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Python.UI_Setup" />
-      <item itemvalue="Python.testing classes" />
-    </list>
-  </component>
-  <component name="ServiceViewManager">
-    <option name="viewStates">
-      <list>
-        <serviceView>
-          <treeState>
-            <expand />
-            <select />
-          </treeState>
-        </serviceView>
-      </list>
-    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -126,53 +98,53 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="447" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584718997146">
+    <state x="447" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1582243072859">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="447" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1584718997146" />
-    <state x="771" y="171" key="FileChooserDialogImpl" timestamp="1582757220768">
+    <state x="447" y="71" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1582243072859" />
+    <state x="771" y="171" key="FileChooserDialogImpl" timestamp="1582241991798">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="771" y="171" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1582757220768" />
-    <state width="1515" height="230" key="GridCell.Tab.0.bottom" timestamp="1584720803807">
+    <state x="771" y="171" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1582241991798" />
+    <state width="1515" height="261" key="GridCell.Tab.0.bottom" timestamp="1582243720697">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1584720803807" />
-    <state width="1515" height="230" key="GridCell.Tab.0.center" timestamp="1584720803807">
+    <state width="1515" height="261" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1582243720697" />
+    <state width="1515" height="261" key="GridCell.Tab.0.center" timestamp="1582243720697">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1584720803807" />
-    <state width="1515" height="230" key="GridCell.Tab.0.left" timestamp="1584720803807">
+    <state width="1515" height="261" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1582243720697" />
+    <state width="1515" height="261" key="GridCell.Tab.0.left" timestamp="1582243720697">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1584720803807" />
-    <state width="1515" height="230" key="GridCell.Tab.0.right" timestamp="1584720803807">
+    <state width="1515" height="261" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1582243720697" />
+    <state width="1515" height="261" key="GridCell.Tab.0.right" timestamp="1582243720697">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1584720803807" />
-    <state width="1515" height="230" key="GridCell.Tab.1.bottom" timestamp="1584720803720">
+    <state width="1515" height="261" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1582243720697" />
+    <state width="1515" height="261" key="GridCell.Tab.1.bottom" timestamp="1582243720698">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1584720803720" />
-    <state width="1515" height="230" key="GridCell.Tab.1.center" timestamp="1584720803720">
+    <state width="1515" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1582243720698" />
+    <state width="1515" height="261" key="GridCell.Tab.1.center" timestamp="1582243720698">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1584720803720" />
-    <state width="1515" height="230" key="GridCell.Tab.1.left" timestamp="1584720803720">
+    <state width="1515" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1582243720698" />
+    <state width="1515" height="261" key="GridCell.Tab.1.left" timestamp="1582243720698">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1584720803720" />
-    <state width="1515" height="230" key="GridCell.Tab.1.right" timestamp="1584720803720">
+    <state width="1515" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1582243720698" />
+    <state width="1515" height="261" key="GridCell.Tab.1.right" timestamp="1582243720698">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1515" height="230" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1584720803720" />
+    <state width="1515" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1582243720698" />
     <state x="579" y="135" key="RollbackChangesDialog" timestamp="1582242946159">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="579" y="135" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1582242946159" />
-    <state x="849" y="241" key="com.intellij.ide.util.TipDialog" timestamp="1584718881052">
+    <state x="849" y="241" key="com.intellij.ide.util.TipDialog" timestamp="1582241763655">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="849" y="241" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1584718881052" />
+    <state x="849" y="241" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1582241763655" />
   </component>
 </project>
