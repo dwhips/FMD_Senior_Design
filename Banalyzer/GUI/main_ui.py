@@ -24,7 +24,7 @@ class mywindow(QMainWindow):
     def Run(self):
         self.ui = Ui_Banalyzer()
         self.ui.setupUi(self)
-        #self.ui.back_btn.clicked.connect(self.ChooseFMD())
+        self.ui.back_btn.clicked.connect(self.ChooseFMD)
 
 
 app = QtWidgets.QApplication([])
