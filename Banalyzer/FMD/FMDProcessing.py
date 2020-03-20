@@ -6,6 +6,11 @@ import cv2
 import numpy as np
 import time  # just for delay, ill probably delete this
 
+import sys
+
+sys.path.append('../')  # could be hacky, need to figure out how to share between files
+import Global.gbl_fmd_class_list as gbl_fmd
+
 ############Remove the im_x and such and change colors to resources file##############
 RED = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
@@ -50,20 +55,17 @@ def Populate(img, img_obj):
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
             length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
             # might need to create namespaces to shorthand these calls
-            GUIbr.gbl_class_list[-1].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
-            print("Diam:\t", GUIbr.gbl_class_list[-1].GetRecentDiam(), " pixels")
+            gbl_fmd.class_list[-1].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
+            print("Diam:\t", gbl_fmd.class_list[-1].GetRecentDiam(), " pixels")
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
-
-# When the GUI UI is clicked, populate the gui with a FMD measurement based on the click location
-# def GUIFMDClick(image_obj, x_coord, y_coord):
-#    print(x_coord," ", y_coord)
-#   # need to update that the image can be accepted. i think update user xy to null
-
 # this will run the FMD process once an image has been verified.
 def PerformFMD(image_path, image_obj):
-    if GUIbr.gbl_class_list[-1].CheckXY():
+    # TODO Deltere following, proves global is saving the class name
+    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].name)
+    print("print xy in FMDproccessing ", gbl_fmd.class_list[-1].GetXY())
+    if gbl_fmd.class_list[-1].CheckXY():
         artery_avi = cv2.VideoCapture(image_path)
         if not artery_avi.isOpened():
             print("Couldn't open file")

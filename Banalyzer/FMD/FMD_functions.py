@@ -1,4 +1,6 @@
 # This is simplified code without gui link
+# TODO THIS IS A DEAD FILE
+
 
 import cv2
 import numpy as np

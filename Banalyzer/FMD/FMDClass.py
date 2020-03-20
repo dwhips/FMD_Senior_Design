@@ -10,7 +10,7 @@ class classFMD:
         self.file_path = file_path
         self.diameter_arr = []
         self.conf_arr = []
-        self.xy_user_click = [None, None] # if [None, None] then user doesnt have click saved
+        self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
@@ -36,13 +36,14 @@ class classFMD:
 
     # if self.xy is [Null,Null] return false
     def CheckXY(self):
-        if(self.xy_user_click[0] == None and self.xy_user_click[1] == None):
+        if self.xy_user_click[0] is None and self.xy_user_click[1] is None:
             return False
         else:
             return True
 
     def GetXY(self):
         return self.xy_user_click
+
 
 # practice class. not used in our final product
 class classSTUDENT(classFMD):

@@ -14,6 +14,7 @@ sys.path.append('../')  # could be hacky, need to figure out how to share betwee
 import GUIHelper
 import FMD.FMDProcessing as FMD
 import FMD.FMDClass as FMDclass
+import Global.gbl_fmd_class_list as gbl_fmd
 from PyQt5 import QtCore, QtGui, QtWidgets
 import pathlib
 
@@ -30,9 +31,10 @@ BLUE = (255, 0, 0)
 # UI
 im_x, im_y, click_allowed = 1, 1, True
 # imagine this list is declared once the user has selected all the file paths, fmd names on moved to this page
-global gbl_class_list
-gbl_class_list = [FMDclass.classFMD("Test FMD", image_file_path)]
-print(gbl_class_list[-1].name)
+#global gbl_class_list
+gbl_fmd.class_list = [FMDclass.classFMD("Test FMD", image_file_path)]
+print("showing local class name in brachial_ui.py", gbl_fmd.class_list[-1].name)
+
 
 # ----------------------------------------------------
 
@@ -93,9 +95,9 @@ class Ui_Banalyzer(object):
         self.crop_image.setAutoFillBackground(False)
         self.crop_image.setText("")
         self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
-        self.crop_image.setScaledContents(False)
+        self.crop_image.setScaledContents(False)  # originally false
         self.crop_image.setObjectName("crop_image")
-        self.crop_image.mousePressEvent = self.GetPos #!!!!!!!!!!!!!
+        self.crop_image.mousePressEvent = self.GetPos  # !!!!!!!!!!!!!
         self.pushButton = QtWidgets.QPushButton(self.fmd_screen)
         self.pushButton.setGeometry(QtCore.QRect(0, 10, 62, 19))
         self.pushButton.setStyleSheet("background:rgb(255, 255, 255)")
@@ -121,16 +123,18 @@ class Ui_Banalyzer(object):
     # i dont want this here. I need to break it out
     # THIS SHIT DONT WORK
     def GetPos(self, event):
-        x = event.pos().x()
-        y = event.pos().y()
-        gbl_class_list[-1].UpdateXY(x, y)
-        print(gbl_class_list[-1].GetXY())
+        # x = event.pos().x()
+        x = event.x()
+        y = event.y()
+        gbl_fmd.class_list[-1].UpdateXY(x, y)
+        print(gbl_fmd.class_list[-1].GetXY())
         color = (0, 255, 0)
- #       GUIHelper.AddPixmapCircle(self.crop_image, gbl_class_list[-1].GetXY(), color)
+        #       GUIHelper.AddPixmapCircle(self.crop_image, gbl_class_list[-1].GetXY(), color)
         paint = QtGui.QPainter(self.crop_image.pixmap())
         paint.setPen(QtGui.QColor(color[0], color[1], color[2]))
         paint.drawPoint(x, y)
         self.crop_image.repaint()
+        print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[-1].CheckXY())
 
 
 if __name__ == "__main__":
