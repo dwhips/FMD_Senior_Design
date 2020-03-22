@@ -25,6 +25,23 @@ class Ui_filescreen(QWidget):
         font.setPointSize(20)
         self.instructions.setFont(font)
         self.instructions.setObjectName("instructions")
+
+        #First Column Label
+        self.file_label = QtWidgets.QLabel(self.filescreen)
+        self.file_label.setGeometry(QtCore.QRect(625, 350, 300, 200))
+        self.file_label.setAlignment(Qt.AlignCenter)
+        font.setPointSize(12)
+        self.file_label.setFont(font)
+        self.file_label.setObjectName("file_label")
+
+        #Second Column Label
+        self.name_label = QtWidgets.QLabel(self.filescreen)
+        self.name_label.setGeometry(QtCore.QRect(225, 350, 300, 200))
+        self.name_label.setAlignment(Qt.AlignCenter)
+        font.setPointSize(12)
+        self.name_label.setFont(font)
+        self.name_label.setObjectName("name_label")
+
         self.run_btn = QtWidgets.QPushButton(self.filescreen)
         self.run_btn.setGeometry(QtCore.QRect(1200, 500, 442, 262))
         font = QtGui.QFont()
@@ -33,7 +50,7 @@ class Ui_filescreen(QWidget):
         self.run_btn.setStyleSheet("background: rgb(255, 255, 255)")
         self.run_btn.setObjectName("run_btn")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.filescreen)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(200, 400, 600, 822))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(200, 500, 350, 822))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.layout_files = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.layout_files.setContentsMargins(5, 0, 0, 0)
@@ -56,6 +73,31 @@ class Ui_filescreen(QWidget):
         self.file4_in.setObjectName("file4_in")
         self.layout_files.addWidget(self.file4_in)
 
+        #section for the second column
+        self.verticalLayoutWidget2 = QtWidgets.QWidget(self.filescreen)
+        self.verticalLayoutWidget2.setGeometry(QtCore.QRect(600, 500, 350, 822))
+        self.verticalLayoutWidget2.setObjectName("verticalLayoutWidget2")
+        self.layout_names = QtWidgets.QVBoxLayout(self.verticalLayoutWidget2)
+        self.layout_names.setContentsMargins(5, 0, 0, 0)
+        self.layout_names.setObjectName("layout_names")
+        self.name1_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.name1_in.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name1_in.setObjectName("name1_in")
+        self.layout_names.addWidget(self.name1_in)
+        self.name2_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.name2_in.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name2_in.setObjectName("name2_in")
+        self.layout_names.addWidget(self.name2_in)
+        self.name3_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.name3_in.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name3_in.setObjectName("name3_in")
+        self.layout_names.addWidget(self.name3_in)
+        self.name4_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.name4_in.setStyleSheet("background: rgb(255, 255, 255)\n"
+                                    "")
+        self.name4_in.setObjectName("name4_in")
+        self.layout_names.addWidget(self.name4_in)
+
         filescreen.setCentralWidget(self.filescreen)
 
         self.retranslateUi(filescreen)
@@ -63,8 +105,10 @@ class Ui_filescreen(QWidget):
 
     def retranslateUi(self, filescreen):
         _translate = QtCore.QCoreApplication.translate
-        filescreen.setWindowTitle(_translate("filescreen", "Form"))
+        filescreen.setWindowTitle(_translate("filescreen", "MU Brachial Analyzer"))
         self.instructions.setText(_translate("filescreen", "Choose Files For Analysis"))
+        self.file_label.setText(_translate("filescreen", "File Path"))
+        self.name_label.setText(_translate("filescreen", "File Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.file1_in_2.setHtml(_translate("filescreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
