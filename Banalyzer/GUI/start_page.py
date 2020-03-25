@@ -19,11 +19,14 @@ class Ui_start_screen(object):
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
 
+        windowwidth = width/2
+        windowheight = height/1/5
+
         start_screen.setObjectName("start_screen")
         start_screen.resize(width/2, height/1.5)
         start_screen.setStyleSheet("background: rgb(177, 185, 199)")
         self.welcome_message = QtWidgets.QLabel(start_screen)
-        self.welcome_message.setGeometry(QtCore.QRect(250, 70, 1500, 342))
+        self.welcome_message.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.3, windowwidth*0.8, windowheight/7))
         self.welcome_message.setAlignment(Qt.AlignCenter)
         font = QtGui.QFont()
         font.setPointSize(20)
