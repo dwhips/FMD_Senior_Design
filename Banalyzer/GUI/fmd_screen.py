@@ -13,8 +13,8 @@ from PyQt5.QtWidgets import QWidget, QMainWindow
 
 class Ui_Banalyzer(QWidget):
     def setupUi(self, Banalyzer):
+
         Banalyzer.setObjectName("Banalyzer")
-        Banalyzer.resize(2000, 1500)
         Banalyzer.setAutoFillBackground(True)
         Banalyzer.setStyleSheet("background:rgb(177, 185, 199)")
         self.main_screen = QtWidgets.QWidget(Banalyzer)

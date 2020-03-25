@@ -9,12 +9,18 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QDesktopWidget
 
 
 class Ui_start_screen(object):
     def setupUi(self, start_screen):
+
+        #Get the size of the screen
+        width = QDesktopWidget().screenGeometry(-1).width()
+        height = QDesktopWidget().screenGeometry(-1).height()
+
         start_screen.setObjectName("start_screen")
-        start_screen.resize(2000, 1500)
+        start_screen.resize(width/2, height/1.5)
         start_screen.setStyleSheet("background: rgb(177, 185, 199)")
         self.welcome_message = QtWidgets.QLabel(start_screen)
         self.welcome_message.setGeometry(QtCore.QRect(250, 70, 1500, 342))

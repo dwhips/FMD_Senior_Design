@@ -14,9 +14,9 @@ from PyQt5.QtWidgets import QWidget
 
 class Ui_filescreen(QWidget):
     def setupUi(self, filescreen):
+
         self.filescreen = QtWidgets.QWidget()
         self.filescreen.setObjectName("filescreen")
-        self.filescreen.resize(2000, 1500)
         self.filescreen.setStyleSheet("background: rgb(177, 185, 199)")
         self.instructions = QtWidgets.QLabel(self.filescreen)
         self.instructions.setGeometry(QtCore.QRect(90, 60, 1500, 342))
