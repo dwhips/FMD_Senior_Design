@@ -29,5 +29,6 @@ class mywindow(QMainWindow):
 
 app = QtWidgets.QApplication([])
 application = mywindow()
+#application.showMaximized()
 application.show()
 sys.exit(app.exec())
