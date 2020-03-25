@@ -43,7 +43,7 @@ class Ui_filescreen(QWidget):
         self.name_label.setObjectName("name_label")
 
         self.run_btn = QtWidgets.QPushButton(self.filescreen)
-        self.run_btn.setGeometry(QtCore.QRect(1200, 500, 442, 262))
+        self.run_btn.setGeometry(QtCore.QRect(1200, 900, 442, 262))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.run_btn.setFont(font)
@@ -98,6 +98,17 @@ class Ui_filescreen(QWidget):
         self.name4_in.setObjectName("name4_in")
         self.layout_names.addWidget(self.name4_in)
 
+        #Set up the study name box
+        self.study = QtWidgets.QTextEdit(self.filescreen)
+        self.study.setGeometry(QtCore.QRect(1200, 500, 300, 100))
+        self.study.setStyleSheet("background: rgb(255, 255, 255)")
+
+        self.study_label = QtWidgets.QLabel(self.filescreen)
+        self.study_label.setGeometry(QtCore.QRect(1200, 400, 200, 100))
+        self.study_label.setAlignment(Qt.AlignCenter)
+        font.setPointSize(12)
+        self.name_label.setFont(font)
+
         filescreen.setCentralWidget(self.filescreen)
 
         self.retranslateUi(filescreen)
@@ -109,6 +120,7 @@ class Ui_filescreen(QWidget):
         self.instructions.setText(_translate("filescreen", "Choose Files For Analysis"))
         self.file_label.setText(_translate("filescreen", "File Path"))
         self.name_label.setText(_translate("filescreen", "File Name"))
+        self.study_label.setText(_translate("filescreen", "Study Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.file1_in_2.setHtml(_translate("filescreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
