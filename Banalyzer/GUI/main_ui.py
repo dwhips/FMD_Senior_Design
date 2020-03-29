@@ -17,10 +17,16 @@ class mywindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.fmd_button.clicked.connect(self.ChooseFMD)
 
+    def MainMenu(self):
+        self.ui = Ui_start_screen()
+        self.ui.setupUi(self)
+        self.ui.fmd_button.clicked.connect(self.ChooseFMD)
+
     def ChooseFMD(self):
         self.ui = Ui_filescreen()
         self.ui.setupUi(self)
         self.ui.run_btn.clicked.connect(self.Run)
+        self.ui.back_btn1.clicked.connect(self.MainMenu)
 
     def Run(self):
         self.ui = Ui_Banalyzer()

@@ -54,6 +54,7 @@ class Ui_Banalyzer(QWidget):
         self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
         self.crop_image.setScaledContents(True)
         self.crop_image.setObjectName("crop_image")
+
         self.back_btn = QtWidgets.QPushButton(self.fmd_screen)
         self.back_btn.setGeometry(QtCore.QRect(windowwidth*0.01, windowheight*0.01, windowwidth*0.05, windowheight*0.03))
         self.back_btn.setStyleSheet("background:rgb(255, 255, 255)")

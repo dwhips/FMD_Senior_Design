@@ -117,6 +117,12 @@ class Ui_filescreen(QWidget):
         font.setPointSize(12)
         self.name_label.setFont(font)
 
+        #Make the back button
+        self.back_btn1 = QtWidgets.QPushButton(self.filescreen)
+        self.back_btn1.setGeometry(QtCore.QRect(windowwidth*0.01, windowheight*0.01, windowwidth*0.05, windowheight*0.03))
+        self.back_btn1.setStyleSheet("background:rgb(255, 255, 255)")
+        self.back_btn1.setObjectName("back_btn")
+
         filescreen.setCentralWidget(self.filescreen)
 
         self.retranslateUi(filescreen)
@@ -126,8 +132,9 @@ class Ui_filescreen(QWidget):
         _translate = QtCore.QCoreApplication.translate
         filescreen.setWindowTitle(_translate("filescreen", "MU Brachial Analyzer"))
         self.instructions.setText(_translate("filescreen", "Choose Files For Analysis"))
+        self.back_btn1.setText(_translate("filescreen", "Back"))
         self.file_label.setText(_translate("filescreen", "File Path"))
-        self.name_label.setText(_translate("filescreen", "File Type"))
+        self.name_label.setText(_translate("filescreen", "Test Name"))
         self.study_label.setText(_translate("filescreen", "Study Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.file1_in_2.setHtml(_translate("filescreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
