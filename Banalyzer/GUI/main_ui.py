@@ -6,6 +6,7 @@ from file_Screen import Ui_filescreen
 from fmd_screen import Ui_Banalyzer
 from start_page import Ui_start_screen
 from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QDesktopWidget
 import sys
 
 

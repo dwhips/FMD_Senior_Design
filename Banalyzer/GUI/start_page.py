@@ -20,13 +20,13 @@ class Ui_start_screen(object):
         height = QDesktopWidget().screenGeometry(-1).height()
 
         windowwidth = width/2
-        windowheight = height/1/5
+        windowheight = height/1.5
 
         start_screen.setObjectName("start_screen")
         start_screen.resize(width/2, height/1.5)
         start_screen.setStyleSheet("background: rgb(177, 185, 199)")
         self.welcome_message = QtWidgets.QLabel(start_screen)
-        self.welcome_message.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.3, windowwidth*0.8, windowheight/7))
+        self.welcome_message.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.1, windowwidth*0.8, windowheight/7))
         self.welcome_message.setAlignment(Qt.AlignCenter)
         font = QtGui.QFont()
         font.setPointSize(20)
@@ -35,11 +35,11 @@ class Ui_start_screen(object):
         self.welcome_message.setAlignment(QtCore.Qt.AlignCenter)
         self.welcome_message.setObjectName("welcome_message")
         self.fmd_button = QtWidgets.QPushButton(start_screen)
-        self.fmd_button.setGeometry(QtCore.QRect(250, 500, 282, 162))
+        self.fmd_button.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.3, windowwidth*0.25, windowheight*0.2))
         self.fmd_button.setStyleSheet("background:rgb(255, 255, 255)")
         self.fmd_button.setObjectName("fmd_button")
         self.integral_btn = QtWidgets.QPushButton(start_screen)
-        self.integral_btn.setGeometry(QtCore.QRect(750, 500, 282, 162))
+        self.integral_btn.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.3, windowwidth*0.25, windowheight*0.2))
         self.integral_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.integral_btn.setObjectName("integral_btn")
 

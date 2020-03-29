@@ -10,47 +10,55 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QDesktopWidget
 
 
 class Ui_filescreen(QWidget):
     def setupUi(self, filescreen):
 
+        #Get the size of the screen
+        width = QDesktopWidget().screenGeometry(-1).width()
+        height = QDesktopWidget().screenGeometry(-1).height()
+
+        windowwidth = width/2
+        windowheight = height/1.5
+
         self.filescreen = QtWidgets.QWidget()
         self.filescreen.setObjectName("filescreen")
         self.filescreen.setStyleSheet("background: rgb(177, 185, 199)")
         self.instructions = QtWidgets.QLabel(self.filescreen)
-        self.instructions.setGeometry(QtCore.QRect(90, 60, 1500, 342))
+        self.instructions.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.1, windowwidth*0.7, windowheight*0.2))
         self.instructions.setAlignment(Qt.AlignCenter)
         font = QtGui.QFont()
         font.setPointSize(20)
         self.instructions.setFont(font)
         self.instructions.setObjectName("instructions")
 
-        #First Column Label
+        #Second Column Label (File path)
         self.file_label = QtWidgets.QLabel(self.filescreen)
-        self.file_label.setGeometry(QtCore.QRect(625, 350, 300, 200))
+        self.file_label.setGeometry(QtCore.QRect(windowwidth*0.35, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
         self.file_label.setAlignment(Qt.AlignCenter)
         font.setPointSize(12)
         self.file_label.setFont(font)
         self.file_label.setObjectName("file_label")
 
-        #Second Column Label
+        #First Column Label
         self.name_label = QtWidgets.QLabel(self.filescreen)
-        self.name_label.setGeometry(QtCore.QRect(225, 350, 300, 200))
+        self.name_label.setGeometry(QtCore.QRect(windowwidth*0.15, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
         self.name_label.setAlignment(Qt.AlignCenter)
         font.setPointSize(12)
         self.name_label.setFont(font)
         self.name_label.setObjectName("name_label")
 
         self.run_btn = QtWidgets.QPushButton(self.filescreen)
-        self.run_btn.setGeometry(QtCore.QRect(1200, 900, 442, 262))
+        self.run_btn.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.6, windowwidth*0.25, windowheight*0.2))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.run_btn.setFont(font)
         self.run_btn.setStyleSheet("background: rgb(255, 255, 255)")
         self.run_btn.setObjectName("run_btn")
         self.verticalLayoutWidget = QtWidgets.QWidget(self.filescreen)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(200, 500, 350, 822))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.35, windowwidth*0.18, windowheight*0.57))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.layout_files = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.layout_files.setContentsMargins(5, 0, 0, 0)
@@ -75,7 +83,7 @@ class Ui_filescreen(QWidget):
 
         #section for the second column
         self.verticalLayoutWidget2 = QtWidgets.QWidget(self.filescreen)
-        self.verticalLayoutWidget2.setGeometry(QtCore.QRect(600, 500, 350, 822))
+        self.verticalLayoutWidget2.setGeometry(QtCore.QRect(windowwidth*0.3, windowheight*0.35, windowwidth*0.18, windowheight*0.57))
         self.verticalLayoutWidget2.setObjectName("verticalLayoutWidget2")
         self.layout_names = QtWidgets.QVBoxLayout(self.verticalLayoutWidget2)
         self.layout_names.setContentsMargins(5, 0, 0, 0)
@@ -100,11 +108,11 @@ class Ui_filescreen(QWidget):
 
         #Set up the study name box
         self.study = QtWidgets.QTextEdit(self.filescreen)
-        self.study.setGeometry(QtCore.QRect(1200, 500, 300, 100))
+        self.study.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.35, windowwidth*0.15, windowheight*0.07))
         self.study.setStyleSheet("background: rgb(255, 255, 255)")
 
         self.study_label = QtWidgets.QLabel(self.filescreen)
-        self.study_label.setGeometry(QtCore.QRect(1200, 400, 200, 100))
+        self.study_label.setGeometry(QtCore.QRect(windowwidth*0.62, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
         self.study_label.setAlignment(Qt.AlignCenter)
         font.setPointSize(12)
         self.name_label.setFont(font)
@@ -119,7 +127,7 @@ class Ui_filescreen(QWidget):
         filescreen.setWindowTitle(_translate("filescreen", "MU Brachial Analyzer"))
         self.instructions.setText(_translate("filescreen", "Choose Files For Analysis"))
         self.file_label.setText(_translate("filescreen", "File Path"))
-        self.name_label.setText(_translate("filescreen", "File Name"))
+        self.name_label.setText(_translate("filescreen", "File Type"))
         self.study_label.setText(_translate("filescreen", "Study Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.file1_in_2.setHtml(_translate("filescreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
