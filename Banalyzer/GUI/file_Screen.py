@@ -36,7 +36,7 @@ class Ui_filescreen(QWidget):
 
         #Second Column Label (File path)
         self.file_label = QtWidgets.QLabel(self.filescreen)
-        self.file_label.setGeometry(QtCore.QRect(windowwidth*0.35, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
+        self.file_label.setGeometry(QtCore.QRect(windowwidth*0.25, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
         self.file_label.setAlignment(Qt.AlignCenter)
         font.setPointSize(12)
         self.file_label.setFont(font)
@@ -44,7 +44,7 @@ class Ui_filescreen(QWidget):
 
         #First Column Label
         self.name_label = QtWidgets.QLabel(self.filescreen)
-        self.name_label.setGeometry(QtCore.QRect(windowwidth*0.15, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
+        self.name_label.setGeometry(QtCore.QRect(windowwidth*0.05, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
         self.name_label.setAlignment(Qt.AlignCenter)
         font.setPointSize(12)
         self.name_label.setFont(font)
@@ -57,8 +57,9 @@ class Ui_filescreen(QWidget):
         self.run_btn.setFont(font)
         self.run_btn.setStyleSheet("background: rgb(255, 255, 255)")
         self.run_btn.setObjectName("run_btn")
+
         self.verticalLayoutWidget = QtWidgets.QWidget(self.filescreen)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.35, windowwidth*0.18, windowheight*0.57))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(windowwidth*0.02, windowheight*0.35, windowwidth*0.18, windowheight*0.57))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.layout_files = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.layout_files.setContentsMargins(5, 0, 0, 0)
@@ -83,7 +84,7 @@ class Ui_filescreen(QWidget):
 
         #section for the second column
         self.verticalLayoutWidget2 = QtWidgets.QWidget(self.filescreen)
-        self.verticalLayoutWidget2.setGeometry(QtCore.QRect(windowwidth*0.3, windowheight*0.35, windowwidth*0.18, windowheight*0.57))
+        self.verticalLayoutWidget2.setGeometry(QtCore.QRect(windowwidth*0.2, windowheight*0.35, windowwidth*0.18, windowheight*0.57))
         self.verticalLayoutWidget2.setObjectName("verticalLayoutWidget2")
         self.layout_names = QtWidgets.QVBoxLayout(self.verticalLayoutWidget2)
         self.layout_names.setContentsMargins(5, 0, 0, 0)
@@ -135,6 +136,12 @@ class Ui_filescreen(QWidget):
         self.back_btn1.setStyleSheet("background:rgb(255, 255, 255)")
         self.back_btn1.setObjectName("back_btn")
 
+        #Choose File Button
+        self.chooseFile_btn = QtWidgets.QPushButton(self.filescreen)
+        self.chooseFile_btn.setGeometry(QtCore.QRect(windowwidth*0.4, windowheight*0.4, windowwidth*0.15, windowheight*0.05))
+        self.chooseFile_btn.setStyleSheet("background:rgb(255, 255, 255)")
+        self.chooseFile_btn.setObjectName("chooseFile_btn")
+
         filescreen.setCentralWidget(self.filescreen)
 
         self.retranslateUi(filescreen)
@@ -145,6 +152,7 @@ class Ui_filescreen(QWidget):
         filescreen.setWindowTitle(_translate("filescreen", "MU Brachial Analyzer"))
         self.instructions.setText(_translate("filescreen", "Choose Files For Analysis"))
         self.back_btn1.setText(_translate("filescreen", "Back"))
+        self.chooseFile_btn.setText(_translate("filescreen", "Choose File"))
         self.file_label.setText(_translate("filescreen", "File Path"))
         self.name_label.setText(_translate("filescreen", "Test Name"))
         self.study_label.setText(_translate("filescreen", "Study Name"))

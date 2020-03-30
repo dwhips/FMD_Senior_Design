@@ -1,6 +1,6 @@
 import sys
 
-from PyQt5.QtWidgets import QWidget, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QWidget, QMainWindow, QPushButton, QFileDialog
 
 from file_Screen import Ui_filescreen
 from fmd_screen import Ui_Banalyzer
@@ -27,6 +27,11 @@ class mywindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.run_btn.clicked.connect(self.Run)
         self.ui.back_btn1.clicked.connect(self.MainMenu)
+        self.ui.chooseFile_btn.clicked.connect(self.ChooseFile)
+
+    def ChooseFile(self):
+        name = QFileDialog.getOpenFileName(self, 'Open File')
+        #self.ui.name1_in.setText(name)
 
     def Run(self):
         self.ui = Ui_Banalyzer()
