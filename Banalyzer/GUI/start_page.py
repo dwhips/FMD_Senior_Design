@@ -36,12 +36,18 @@ class Ui_start_screen(QWidget):
         self.welcome_message.setScaledContents(True)
         self.welcome_message.setAlignment(QtCore.Qt.AlignCenter)
         self.welcome_message.setObjectName("welcome_message")
+
+
         self.fmd_button = QtWidgets.QPushButton(self.start_screen)
         self.fmd_button.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.3, windowwidth*0.25, windowheight*0.2))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.fmd_button.setFont(font)
         self.fmd_button.setStyleSheet("background:rgb(255, 255, 255)")
         self.fmd_button.setObjectName("fmd_button")
         self.integral_btn = QtWidgets.QPushButton(self.start_screen)
         self.integral_btn.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.3, windowwidth*0.25, windowheight*0.2))
+        self.integral_btn.setFont(font)
         self.integral_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.integral_btn.setObjectName("integral_btn")
 
