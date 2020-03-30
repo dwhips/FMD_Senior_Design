@@ -51,7 +51,7 @@ class Ui_filescreen(QWidget):
         self.name_label.setObjectName("name_label")
 
         self.run_btn = QtWidgets.QPushButton(self.filescreen)
-        self.run_btn.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.6, windowwidth*0.25, windowheight*0.2))
+        self.run_btn.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.7, windowwidth*0.25, windowheight*0.2))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.run_btn.setFont(font)
@@ -114,8 +114,20 @@ class Ui_filescreen(QWidget):
         self.study_label = QtWidgets.QLabel(self.filescreen)
         self.study_label.setGeometry(QtCore.QRect(windowwidth*0.62, windowheight*0.3, windowwidth*0.1, windowheight*0.05))
         self.study_label.setAlignment(Qt.AlignCenter)
+
         font.setPointSize(12)
         self.name_label.setFont(font)
+
+        #Patient Name Box
+        self.patient = QtWidgets.QTextEdit(self.filescreen)
+        self.patient.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.5, windowwidth*0.15, windowheight*0.07))
+        self.patient.setStyleSheet("background: rgb(255, 255, 255)")
+
+        self.patient_label = QtWidgets.QLabel(self.filescreen)
+        self.patient_label.setGeometry(QtCore.QRect(windowwidth*0.62, windowheight*0.45, windowwidth*0.1, windowheight*0.05))
+        self.patient_label.setAlignment(Qt.AlignCenter)
+        #font.setPointSize(12)
+        #self.patient_label.setFont(font)
 
         #Make the back button
         self.back_btn1 = QtWidgets.QPushButton(self.filescreen)
@@ -136,6 +148,7 @@ class Ui_filescreen(QWidget):
         self.file_label.setText(_translate("filescreen", "File Path"))
         self.name_label.setText(_translate("filescreen", "Test Name"))
         self.study_label.setText(_translate("filescreen", "Study Name"))
+        self.patient_label.setText(_translate("filescreen", "Patient Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.file1_in_2.setHtml(_translate("filescreen", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
