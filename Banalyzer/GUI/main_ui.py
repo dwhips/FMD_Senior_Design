@@ -27,10 +27,12 @@ class mywindow(QMainWindow):
         self.ui.setupUi(self)
         self.ui.run_btn.clicked.connect(self.Run)
         self.ui.back_btn1.clicked.connect(self.MainMenu)
-        self.ui.chooseFile_btn.clicked.connect(self.ChooseFile)
+ #       self.ui.chooseFile_btn.clicked.connect(self.ChooseFile)
 
-    def ChooseFile(self):
-        name = QFileDialog.getOpenFileName(self, 'Open File')
+ #   def ChooseFile(self):
+ #       file_path = QFileDialog.getOpenFileName(self, 'Open File')
+ #       file_path = file_path[0]
+
         #self.ui.name1_in.setText(name)
 
     def Run(self):

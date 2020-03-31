@@ -11,6 +11,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMainWindow
 from PyQt5.QtWidgets import QDesktopWidget
 
+import sys
+sys.path.append('../')  # could be hacky
+import Global.gbl_fmd_class_list as gbl_fmd
+import FMD.FMDClass as class_file
+
+def test():
+    print("fmd screen path: ", gbl_fmd.class_list[-1].file_path)
+    print("fmd screen name: ", gbl_fmd.class_list[-1].name)
 
 class Ui_Banalyzer(QWidget):
     def setupUi(self, Banalyzer):
@@ -38,6 +46,8 @@ class Ui_Banalyzer(QWidget):
         self.accept_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.accept_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.accept_btn.setObjectName("accept_btn")
+        self.accept_btn.clicked.connect(test)  # !!!!!!!!!!!!!!!!!!!!!!!!!
+
         self.buttons.addWidget(self.accept_btn)
         self.retry_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.retry_btn.setStyleSheet("background:rgb(255, 255, 255)")
@@ -51,7 +61,8 @@ class Ui_Banalyzer(QWidget):
         self.crop_image.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.2, windowwidth*0.55, windowheight*0.5))
         self.crop_image.setAutoFillBackground(False)
         self.crop_image.setText("")
-        self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
+        # self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
+        self.crop_image.setPixmap(QtGui.QPixmap(gbl_fmd.class_list[-1].file_path))  # !!!!!!!
         self.crop_image.setScaledContents(True)
         self.crop_image.setObjectName("crop_image")
         self.back_btn = QtWidgets.QPushButton(self.fmd_screen)
