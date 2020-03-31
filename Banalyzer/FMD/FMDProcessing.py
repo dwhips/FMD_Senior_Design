@@ -10,6 +10,7 @@ import sys
 
 sys.path.append('../')  # could be hacky, need to figure out how to share between files
 import Global.gbl_fmd_class_list as gbl_fmd
+import Excel.excel as excel
 
 ############Remove the im_x and such and change colors to resources file##############
 RED = (0, 0, 255)  # opencv uses BGR not RGB
@@ -98,6 +99,11 @@ def PerformFMD(image_path, image_obj):
             print("Image %i Complete" % i_frame, "\n")
             i_frame += 1
             success, image = artery_avi.read()
+
+        excel.PrintHi()
+        excel.ExcelReport()
+
     else:
          print("user has not defined xy click")
          # have a popup or some error indication that they should click the gui
+
