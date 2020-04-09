@@ -30,7 +30,7 @@ def ExcelReport():
     interpreterID = ''
     baseimgfilename = ''
     basesdyfilename = ''
-    pixelsize = 'mm/p'
+    pixelsize = 3.5 #This is hardcoded as of right now
     roilength = ''
     frameinitial = ''
     frametotal = len(gbl_fmd.class_list[-1].diameter_arr)
@@ -45,6 +45,7 @@ def ExcelReport():
     reproduc = ''
     readingnum = ''
     fps = 10
+    mspf = fps*10  #milliseconds per frame
 
     rhimgfilename = ''
     rhdyfilename = ''
@@ -175,15 +176,31 @@ def ExcelReport():
     #Formatting
     datab.set_column('A:AC',25)
     datab.set_row(0,20,headerf)
+
+    # Writing Pixel Diameters in Second Column
+    datab.write_column(1, 1, gbl_fmd.class_list[-1].diameter_arr)
+
+    #Formatting and Frame #
     for row_num in range(1,frametotal,1):
-        datab.write(row_num, 0, row_num)
+        datab.write(row_num, 0, row_num)  #Writing frame number
+        datab.write(row_num,7,row_num*mspf-mspf)  #Writing MSEC
         if (row_num%2 == 1):
             datab.set_row(row_num,15,bg)
 
 
-    datab.write_column(1, 1, gbl_fmd.class_list[-1].diameter_arr)
+    #Upper Labels
+    datab.write('A1','Frame'); datab.write('B1','AVG Pixel Diameter'); datab.write('C1','BDIAMM')
+    datab.write('D1','Patient ID'); datab.write('E1','STYPE'); datab.write('F1','SDATE')
+    datab.write('G1','STIME'); datab.write('H1','MSEC'); datab.write('I1','COND')
 
-    datab.write('A1','Frame'); datab.write('B1','Pixel Diameter')
+    basechart = wb.add_chart({'type': 'scatter', 'subtype': 'straight_with_markers'})
+    basechartystr = '=\'' + datastudynameb + '\'!$B$2:$B$' + str(frametotal)
+    basechartxstr = '=\'' + datastudynameb + '\'!$H$2:$H$' + str(frametotal)
+    basechart.add_series({'values': basechartystr, 'categories': basechartxstr})
+    basechart.set_x_axis({'name': 'Time (ms)'});basechart.set_y_axis({'name': 'Diameter (pixels)'})
+    basechart.set_title({'name':'Baseline Test Diameter'})
+    sumb.insert_chart('D1',basechart)
+
 
 
     #Worksheet RH Summary

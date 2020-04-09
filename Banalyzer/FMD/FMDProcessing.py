@@ -5,6 +5,7 @@ import FMD.FMDClass as FMDclass
 import cv2
 import numpy as np
 import time  # just for delay, ill probably delete this
+import Excel.excel as excel
 
 import sys
 
@@ -63,6 +64,7 @@ def Populate(img, img_obj):
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
+
 # this will run the FMD process once an image has been verified.
 def PerformFMD(image_path, image_obj):
     # TODO Deltere following, proves global is saving the class name
@@ -110,6 +112,9 @@ def PerformFMD(image_path, image_obj):
             print("Image %i Complete" % i_frame, "\n")
             i_frame += 1
             success, image = artery_avi.read()
+
+        excel.PrintHi()
+        excel.ExcelReport()
     else:
          print("user has not defined xy click")
          # have a popup or some error indication that they should click the gui
