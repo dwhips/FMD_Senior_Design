@@ -3,6 +3,9 @@ import numpy as np
 import math
 import cv2
 
+import sys
+sys.path.append('../')  # could be hacky, need to figure out how to share between files
+import Global.gbl_fmd_class_list as gbl_fmd
 
 # outputs the difference between two coordinates
 # c = [x y]
@@ -72,3 +75,33 @@ def TangDiamMean(contour, tang):
 # this dose the center line area thing brian talked about
 def ContourMean(contour, length):
     return cv2.contourArea(contour) / length
+
+# hardcoded stuff
+# the scale is 56X767 pixels (4 cm(?) in 767 pixels
+# the cropped image is 359*264 pixels
+# ^ as acquired from screenshots so both should be relative
+def CalcPixel2RealConversion():
+    original_pixel_scale = 767  # pixel size of reference cm size
+    n_cm_seg = 4  # number of reference segments in original scale (one segment is cm length)
+    pixels_per_cm = original_pixel_scale / n_cm_seg
+    n_cm_per_pixel = 1 / pixels_per_cm # maybe keep it as npixel to make more precise?
+
+    # need to have the xy stuff work
+    cropped_pixel_x = 359  # found manually (this is the 'frame 0' stuff, so it is scaled to my original gui size)
+    cropped_pixel_y = 264  # found manually
+    unshrunk_crop_x = 726  # (this is the crop of of the .avi, so its the original image scale)
+    scale = unshrunk_crop_x/cropped_pixel_x  # the x crop should be the same, i couldnt tell how large the y crop was
+    cropped_pixel_x *= scale
+    cropped_pixel_y *= scale
+
+    widge_x = gbl_fmd.class_list[-1].widget_size[0]
+    widge_y = gbl_fmd.class_list[-1].widget_size[1]
+    # the x and y dimensions between the widget and the original cropped image need to
+    # be the same in order for the conversion to not care about x vs y stretching
+    x_ratio = widge_x/cropped_pixel_x
+    y_ratio = widge_y/cropped_pixel_y
+    print("x ratio: ", x_ratio)
+    print("y ratio: ", y_ratio)
+
+    avg_ratio = (x_ratio + y_ratio) / 2
+    return avg_ratio*n_cm_per_pixel

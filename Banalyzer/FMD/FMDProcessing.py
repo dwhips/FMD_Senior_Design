@@ -10,7 +10,6 @@ import sys
 
 sys.path.append('../')  # could be hacky, need to figure out how to share between files
 import Global.gbl_fmd_class_list as gbl_fmd
-import Excel.excel as excel
 
 ############Remove the im_x and such and change colors to resources file##############
 RED = (0, 0, 255)  # opencv uses BGR not RGB
@@ -58,6 +57,9 @@ def Populate(img, img_obj):
             # might need to create namespaces to shorthand these calls
             gbl_fmd.class_list[-1].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
             print("Diam:\t", gbl_fmd.class_list[-1].GetRecentDiam(), " pixels")
+            real_diam = gbl_fmd.class_list[-1].GetRecentDiam()*gbl_fmd.class_list[-1].pixel2real_conversion
+            print("Diam:\t", real_diam , " cm (avg width height, not accurate)")
+            gbl_fmd.class_list[-1].REALDIAMARR = [gbl_fmd.class_list[-1].REALDIAMARR, real_diam]
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
@@ -75,15 +77,24 @@ def PerformFMD(image_path, image_obj):
         success, image = artery_avi.read()
 
         # Process and contour each .avi frame ===============================
+        # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
+        # should be saved in the user settings
+        sample_start_row = 144  # measurements are based off the 640x480 sample image
+        sample_end_row = 408
+        sample_start_col = 159
+        sample_end_col = 518
+
+        gbl_fmd.class_list[-1].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
+        gbl_fmd.class_list[-1].SetMaxImageSize(len(image[0]), len(image[1]))
+        row = gbl_fmd.class_list[-1].GetCropRow()
+        col = gbl_fmd.class_list[-1].GetCropCol()
+
+        gbl_fmd.class_list[-1].SetPixel2Real()
+
         i_frame = 0
+
         while success:
-            # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
-            sample_start_row = 144  # measurements are based off the 640x480 sample image
-            sample_end_row = 408
-            sample_start_col = 159
-            sample_end_col = 518
-            image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
-            # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            image = image[row[0]:row[1], col[0]:col[1]]
 
             # saves the current frame. Not necessary but may be used in final product
             # image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
@@ -99,11 +110,6 @@ def PerformFMD(image_path, image_obj):
             print("Image %i Complete" % i_frame, "\n")
             i_frame += 1
             success, image = artery_avi.read()
-
-        excel.PrintHi()
-        excel.ExcelReport()
-
     else:
          print("user has not defined xy click")
          # have a popup or some error indication that they should click the gui
-

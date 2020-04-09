@@ -18,12 +18,6 @@ import Global.gbl_fmd_class_list as gbl_fmd
 import FMD.FMDClass as class_file
 import FMD.FMDProcessing as fmd_proc
 
-
-def test():
-    print("fmd screen path: ", gbl_fmd.class_list[-1].file_path)
-    print("fmd screen name: ", gbl_fmd.class_list[-1].name)
-
-
 class Ui_Banalyzer(QWidget):
     def setupUi(self, Banalyzer):
         # Get the size of the screen
@@ -78,6 +72,10 @@ class Ui_Banalyzer(QWidget):
         self.crop_image.mousePressEvent = self.GetPos  # !!!!!!!!!!!!!
         self.crop_image.setScaledContents(True)
         self.crop_image.setObjectName("crop_image")
+        # for pixel dimensions
+        image_width = self.crop_image.frameGeometry().width()
+        image_height = self.crop_image.frameGeometry().height()
+        gbl_fmd.class_list[-1].SetWidgetSize(image_width, image_height)
 
         # Back Button
         self.back_btn = QtWidgets.QPushButton(self.fmd_screen)

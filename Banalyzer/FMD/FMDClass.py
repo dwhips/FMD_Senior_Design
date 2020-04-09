@@ -1,5 +1,6 @@
 # This class will calculate the flow-mediated dilation for a user-input test (test_name) and
 # user-input file (file_path).
+import FMD.FMDCalcs as FMDCalcs
 
 # stores information for each .avi file being processed (ie baseline name, diameter array etc)
 # this will only be used to store and retrieve information, it will not directly interact with the GUI
@@ -11,6 +12,11 @@ class classFMD:
         self.diameter_arr = []
         self.conf_arr = []
         self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved
+        self.cropped_bounds = []  # [start row, end row,  start col, end col]
+        self.max_image_size = []  # [max row, max col]
+        self.widget_size = []  # [row, col]    pixel size of widget storing image
+        self.pixel2real_conversion = None
+        self.REALDIAMARR = []
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
@@ -44,6 +50,23 @@ class classFMD:
     def GetXY(self):
         return self.xy_user_click
 
+    def SetCropBounds(self, start_row, end_row, start_col, end_col):
+        self.cropped_bounds = [[start_row, end_row], [start_col, end_col]]
+
+    def GetCropRow(self):
+        return self.cropped_bounds[0]
+
+    def GetCropCol(self):
+        return self.cropped_bounds[1]
+
+    def SetMaxImageSize(self, max_row, max_col):
+        self.max_image_size = [max_row, max_col]
+
+    def SetWidgetSize(self, width, height):
+        self.widget_size = [width, height]
+
+    def SetPixel2Real(self):
+        self.pixel2real_conversion = FMDCalcs.CalcPixel2RealConversion()
 
 # practice class. not used in our final product
 class classSTUDENT(classFMD):
