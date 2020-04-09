@@ -24,9 +24,11 @@ class Ui_Banalyzer(QWidget):
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
 
+        # Get the width and height of the window
         windowwidth = width / 2
         windowheight = height / 1.5
 
+        # Create the FMD Screen widget
         Banalyzer.setObjectName("Banalyzer")
         Banalyzer.setAutoFillBackground(True)
         Banalyzer.setStyleSheet("background:rgb(177, 185, 199)")
@@ -34,6 +36,8 @@ class Ui_Banalyzer(QWidget):
         self.main_screen.setObjectName("main_screen")
         self.fmd_screen = QtWidgets.QWidget()
         self.fmd_screen.setObjectName("fmd_screen")
+
+        # Create the layout for the buttons
         self.verticalLayoutWidget = QtWidgets.QWidget(self.fmd_screen)
         self.verticalLayoutWidget.setGeometry(
             QtCore.QRect(windowwidth * 0.75, windowheight * 0.2, windowwidth * 0.2, windowheight * 0.5))
@@ -50,6 +54,8 @@ class Ui_Banalyzer(QWidget):
                                                                     self.crop_image))
 
         self.buttons.addWidget(self.accept_btn)
+
+        # Retry Button
         self.retry_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.retry_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.retry_btn.setObjectName("retry_btn")
@@ -83,6 +89,8 @@ class Ui_Banalyzer(QWidget):
             QtCore.QRect(windowwidth * 0.01, windowheight * 0.01, windowwidth * 0.05, windowheight * 0.03))
         self.back_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.back_btn.setObjectName("pushButton")
+
+        # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)
 
         self.retranslateUi(Banalyzer)

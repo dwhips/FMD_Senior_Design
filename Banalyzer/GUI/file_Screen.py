@@ -24,12 +24,16 @@ class Ui_filescreen(QWidget):
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
 
+        # width and height of the created window
         windowwidth = width / 2
         windowheight = height / 1.5
 
+        # Create the file screen widget
         self.filescreen = QtWidgets.QWidget()
         self.filescreen.setObjectName("filescreen")
         self.filescreen.setStyleSheet("background: rgb(177, 185, 199)")
+
+        # Create the instructions label
         self.instructions = QtWidgets.QLabel(self.filescreen)
         self.instructions.setGeometry(
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.1, windowwidth * 0.7, windowheight * 0.2))
@@ -40,15 +44,15 @@ class Ui_filescreen(QWidget):
         self.instructions.setObjectName("instructions")
 
         # Second Column Label (File path)
-        self.file_label = QtWidgets.QLabel(self.filescreen)
-        self.file_label.setGeometry(
+        self.path_label = QtWidgets.QLabel(self.filescreen)
+        self.path_label.setGeometry(
             QtCore.QRect(windowwidth * 0.25, windowheight * 0.3, windowwidth * 0.1, windowheight * 0.05))
-        self.file_label.setAlignment(Qt.AlignCenter)
+        self.path_label.setAlignment(Qt.AlignCenter)
         font.setPointSize(12)
-        self.file_label.setFont(font)
-        self.file_label.setObjectName("file_label")
+        self.path_label.setFont(font)
+        self.path_label.setObjectName("file_label")
 
-        # First Column Label
+        # First Column Label (Name)
         self.name_label = QtWidgets.QLabel(self.filescreen)
         self.name_label.setGeometry(
             QtCore.QRect(windowwidth * 0.05, windowheight * 0.3, windowwidth * 0.1, windowheight * 0.05))
@@ -69,56 +73,57 @@ class Ui_filescreen(QWidget):
         self.run_btn.clicked.connect(
             self.SaveFileData)  # needs to verify boxes are full, files exist etx. a lot of exception handling here
 
+        # Create the First Column Layout (name layout)
         self.verticalLayoutWidget = QtWidgets.QWidget(self.filescreen)
         self.verticalLayoutWidget.setGeometry(
             QtCore.QRect(windowwidth * 0.02, windowheight * 0.35, windowwidth * 0.18, windowheight * 0.57))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
-        self.layout_files = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
-        self.layout_files.setContentsMargins(5, 0, 0, 0)
-        self.layout_files.setObjectName("layout_files")
-        self.file1_in_2 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.file1_in_2.setStyleSheet("background: rgb(255, 255, 255)")
-        self.file1_in_2.setObjectName("file1_in_2")
-        self.layout_files.addWidget(self.file1_in_2)
-        self.file2_in = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.file2_in.setStyleSheet("background: rgb(255, 255, 255)")
-        self.file2_in.setObjectName("file2_in")
-        self.layout_files.addWidget(self.file2_in)
-        self.file3_in = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.file3_in.setStyleSheet("background: rgb(255, 255, 255)")
-        self.file3_in.setObjectName("file3_in")
-        self.layout_files.addWidget(self.file3_in)
-        self.file4_in = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.file4_in.setStyleSheet("background: rgb(255, 255, 255)\n"
+        self.layout_names = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
+        self.layout_names.setContentsMargins(5, 0, 0, 0)
+        self.layout_names.setObjectName("layout_names")
+        self.name1 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name1.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name1.setObjectName("name1")
+        self.layout_names.addWidget(self.name1)
+        self.name2 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name2.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name2.setObjectName("name2")
+        self.layout_names.addWidget(self.name2)
+        self.name3 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name3.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name3.setObjectName("name3")
+        self.layout_names.addWidget(self.name3)
+        self.name4 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name4.setStyleSheet("background: rgb(255, 255, 255)\n"
                                     "")
-        self.file4_in.setObjectName("file4_in")
-        self.layout_files.addWidget(self.file4_in)
+        self.name4.setObjectName("name4")
+        self.layout_names.addWidget(self.name4)
 
-        # section for the second column
+        # section for the second column layout
         self.verticalLayoutWidget2 = QtWidgets.QWidget(self.filescreen)
         self.verticalLayoutWidget2.setGeometry(
             QtCore.QRect(windowwidth * 0.2, windowheight * 0.35, windowwidth * 0.18, windowheight * 0.57))
         self.verticalLayoutWidget2.setObjectName("verticalLayoutWidget2")
-        self.layout_names = QtWidgets.QVBoxLayout(self.verticalLayoutWidget2)
-        self.layout_names.setContentsMargins(5, 0, 0, 0)
-        self.layout_names.setObjectName("layout_names")
-        self.name1_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
-        self.name1_in.setStyleSheet("background: rgb(255, 255, 255)")
-        self.name1_in.setObjectName("name1_in")
-        self.layout_names.addWidget(self.name1_in)
-        self.name2_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
-        self.name2_in.setStyleSheet("background: rgb(255, 255, 255)")
-        self.name2_in.setObjectName("name2_in")
-        self.layout_names.addWidget(self.name2_in)
-        self.name3_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
-        self.name3_in.setStyleSheet("background: rgb(255, 255, 255)")
-        self.name3_in.setObjectName("name3_in")
-        self.layout_names.addWidget(self.name3_in)
-        self.name4_in = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
-        self.name4_in.setStyleSheet("background: rgb(255, 255, 255)\n"
+        self.layout_paths = QtWidgets.QVBoxLayout(self.verticalLayoutWidget2)
+        self.layout_paths.setContentsMargins(5, 0, 0, 0)
+        self.layout_paths.setObjectName("layout_paths")
+        self.path1 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path1.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path1.setObjectName("path1")
+        self.layout_paths.addWidget(self.path1)
+        self.path2 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path2.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path2.setObjectName("path2")
+        self.layout_paths.addWidget(self.path2)
+        self.path3 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path3.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path3.setObjectName("path3")
+        self.layout_paths.addWidget(self.path3)
+        self.path4 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path4.setStyleSheet("background: rgb(255, 255, 255)\n"
                                     "")
-        self.name4_in.setObjectName("name4_in")
-        self.layout_names.addWidget(self.name4_in)
+        self.path4.setObjectName("path4")
+        self.layout_paths.addWidget(self.path4)
 
         # Set up the study name box
         self.study = QtWidgets.QTextEdit(self.filescreen)
@@ -126,13 +131,11 @@ class Ui_filescreen(QWidget):
             QtCore.QRect(windowwidth * 0.6, windowheight * 0.35, windowwidth * 0.15, windowheight * 0.07))
         self.study.setStyleSheet("background: rgb(255, 255, 255)")
 
+        # Study name box label
         self.study_label = QtWidgets.QLabel(self.filescreen)
         self.study_label.setGeometry(
             QtCore.QRect(windowwidth * 0.62, windowheight * 0.3, windowwidth * 0.1, windowheight * 0.05))
         self.study_label.setAlignment(Qt.AlignCenter)
-
-        font.setPointSize(12)
-        self.name_label.setFont(font)
 
         # Patient Name Box
         self.patient = QtWidgets.QTextEdit(self.filescreen)
@@ -140,12 +143,12 @@ class Ui_filescreen(QWidget):
             QtCore.QRect(windowwidth * 0.6, windowheight * 0.5, windowwidth * 0.15, windowheight * 0.07))
         self.patient.setStyleSheet("background: rgb(255, 255, 255)")
 
+        # Patient Name Box Label
         self.patient_label = QtWidgets.QLabel(self.filescreen)
         self.patient_label.setGeometry(
             QtCore.QRect(windowwidth * 0.62, windowheight * 0.45, windowwidth * 0.1, windowheight * 0.05))
         self.patient_label.setAlignment(Qt.AlignCenter)
-        # font.setPointSize(12)
-        # self.patient_label.setFont(font)
+
 
         # Back button
         self.back_btn1 = QtWidgets.QPushButton(self.filescreen)
@@ -162,6 +165,7 @@ class Ui_filescreen(QWidget):
         self.chooseFile_btn.setObjectName("chooseFile_btn")
         self.chooseFile_btn.clicked.connect(self.ChooseFile)  # !!!!!!!!!!!!
 
+        # Set the central widget
         filescreen.setCentralWidget(self.filescreen)
 
         self.retranslateUi(filescreen)
@@ -172,12 +176,12 @@ class Ui_filescreen(QWidget):
         file_path = QFileDialog.getOpenFileName(self, 'Open File')
         file_path = file_path[0]
         # TODO get the file to verify its open
-        self.name1_in.setText(file_path)
+        self.path1.setText(file_path)
 
     def SaveFileData(self):
         # file and name need new var names. do path and name instead
-        name = self.file1_in_2.toPlainText()
-        path = self.name1_in.toPlainText()
+        name = self.name1.toPlainText()
+        path = self.path1.toPlainText()
         gbl_fmd.class_list = [class_file.classFMD(name, path)]
         print("path 1: ", path)
         print("name 1: ", name)
@@ -190,12 +194,12 @@ class Ui_filescreen(QWidget):
         self.instructions.setText(_translate("filescreen", "Choose Files For Analysis"))
         self.back_btn1.setText(_translate("filescreen", "Back"))
         self.chooseFile_btn.setText(_translate("filescreen", "Choose File"))
-        self.file_label.setText(_translate("filescreen", "File Path"))
+        self.path_label.setText(_translate("filescreen", "File Path"))
         self.name_label.setText(_translate("filescreen", "Test Name"))
         self.study_label.setText(_translate("filescreen", "Study Name"))
         self.patient_label.setText(_translate("filescreen", "Patient Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
-        self.file1_in_2.setHtml(_translate("filescreen",
+        self.name1.setHtml(_translate("filescreen",
                                            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
                                            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
                                            "p, li { white-space: pre-wrap; }\n"
