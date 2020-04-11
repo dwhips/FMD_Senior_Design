@@ -182,7 +182,8 @@ class Ui_filescreen(QWidget):
         # file and name need new var names. do path and name instead
         name = self.name1.toPlainText()
         path = self.path1.toPlainText()
-        gbl_fmd.class_list = [class_file.classFMD(name, path)]
+        study_name = self.study.toPlainText()
+        gbl_fmd.class_list = [class_file.classFMD(name, path, study_name)]
         print("path 1: ", path)
         print("name 1: ", name)
         # in order to stop the code from crashing later, we will need to verify that these blocks are full

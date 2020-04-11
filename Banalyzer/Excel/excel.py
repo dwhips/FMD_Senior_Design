@@ -12,8 +12,9 @@ def PrintHi():
 def ExcelReport():
 
 #Variables (From program)
-    studynameb = '123456789 bsl'
-    studynamerh = '123456789 rh1'
+    studyname = gbl_fmd.class_list[-1].study_name
+    studynameb = gbl_fmd.class_list[-1].study_name + ' bsl'
+    studynamerh = gbl_fmd.class_list[-1].study_name + ' rh1'
     studyid = '11'
     studytype = ''
     subjectid = '123456789'
@@ -179,6 +180,8 @@ def ExcelReport():
 
     # Writing Pixel Diameters in Second Column
     datab.write_column(1, 1, gbl_fmd.class_list[-1].diameter_arr)
+    #datab.write_column(1, 2, gbl_fmd.class_list[-1].REALDIAMARR)
+
 
     #Formatting and Frame #
     for row_num in range(1,frametotal,1):

@@ -6,9 +6,10 @@ import FMD.FMDCalcs as FMDCalcs
 # this will only be used to store and retrieve information, it will not directly interact with the GUI
 # since the number of classes will be user generated, i think we need to have a list of classes
 class classFMD:
-    def __init__(self, name, file_path):
+    def __init__(self, name, file_path, study_name):
         self.name = name  # name of user (baseline, 1mn ....)
         self.file_path = file_path
+        self.study_name = study_name
         self.diameter_arr = []
         self.conf_arr = []
         self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved

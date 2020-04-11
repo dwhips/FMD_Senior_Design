@@ -1,6 +1,6 @@
 import FMD.FMDCalcs as FMDCalcs
 import GUI.GUIHelper as GUI
-import GUI.brachial_ui as GUIbr
+#import GUI.brachial_ui as GUIbr
 import FMD.FMDClass as FMDclass
 import cv2
 import numpy as np
