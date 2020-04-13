@@ -18,6 +18,10 @@ import Global.gbl_fmd_class_list as gbl_fmd
 import FMD.FMDClass as class_file
 import FMD.FMDProcessing as fmd_proc
 
+# might need to edge case checks, so maybe breakout into a function?
+# do Restart_iClass?
+gbl_fmd.i_class = 0
+
 class Ui_Banalyzer(QWidget):
     def setupUi(self, Banalyzer):
         # Get the size of the screen
@@ -46,12 +50,25 @@ class Ui_Banalyzer(QWidget):
         self.buttons.setContentsMargins(0, 0, 0, 0)
         self.buttons.setObjectName("buttons")
 
+        # gives test name and other info about current frame/selection process
+        # Create the welcome message
+        self.title = QtWidgets.QLabel(self.fmd_screen)
+        self.title.setGeometry(
+            QtCore.QRect(windowwidth * 0.1, windowheight * 0.1, windowwidth * 0.8, windowheight / 7))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.title.setFont(font)
+        self.title.setScaledContents(True)
+        self.title.setAlignment(QtCore.Qt.AlignCenter)
+        self.title.setObjectName("title")
+
         # accept button (verifies users measure)
         self.accept_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.accept_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.accept_btn.setObjectName("accept_btn")
         self.accept_btn.clicked.connect(lambda: fmd_proc.PerformFMD(gbl_fmd.class_list[-1].file_path,
                                                                     self.crop_image))
+        self.accept_btn.clicked.connect(self.UpdateTitle)
 
         self.buttons.addWidget(self.accept_btn)
 
@@ -73,6 +90,7 @@ class Ui_Banalyzer(QWidget):
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
         self.crop_image.setAutoFillBackground(False)
         self.crop_image.setText("")
+        # self.crop_image.setPixmap(QtGui.QPixmap(fmd_proc.SetFirstFrame(gbl_fmd.class_list[-1].file_path, self.crop_image)))
         self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
         # self.crop_image.setPixmap(QtGui.QPixmap(gbl_fmd.class_list[-1].file_path))  # !!!!!!!
         self.crop_image.mousePressEvent = self.GetPos  # !!!!!!!!!!!!!
@@ -96,6 +114,12 @@ class Ui_Banalyzer(QWidget):
         self.retranslateUi(Banalyzer)
         QtCore.QMetaObject.connectSlotsByName(Banalyzer)
 
+    def UpdateTitle(self):
+        index = str(0)
+        title_string = gbl_fmd.class_list[-1].test_name+" ("+index+"/"+str(len(gbl_fmd.class_list))+")"
+        _translate = QtCore.QCoreApplication.translate
+        self.title.setText(_translate("start_screen", title_string))
+
     # i dont want this here. I need to break it out
     # THIS SHIT DONT WORK
     def GetPos(self, event):
@@ -111,6 +135,7 @@ class Ui_Banalyzer(QWidget):
         paint.drawPoint(x, y)
         self.crop_image.repaint()
         print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[-1].CheckXY())
+        fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
 
     def retranslateUi(self, Banalyzer):
         _translate = QtCore.QCoreApplication.translate
@@ -119,3 +144,4 @@ class Ui_Banalyzer(QWidget):
         self.retry_btn.setText(_translate("Banalyzer", "Retry"))
         self.manual_btn.setText(_translate("Banalyzer", "Manual"))
         self.back_btn.setText(_translate("Banalyzer", "Back"))
+        self.title.setText(_translate("start_screen", "Study info"))

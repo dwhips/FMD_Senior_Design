@@ -64,11 +64,10 @@ def Populate(img, img_obj):
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
-
 # this will run the FMD process once an image has been verified.
 def PerformFMD(image_path, image_obj):
-    # TODO Deltere following, proves global is saving the class name
-    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].name)
+    i_class = gbl_fmd.i_class
+    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].test_name)
     print("print xy in FMDproccessing ", gbl_fmd.class_list[-1].GetXY())
     if gbl_fmd.class_list[-1].CheckXY():
         artery_avi = cv2.VideoCapture(image_path)
@@ -95,26 +94,87 @@ def PerformFMD(image_path, image_obj):
 
         i_frame = 0
 
-        while success:
+        if gbl_fmd.class_list[i_class].accepted_contour:
+            while success:
+                image = image[row[0]:row[1], col[0]:col[1]]
+
+                # saves the current frame. Not necessary but may be used in final product
+                # image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
+                cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image)
+
+                # !!!!!!!! need to implement a clicking opportunity within the GUI
+                # !!!!!!!! the coord should already be saved by user, this func shouldnt happen until
+                # the user clicks 'accept' or 'run'
+
+                time.sleep(.01) # TODO REMOVE
+                Populate(image, image_obj)
+
+                print("Image %i Complete" % i_frame, "\n")
+                i_frame += 1
+                success, image = artery_avi.read()
+            excel.PrintHi()
+            excel.ExcelReport()
+
+        else: # user just verified that the current index is good.
+            gbl_fmd.class_list[i_class].accepted_countour = True
+            gbl_fmd.i_class += 1
+            if gbl_fmd.i_class >= len(gbl_fmd.class_list):
+                gbl_fmd.i_class = 0
+
             image = image[row[0]:row[1], col[0]:col[1]]
-
-            # saves the current frame. Not necessary but may be used in final product
-            # image = image[sample_start_row:sample_end_row, sample_start_col:sample_end_col]
             cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image)
-
-            # !!!!!!!! need to implement a clicking opportunity within the GUI
-            # !!!!!!!! the coord should already be saved by user, this func shouldnt happen until
-            # the user clicks 'accept' or 'run'
-
-            time.sleep(.01)
+            time.sleep(.01)  # TODO REMOVE
             Populate(image, image_obj)
+            print("verify")
 
-            print("Image %i Complete" % i_frame, "\n")
-            i_frame += 1
-            success, image = artery_avi.read()
-
-        excel.PrintHi()
-        excel.ExcelReport()
     else:
          print("user has not defined xy click")
-         # have a popup or some error indication that they should click the gui
+         # TODO have a popup or some error indication that they should click the gui
+
+# populates the first frame when pixmap artery image is clicked
+def VerifyFrame1(image_path, image_obj):
+    i_class = gbl_fmd.i_class
+    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].test_name)
+    print("print xy in FMDproccessing ", gbl_fmd.class_list[-1].GetXY())
+    if gbl_fmd.class_list[i_class].CheckXY():
+        image = GetFirstFrame(image_path)
+        time.sleep(.01)  # TODO REMOVE
+        Populate(image, image_obj)
+        print("Verifed frame 1", "\n")
+
+    else:
+        # this edge case should never happen. this funciton should only trigger if user clicks
+        print("user has not defined xy click")
+        # TODO have a popup or some error indication that they should click the gui
+
+def GetFirstFrame(image_path):
+    i_class = gbl_fmd.i_class
+
+    artery_avi = cv2.VideoCapture(image_path)
+    if not artery_avi.isOpened():
+        print("Couldn't open file")
+        # change to a button alert
+        return
+    success, image = artery_avi.read()
+    # Process and contour each .avi frame ===============================
+    # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
+    # should be saved in the user settings
+    sample_start_row = 144  # measurements are based off the 640x480 sample image
+    sample_end_row = 408
+    sample_start_col = 159
+    sample_end_col = 518
+
+    gbl_fmd.class_list[-1].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
+    gbl_fmd.class_list[-1].SetMaxImageSize(len(image[0]), len(image[1]))
+    row = gbl_fmd.class_list[-1].GetCropRow()
+    col = gbl_fmd.class_list[-1].GetCropCol()
+    gbl_fmd.class_list[-1].SetPixel2Real()
+
+    image = image[row[0]:row[1], col[0]:col[1]]
+    return image
+
+def SetFirstFrame(image_path, image_obj):
+    image = GetFirstFrame(image_path)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite(image_path + "init frame.jpg", image)
+    GUI.OpenCv2QImage(image, image_obj)

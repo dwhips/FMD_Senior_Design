@@ -6,8 +6,8 @@ import FMD.FMDCalcs as FMDCalcs
 # this will only be used to store and retrieve information, it will not directly interact with the GUI
 # since the number of classes will be user generated, i think we need to have a list of classes
 class classFMD:
-    def __init__(self, name, file_path, study_name):
-        self.name = name  # name of user (baseline, 1mn ....)
+    def __init__(self, test_name, file_path, study_name):
+        self.test_name = test_name  # name of user (baseline, 1mn ....)
         self.file_path = file_path
         self.study_name = study_name
         self.diameter_arr = []
@@ -18,6 +18,7 @@ class classFMD:
         self.widget_size = []  # [row, col]    pixel size of widget storing image
         self.pixel2real_conversion = None
         self.REALDIAMARR = []
+        self.accepted_contour = False # if false, user still needs to accept the FMD measurements
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
