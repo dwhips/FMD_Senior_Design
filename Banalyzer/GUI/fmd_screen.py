@@ -11,12 +11,14 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMainWindow
 from PyQt5.QtWidgets import QDesktopWidget
 
-import sys
+import GUI.GUIHelper as GUIHelper
 
+import sys
 sys.path.append('../')  # could be hacky
 import Global.gbl_fmd_class_list as gbl_fmd
 import FMD.FMDClass as class_file
 import FMD.FMDProcessing as fmd_proc
+
 
 # might need to edge case checks, so maybe breakout into a function?
 # do Restart_iClass?
@@ -112,8 +114,10 @@ class Ui_Banalyzer(QWidget):
         # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)
 
+        # runtime updates
         self.retranslateUi(Banalyzer)
         QtCore.QMetaObject.connectSlotsByName(Banalyzer)
+        self.UpdateTitle()
 
     def UpdateTitle(self):
         index = str(0)
@@ -130,13 +134,13 @@ class Ui_Banalyzer(QWidget):
         gbl_fmd.class_list[-1].UpdateXY(x, y)
         print(gbl_fmd.class_list[-1].GetXY())
         color = (0, 255, 0)
-        #       GUIHelper.AddPixmapCircle(self.crop_image, gbl_class_list[-1].GetXY(), color)
+        GUIHelper.AddPixmapCircle(self.crop_image, gbl_fmd.class_list[-1].GetXY(), color)
         paint = QtGui.QPainter(self.crop_image.pixmap())
         paint.setPen(QtGui.QColor(color[0], color[1], color[2]))
         paint.drawPoint(x, y)
         self.crop_image.repaint()
         print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[-1].CheckXY())
-        # fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
+        fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
         print("GetPos crashing here?")
 
     def retranslateUi(self, Banalyzer):
@@ -146,4 +150,4 @@ class Ui_Banalyzer(QWidget):
         self.retry_btn.setText(_translate("Banalyzer", "Retry"))
         self.manual_btn.setText(_translate("Banalyzer", "Manual"))
         self.back_btn.setText(_translate("Banalyzer", "Back"))
-        self.title.setText(_translate("start_screen", "Study info"))
+        # self.title.setText(_translate("start_screen", "Study info"))
