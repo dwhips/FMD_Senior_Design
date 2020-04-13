@@ -82,7 +82,7 @@ class Ui_filescreen(QWidget):
         self.layout_names.setContentsMargins(5, 0, 0, 0)
         self.layout_names.setObjectName("layout_names")
         self.name1 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.name1.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name1.setStyleSheet("background: rgb(0, 204, 102)")
         self.name1.setObjectName("name1")
         self.layout_names.addWidget(self.name1)
         self.name2 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
@@ -94,8 +94,7 @@ class Ui_filescreen(QWidget):
         self.name3.setObjectName("name3")
         self.layout_names.addWidget(self.name3)
         self.name4 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
-        self.name4.setStyleSheet("background: rgb(255, 255, 255)\n"
-                                    "")
+        self.name4.setStyleSheet("background: rgb(255, 255, 255)")
         self.name4.setObjectName("name4")
         self.layout_names.addWidget(self.name4)
 
@@ -108,7 +107,7 @@ class Ui_filescreen(QWidget):
         self.layout_paths.setContentsMargins(5, 0, 0, 0)
         self.layout_paths.setObjectName("layout_paths")
         self.path1 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
-        self.path1.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path1.setStyleSheet("background: rgb(0, 204, 102)")
         self.path1.setObjectName("path1")
         self.layout_paths.addWidget(self.path1)
         self.path2 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
@@ -120,10 +119,22 @@ class Ui_filescreen(QWidget):
         self.path3.setObjectName("path3")
         self.layout_paths.addWidget(self.path3)
         self.path4 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
-        self.path4.setStyleSheet("background: rgb(255, 255, 255)\n"
-                                    "")
+        self.path4.setStyleSheet("background: rgb(255, 255, 255)")
         self.path4.setObjectName("path4")
         self.layout_paths.addWidget(self.path4)
+
+        # link to FIleIndexCLick when user clicks on name or file path textbox. Indicates the block currently selected
+        self.name1.mousePressEvent = lambda x: self.FileIndexClick(1)
+        self.name2.mousePressEvent = lambda x: self.FileIndexClick(2)
+        self.name3.mousePressEvent = lambda x: self.FileIndexClick(3)
+        self.name4.mousePressEvent = lambda x: self.FileIndexClick(4)
+        self.path1.mousePressEvent = lambda x: self.FileIndexClick(1)
+        self.path2.mousePressEvent = lambda x: self.FileIndexClick(2)
+        self.path3.mousePressEvent = lambda x: self.FileIndexClick(3)
+        self.path4.mousePressEvent = lambda x: self.FileIndexClick(4)
+
+        self.FileIndexClick(1)
+
 
         # Set up the study name box
         self.study = QtWidgets.QTextEdit(self.filescreen)
@@ -149,7 +160,6 @@ class Ui_filescreen(QWidget):
             QtCore.QRect(windowwidth * 0.62, windowheight * 0.45, windowwidth * 0.1, windowheight * 0.05))
         self.patient_label.setAlignment(Qt.AlignCenter)
 
-
         # Back button
         self.back_btn1 = QtWidgets.QPushButton(self.filescreen)
         self.back_btn1.setGeometry(
@@ -171,12 +181,61 @@ class Ui_filescreen(QWidget):
         self.retranslateUi(filescreen)
         QtCore.QMetaObject.connectSlotsByName(filescreen)
 
+    # BETTER NAME!!! this updates the row color and the global index for selecting files 1-4
+    def FileIndexClick(self, i_file):
+        # reset path text background color
+        self.path1.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path2.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path3.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path4.setStyleSheet("background: rgb(255, 255, 255)")
+        # reset name text background color
+        self.name1.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name2.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name3.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name4.setStyleSheet("background: rgb(255, 255, 255)")
+
+        # no cases in python, so if else
+        # change selected blocks to green
+        if i_file == 1:
+            self.name1.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path1.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 1
+            print("1")
+        elif i_file == 2:
+            self.name2.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path2.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 2
+            print("2")
+        elif i_file == 3:
+            self.name3.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path3.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 3
+            print("3")
+        elif i_file == 4:
+            self.name4.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path4.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 4
+            print("4")
+        else:
+            x = 0
+            print("FileIndexClick edge case reached")
+            # file number should be impossible. its not supported
+
     # opens up file browser and adds it to text box
     def ChooseFile(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File')
         file_path = file_path[0]
         # TODO get the file to verify its open
-        self.path1.setText(file_path)
+        if self.i_file_selected == 1:
+            self.path1.setText(file_path)
+        elif self.i_file_selected == 2:
+            self.path2.setText(file_path)
+        elif self.i_file_selected == 3:
+            self.path3.setText(file_path)
+        elif self.i_file_selected == 4:
+            self.path4.setText(file_path)
+        else:
+            print("Reach choose file edge case")
 
     def SaveFileData(self):
         # file and name need new var names. do path and name instead
@@ -184,8 +243,6 @@ class Ui_filescreen(QWidget):
         path = self.path1.toPlainText()
         study_name = self.study.toPlainText()
         gbl_fmd.class_list = [class_file.classFMD(name, path, study_name)]
-        print("path 1: ", path)
-        print("name 1: ", name)
         # in order to stop the code from crashing later, we will need to verify that these blocks are full
         # otherwise the code might assume they are full and try to access the vars later
 
@@ -201,8 +258,8 @@ class Ui_filescreen(QWidget):
         self.patient_label.setText(_translate("filescreen", "Patient Name"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.name1.setHtml(_translate("filescreen",
-                                           "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                                           "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-                                           "p, li { white-space: pre-wrap; }\n"
-                                           "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.1pt; font-weight:400; font-style:normal;\">\n"
-                                           "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p></body></html>"))
+                                      "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+                                      "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+                                      "p, li { white-space: pre-wrap; }\n"
+                                      "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8.1pt; font-weight:400; font-style:normal;\">\n"
+                                      "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:\'MS Shell Dlg 2\';\"><br /></p></body></html>"))
