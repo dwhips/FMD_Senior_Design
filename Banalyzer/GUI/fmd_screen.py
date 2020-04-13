@@ -90,8 +90,8 @@ class Ui_Banalyzer(QWidget):
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
         self.crop_image.setAutoFillBackground(False)
         self.crop_image.setText("")
-        # self.crop_image.setPixmap(QtGui.QPixmap(fmd_proc.SetFirstFrame(gbl_fmd.class_list[-1].file_path, self.crop_image)))
-        self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
+        # setting it below is replaced by SetFirstFrame
+        # self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
         # self.crop_image.setPixmap(QtGui.QPixmap(gbl_fmd.class_list[-1].file_path))  # !!!!!!!
         self.crop_image.mousePressEvent = self.GetPos  # !!!!!!!!!!!!!
         self.crop_image.setScaledContents(True)
@@ -100,6 +100,7 @@ class Ui_Banalyzer(QWidget):
         image_width = self.crop_image.frameGeometry().width()
         image_height = self.crop_image.frameGeometry().height()
         gbl_fmd.class_list[-1].SetWidgetSize(image_width, image_height)
+        fmd_proc.SetFirstFrame(gbl_fmd.class_list[-1].file_path, self.crop_image)
 
         # Back Button
         self.back_btn = QtWidgets.QPushButton(self.fmd_screen)
@@ -135,7 +136,8 @@ class Ui_Banalyzer(QWidget):
         paint.drawPoint(x, y)
         self.crop_image.repaint()
         print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[-1].CheckXY())
-        fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
+        # fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
+        print("GetPos crashing here?")
 
     def retranslateUi(self, Banalyzer):
         _translate = QtCore.QCoreApplication.translate

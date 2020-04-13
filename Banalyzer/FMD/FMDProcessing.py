@@ -66,7 +66,12 @@ def Populate(img, img_obj):
 
 # this will run the FMD process once an image has been verified.
 def PerformFMD(image_path, image_obj):
-    i_class = gbl_fmd.i_class
+    # TODO i think i need to reset the diam measured arrays as i use populate in the verify
+    # function which updates them
+
+    # i_class = gbl_fmd.i_class
+    i_class = -1
+
     print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].test_name)
     print("print xy in FMDproccessing ", gbl_fmd.class_list[-1].GetXY())
     if gbl_fmd.class_list[-1].CheckXY():
@@ -115,16 +120,16 @@ def PerformFMD(image_path, image_obj):
             excel.PrintHi()
             excel.ExcelReport()
 
-        else: # user just verified that the current index is good.
+        else: # user just verified that the current index is good. Check for next possible file to verify
+            # or start processing the images
             gbl_fmd.class_list[i_class].accepted_countour = True
             gbl_fmd.i_class += 1
             if gbl_fmd.i_class >= len(gbl_fmd.class_list):
                 gbl_fmd.i_class = 0
+                # TODO perform fmd on file 1
+                print("should loop back")
+                # PerformFMD(image_path, image_obj)
 
-            image = image[row[0]:row[1], col[0]:col[1]]
-            cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image)
-            time.sleep(.01)  # TODO REMOVE
-            Populate(image, image_obj)
             print("verify")
 
     else:
@@ -147,6 +152,7 @@ def VerifyFrame1(image_path, image_obj):
         print("user has not defined xy click")
         # TODO have a popup or some error indication that they should click the gui
 
+# gets and returns first frame image
 def GetFirstFrame(image_path):
     i_class = gbl_fmd.i_class
 
@@ -165,16 +171,20 @@ def GetFirstFrame(image_path):
     sample_end_col = 518
 
     gbl_fmd.class_list[-1].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
-    gbl_fmd.class_list[-1].SetMaxImageSize(len(image[0]), len(image[1]))
+    # gbl_fmd.class_list[-1].SetMaxImageSize(len(image[0]), len(image[1]))
     row = gbl_fmd.class_list[-1].GetCropRow()
     col = gbl_fmd.class_list[-1].GetCropCol()
-    gbl_fmd.class_list[-1].SetPixel2Real()
+
+    # gbl_fmd.class_list[-1].SetPixel2Real()
 
     image = image[row[0]:row[1], col[0]:col[1]]
     return image
 
+# updates pixmap cropimage to the first frame image
 def SetFirstFrame(image_path, image_obj):
+    print("set first frame image path : ", image_path)
     image = GetFirstFrame(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    cv2.imwrite(image_path + "init frame.jpg", image)
+    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+    cv2.imwrite(image_path + "init_frame.jpg", image)
     GUI.OpenCv2QImage(image, image_obj)
