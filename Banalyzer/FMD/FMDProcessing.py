@@ -79,7 +79,7 @@ def PerformFMD(image_path, image_obj):
 
         # all files have been verified, start processing
         if i_class >= len(gbl_fmd.class_list)-1:
-            gbl_fmd.class_list = 0
+            gbl_fmd.i_class = 0
             i_class = gbl_fmd.class_list
 
             print("All verified")
