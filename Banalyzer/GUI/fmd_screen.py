@@ -102,6 +102,7 @@ class Ui_Banalyzer(QWidget):
         image_width = self.crop_image.frameGeometry().width()
         image_height = self.crop_image.frameGeometry().height()
         gbl_fmd.class_list[-1].SetWidgetSize(image_width, image_height)
+        # update the crop image to the first frame of the first inputted file
         fmd_proc.SetFirstFrame(gbl_fmd.class_list[-1].file_path, self.crop_image)
 
         # Back Button
@@ -133,12 +134,13 @@ class Ui_Banalyzer(QWidget):
         y = event.y()
         gbl_fmd.class_list[-1].UpdateXY(x, y)
         print(gbl_fmd.class_list[-1].GetXY())
-        color = (0, 255, 0)
-        GUIHelper.AddPixmapCircle(self.crop_image, gbl_fmd.class_list[-1].GetXY(), color)
-        paint = QtGui.QPainter(self.crop_image.pixmap())
-        paint.setPen(QtGui.QColor(color[0], color[1], color[2]))
-        paint.drawPoint(x, y)
-        self.crop_image.repaint()
+        # color = (0, 255, 0)
+        # GUIHelper.AddPixmapCircle(self.crop_image, gbl_fmd.class_list[-1].GetXY(), color)
+        # paint = QtGui.QPainter(self.crop_image.pixmap())
+        # paint.setPen(QtGui.QColor(color[0], color[1], color[2]))
+        # paint.drawPoint(x, y)
+        # maybe repaint collision?
+        # self.crop_image.repaint()
         print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[-1].CheckXY())
         fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
         print("GetPos crashing here?")
