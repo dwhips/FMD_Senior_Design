@@ -96,8 +96,8 @@ def CalcPixel2RealConversion():
     cropped_pixel_x *= scale
     cropped_pixel_y *= scale
 
-    widge_x = gbl_fmd.class_list[i_class].widget_size[0]
-    widge_y = gbl_fmd.class_list[i_class].widget_size[1]
+    widge_x = gbl_fmd.class_list[0].widget_size[0]
+    widge_y = gbl_fmd.class_list[0].widget_size[1]
     # the x and y dimensions between the widget and the original cropped image need to
     # be the same in order for the conversion to not care about x vs y stretching
     x_ratio = widge_x/cropped_pixel_x
