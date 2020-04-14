@@ -78,7 +78,9 @@ def PerformFMD(image_path, image_obj):
         i_class = gbl_fmd.i_class
 
         # all files have been verified, start processing
-        if i_class >= len(gbl_fmd.class_list)-1:
+        print(i_class, ": i class")
+        print("list length: ", len(gbl_fmd.class_list))
+        if i_class >= len(gbl_fmd.class_list):
             gbl_fmd.i_class = 0
             i_class = gbl_fmd.i_class
 
@@ -130,7 +132,7 @@ def PerformFMD(image_path, image_obj):
             print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
 
             image_path = gbl_fmd.class_list[i_class].file_path
-            GetFirstFrame(image_path)
+            SetFirstFrame(image_path, image_obj)
     else: # user hasnt selected an xy
         print("User hasnt selected xy")
         # Need user indication to select xy
@@ -138,6 +140,7 @@ def PerformFMD(image_path, image_obj):
 
 # populates the first frame when pixmap artery image is clicked
 def VerifyFrame1(image_path, image_obj):
+    g = gbl_fmd.class_list
     i_class = gbl_fmd.i_class
     print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
     print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
