@@ -242,24 +242,21 @@ class Ui_filescreen(QWidget):
         path3 = self.path3.toPlainText()
         path4 = self.path4.toPlainText()
 
+        list = []
         # TODO if path is not empty but study is, prompt user to fill it in (red text)
         if path1 != "" :
-            # this assumes the first box is always filled. Edge case would be more work than necessary
             name = self.name1.toPlainText()
-            if path2 == "" and path3 == "" and path4 == "":
-                gbl_fmd.class_list = [class_file.classFMD(name, path1, study_name)]
-            else:  # need to pass it as not a list, otherwise class list will have a nested list for list[0]
-                gbl_fmd.class_list = class_file.classFMD(name, path1, study_name)
+            list.append(class_file.classFMD(name, path1, study_name))
         if path2 != "":
             name = self.name2.toPlainText()
-            gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path2, study_name)]
+            list.append(class_file.classFMD(name, path2, study_name))
         if path3 != "":
             name = self.name3.toPlainText()
-            gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path3, study_name)]
+            list.append(class_file.classFMD(name, path3, study_name))
         if path4 != "":
             name = self.name4.toPlainText()
-            gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path4, study_name)]
-        b = gbl_fmd.class_list
+            list.append(class_file.classFMD(name, path3, study_name))
+        gbl_fmd.class_list = list
         gbl_fmd.i_class = 0
 
     def retranslateUi(self, filescreen):
