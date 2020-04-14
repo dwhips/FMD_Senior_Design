@@ -19,11 +19,8 @@ import Global.gbl_fmd_class_list as gbl_fmd
 import FMD.FMDClass as class_file
 import FMD.FMDProcessing as fmd_proc
 
-
 # might need to edge case checks, so maybe breakout into a function?
 # do Restart_iClass?
-
-
 
 class Ui_Banalyzer(QWidget):
     def setupUi(self, Banalyzer):
@@ -133,8 +130,8 @@ class Ui_Banalyzer(QWidget):
         if i_class >= len(gbl_fmd.class_list):
             i_class = 0
 
-        index = str(0)
-        title_string = gbl_fmd.class_list[i_class].test_name+" ("+index+"/"+str(len(gbl_fmd.class_list))+")"
+        index = str(gbl_fmd.i_class+1)
+        title_string = gbl_fmd.class_list[i_class].test_name+" ("+ index +"/"+str(len(gbl_fmd.class_list))+")"
         _translate = QtCore.QCoreApplication.translate
         self.title.setText(_translate("start_screen", title_string))
 

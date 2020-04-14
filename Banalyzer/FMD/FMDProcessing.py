@@ -80,9 +80,50 @@ def PerformFMD(image_path, image_obj):
         # all files have been verified, start processing
         if i_class >= len(gbl_fmd.class_list)-1:
             gbl_fmd.i_class = 0
-            i_class = gbl_fmd.class_list
+            i_class = gbl_fmd.i_class
 
             print("All verified")
+
+            artery_avi = cv2.VideoCapture(image_path)
+            if not artery_avi.isOpened():
+                print("Couldn't open file")
+                # change to a button alert
+                return
+            success, image = artery_avi.read()
+
+            # Process and contour each .avi frame ===============================
+            # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
+            # should be saved in the user settings
+            sample_start_row = 144  # measurements are based off the 640x480 sample image
+            sample_end_row = 408
+            sample_start_col = 159
+            sample_end_col = 518
+
+            gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col,
+                                                      sample_end_col)
+            gbl_fmd.class_list[i_class].SetMaxImageSize(len(image[0]), len(image[1]))
+            row = gbl_fmd.class_list[i_class].GetCropRow()
+            col = gbl_fmd.class_list[i_class].GetCropCol()
+
+            # should be removing this as the first frame will update all of these
+            gbl_fmd.class_list[i_class].SetPixel2Real()
+
+            i_frame = 0
+
+            # if gbl_fmd.class_list[i_class].accepted_contour:
+            while success:
+                image = image[row[0]:row[1], col[0]:col[1]]
+            # cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image
+                time.sleep(.01)  # TODO REMOVE
+                Populate(image, image_obj)
+
+                print("Image %i Complete" % i_frame, "\n")
+                i_frame += 1
+                success, image = artery_avi.read()
+            excel.PrintHi()
+            excel.ExcelReport()
+            # else:
+            #    print("contour not accepted. shouldnt be possible")
         # need to verify next file, so set up first frame of next index
         else:
             print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
