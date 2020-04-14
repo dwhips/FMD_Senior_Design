@@ -239,12 +239,28 @@ class Ui_filescreen(QWidget):
 
     def SaveFileData(self):
         # file and name need new var names. do path and name instead
-        name = self.name1.toPlainText()
-        path = self.path1.toPlainText()
         study_name = self.study.toPlainText()
-        gbl_fmd.class_list = [class_file.classFMD(name, path, study_name)]
-        # in order to stop the code from crashing later, we will need to verify that these blocks are full
-        # otherwise the code might assume they are full and try to access the vars later
+
+        path1 = self.path1.toPlainText()
+        path2 = self.path2.toPlainText()
+        path3 = self.path3.toPlainText()
+        path4 = self.path4.toPlainText()
+
+        # TODO if path is not empty but study is, prompt user to fill it in (red text)
+        if path1 != "":
+            name = self.name1.toPlainText()
+            # this assumes the first box is always filled. Edge case would be more work than necessary
+            gbl_fmd.class_list = [class_file.classFMD(name, path1, study_name)]
+        if path2 != "":
+            name = self.name2.toPlainText()
+            gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path2, study_name)]
+        if path3 != "":
+            name = self.name3.toPlainText()
+            gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path3, study_name)]
+        if path4 != "":
+            name = self.name4.toPlainText()
+            gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path4, study_name)]
+        gbl_fmd.i_class = 0
 
     def retranslateUi(self, filescreen):
         _translate = QtCore.QCoreApplication.translate

@@ -22,10 +22,12 @@ import FMD.FMDProcessing as fmd_proc
 
 # might need to edge case checks, so maybe breakout into a function?
 # do Restart_iClass?
-gbl_fmd.i_class = 0
+
+
 
 class Ui_Banalyzer(QWidget):
     def setupUi(self, Banalyzer):
+        i_class = gbl_fmd.i_class
         # Get the size of the screen
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
@@ -68,7 +70,8 @@ class Ui_Banalyzer(QWidget):
         self.accept_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
         self.accept_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.accept_btn.setObjectName("accept_btn")
-        self.accept_btn.clicked.connect(lambda: fmd_proc.PerformFMD(gbl_fmd.class_list[-1].file_path,
+        # if the user is still verifying the files, this will just switch to the first frame of the next file
+        self.accept_btn.clicked.connect(lambda: fmd_proc.PerformFMD(gbl_fmd.class_list[i_class].file_path,
                                                                     self.crop_image))
         self.accept_btn.clicked.connect(self.UpdateTitle)
 
@@ -94,16 +97,17 @@ class Ui_Banalyzer(QWidget):
         self.crop_image.setText("")
         # setting it below is replaced by SetFirstFrame
         # self.crop_image.setPixmap(QtGui.QPixmap("frame0.jpg"))
-        # self.crop_image.setPixmap(QtGui.QPixmap(gbl_fmd.class_list[-1].file_path))  # !!!!!!!
+        # self.crop_image.setPixmap(QtGui.QPixmap(gbl_fmd.class_list[i_class].file_path))  # !!!!!!!
+        # TODO might need a lock to make sure the current i_class isnt already verified
         self.crop_image.mousePressEvent = self.GetPos  # !!!!!!!!!!!!!
         self.crop_image.setScaledContents(True)
         self.crop_image.setObjectName("crop_image")
         # for pixel dimensions
         image_width = self.crop_image.frameGeometry().width()
         image_height = self.crop_image.frameGeometry().height()
-        gbl_fmd.class_list[-1].SetWidgetSize(image_width, image_height)
+        gbl_fmd.class_list[i_class].SetWidgetSize(image_width, image_height)
         # update the crop image to the first frame of the first inputted file
-        fmd_proc.SetFirstFrame(gbl_fmd.class_list[-1].file_path, self.crop_image)
+        fmd_proc.SetFirstFrame(gbl_fmd.class_list[i_class].file_path, self.crop_image)
 
         # Back Button
         self.back_btn = QtWidgets.QPushButton(self.fmd_screen)
@@ -121,28 +125,30 @@ class Ui_Banalyzer(QWidget):
         self.UpdateTitle()
 
     def UpdateTitle(self):
+        i_class = gbl_fmd.i_class
         index = str(0)
-        title_string = gbl_fmd.class_list[-1].test_name+" ("+index+"/"+str(len(gbl_fmd.class_list))+")"
+        title_string = gbl_fmd.class_list[i_class].test_name+" ("+index+"/"+str(len(gbl_fmd.class_list))+")"
         _translate = QtCore.QCoreApplication.translate
         self.title.setText(_translate("start_screen", title_string))
 
     # i dont want this here. I need to break it out
     # THIS SHIT DONT WORK
     def GetPos(self, event):
+        i_class = gbl_fmd.i_class
         # x = event.pos().x()
         x = event.x()
         y = event.y()
-        gbl_fmd.class_list[-1].UpdateXY(x, y)
-        print(gbl_fmd.class_list[-1].GetXY())
+        gbl_fmd.class_list[i_class].UpdateXY(x, y)
+        print(gbl_fmd.class_list[i_class].GetXY())
         # color = (0, 255, 0)
-        # GUIHelper.AddPixmapCircle(self.crop_image, gbl_fmd.class_list[-1].GetXY(), color)
+        # GUIHelper.AddPixmapCircle(self.crop_image, gbl_fmd.class_list[i_class].GetXY(), color)
         # paint = QtGui.QPainter(self.crop_image.pixmap())
         # paint.setPen(QtGui.QColor(color[0], color[1], color[2]))
         # paint.drawPoint(x, y)
         # maybe repaint collision?
         # self.crop_image.repaint()
-        print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[-1].CheckXY())
-        fmd_proc.VerifyFrame1(gbl_fmd.class_list[-1].file_path, self.crop_image)
+        print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[i_class].CheckXY())
+        fmd_proc.VerifyFrame1(gbl_fmd.class_list[i_class].file_path, self.crop_image)
         print("GetPos crashing here?")
 
     def retranslateUi(self, Banalyzer):
