@@ -200,22 +200,18 @@ class Ui_filescreen(QWidget):
             self.name1.setStyleSheet("background: rgb(0, 204, 102)")
             self.path1.setStyleSheet("background: rgb(0, 204, 102)")
             self.i_file_selected = 1
-            print("1")
         elif i_file == 2:
             self.name2.setStyleSheet("background: rgb(0, 204, 102)")
             self.path2.setStyleSheet("background: rgb(0, 204, 102)")
             self.i_file_selected = 2
-            print("2")
         elif i_file == 3:
             self.name3.setStyleSheet("background: rgb(0, 204, 102)")
             self.path3.setStyleSheet("background: rgb(0, 204, 102)")
             self.i_file_selected = 3
-            print("3")
         elif i_file == 4:
             self.name4.setStyleSheet("background: rgb(0, 204, 102)")
             self.path4.setStyleSheet("background: rgb(0, 204, 102)")
             self.i_file_selected = 4
-            print("4")
         else:
             x = 0
             print("FileIndexClick edge case reached")
@@ -247,10 +243,13 @@ class Ui_filescreen(QWidget):
         path4 = self.path4.toPlainText()
 
         # TODO if path is not empty but study is, prompt user to fill it in (red text)
-        if path1 != "":
-            name = self.name1.toPlainText()
+        if path1 != "" :
             # this assumes the first box is always filled. Edge case would be more work than necessary
-            gbl_fmd.class_list = [class_file.classFMD(name, path1, study_name)]
+            name = self.name1.toPlainText()
+            if path2 == "" and path3 == "" and path4 == "":
+                gbl_fmd.class_list = [class_file.classFMD(name, path1, study_name)]
+            else:  # need to pass it as not a list, otherwise class list will have a nested list for list[0]
+                gbl_fmd.class_list = class_file.classFMD(name, path1, study_name)
         if path2 != "":
             name = self.name2.toPlainText()
             gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path2, study_name)]
@@ -260,6 +259,7 @@ class Ui_filescreen(QWidget):
         if path4 != "":
             name = self.name4.toPlainText()
             gbl_fmd.class_list = [gbl_fmd.class_list, class_file.classFMD(name, path4, study_name)]
+        b = gbl_fmd.class_list
         gbl_fmd.i_class = 0
 
     def retranslateUi(self, filescreen):

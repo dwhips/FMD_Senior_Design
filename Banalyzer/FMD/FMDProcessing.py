@@ -77,14 +77,17 @@ def PerformFMD(image_path, image_obj):
         gbl_fmd.i_class += 1
         i_class = gbl_fmd.i_class
 
-        print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
-        print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
-
         # all files have been verified, start processing
         if i_class >= len(gbl_fmd.class_list)-1:
+            gbl_fmd.class_list = 0
+            i_class = gbl_fmd.class_list
+
             print("All verified")
         # need to verify next file, so set up first frame of next index
         else:
+            print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
+            print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
+
             image_path = gbl_fmd.class_list[i_class].file_path
             GetFirstFrame(image_path)
     else: # user hasnt selected an xy
