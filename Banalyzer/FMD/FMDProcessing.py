@@ -24,6 +24,7 @@ im_x, im_y, click_allowed = 150, 150, True
 
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
 def Populate(img, img_obj):
+    i_class = gbl_fmd.i_class
     # Convert image to grayscale
     img = cv2.cvtColor(img,
                        cv2.COLOR_BGR2GRAY)  # imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
@@ -56,11 +57,12 @@ def Populate(img, img_obj):
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
             length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
             # might need to create namespaces to shorthand these calls
-            gbl_fmd.class_list[-1].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
-            print("Diam:\t", gbl_fmd.class_list[-1].GetRecentDiam(), " pixels")
-            real_diam = gbl_fmd.class_list[-1].GetRecentDiam()*gbl_fmd.class_list[-1].pixel2real_conversion
+            gbl_fmd.class_list[i_class].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
+            print("Diam:\t", gbl_fmd.class_list[i_class].GetRecentDiam(), " pixels")
+            print(gbl_fmd.class_list[i_class].pixel2real_conversion)
+            real_diam = gbl_fmd.class_list[i_class].GetRecentDiam()*gbl_fmd.class_list[i_class].pixel2real_conversion
             print("Diam:\t", real_diam , " cm (avg width height, not accurate)")
-            gbl_fmd.class_list[-1].REALDIAMARR = [gbl_fmd.class_list[-1].REALDIAMARR, real_diam]
+            gbl_fmd.class_list[i_class].REALDIAMARR = [gbl_fmd.class_list[i_class].REALDIAMARR, real_diam]
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
@@ -68,13 +70,11 @@ def Populate(img, img_obj):
 def PerformFMD(image_path, image_obj):
     # TODO i think i need to reset the diam measured arrays as i use populate in the verify
     # function which updates them
+    i_class = gbl_fmd.i_class
 
-    # i_class = gbl_fmd.i_class
-    i_class = -1
-
-    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].test_name)
-    print("print xy in FMDproccessing ", gbl_fmd.class_list[-1].GetXY())
-    if gbl_fmd.class_list[-1].CheckXY():
+    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
+    print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
+    if gbl_fmd.class_list[i_class].CheckXY():
         artery_avi = cv2.VideoCapture(image_path)
         if not artery_avi.isOpened():
             print("Couldn't open file")
@@ -90,12 +90,13 @@ def PerformFMD(image_path, image_obj):
         sample_start_col = 159
         sample_end_col = 518
 
-        gbl_fmd.class_list[-1].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
-        gbl_fmd.class_list[-1].SetMaxImageSize(len(image[0]), len(image[1]))
-        row = gbl_fmd.class_list[-1].GetCropRow()
-        col = gbl_fmd.class_list[-1].GetCropCol()
+        gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
+        gbl_fmd.class_list[i_class].SetMaxImageSize(len(image[0]), len(image[1]))
+        row = gbl_fmd.class_list[i_class].GetCropRow()
+        col = gbl_fmd.class_list[i_class].GetCropCol()
 
-        gbl_fmd.class_list[-1].SetPixel2Real()
+        # should be removing this as the first frame will update all of these
+        gbl_fmd.class_list[i_class].SetPixel2Real()
 
         i_frame = 0
 
@@ -139,14 +140,15 @@ def PerformFMD(image_path, image_obj):
 # populates the first frame when pixmap artery image is clicked
 def VerifyFrame1(image_path, image_obj):
     i_class = gbl_fmd.i_class
-    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[-1].test_name)
-    print("print xy in FMDproccessing ", gbl_fmd.class_list[-1].GetXY())
+    print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
+    print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
     if gbl_fmd.class_list[i_class].CheckXY():
         image = GetFirstFrame(image_path)
+        gbl_fmd.class_list[i_class].SetPixel2Real()
+
         time.sleep(.01)  # TODO REMOVE
         Populate(image, image_obj)
         print("Verifed frame 1", "\n")
-
     else:
         # this edge case should never happen. this funciton should only trigger if user clicks
         print("user has not defined xy click")
@@ -170,12 +172,12 @@ def GetFirstFrame(image_path):
     sample_start_col = 159
     sample_end_col = 518
 
-    gbl_fmd.class_list[-1].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
-    # gbl_fmd.class_list[-1].SetMaxImageSize(len(image[0]), len(image[1]))
-    row = gbl_fmd.class_list[-1].GetCropRow()
-    col = gbl_fmd.class_list[-1].GetCropCol()
+    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
+    # gbl_fmd.class_list[i_class].SetMaxImageSize(len(image[0]), len(image[1]))
+    row = gbl_fmd.class_list[i_class].GetCropRow()
+    col = gbl_fmd.class_list[i_class].GetCropCol()
 
-    # gbl_fmd.class_list[-1].SetPixel2Real()
+    # gbl_fmd.class_list[i_class].SetPixel2Real()
 
     image = image[row[0]:row[1], col[0]:col[1]]
     return image
