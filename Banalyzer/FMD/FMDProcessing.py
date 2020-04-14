@@ -154,7 +154,7 @@ def VerifyFrame1(image_path, image_obj):
         image = GetFirstFrame(image_path)
         gbl_fmd.class_list[i_class].SetPixel2Real()
 
-        time.sleep(.01)  # TODO REMOVE
+        # time.sleep(.01)  # TODO REMOVE
         Populate(image, image_obj)
         print("Verifed frame 1", "\n")
     else:
