@@ -105,6 +105,7 @@ class Ui_Banalyzer(QWidget):
         # for pixel dimensions
         image_width = self.crop_image.frameGeometry().width()
         image_height = self.crop_image.frameGeometry().height()
+        g = gbl_fmd.class_list # for debugging TODO delete later
         gbl_fmd.class_list[i_class].SetWidgetSize(image_width, image_height)
         # update the crop image to the first frame of the first inputted file
         fmd_proc.SetFirstFrame(gbl_fmd.class_list[i_class].file_path, self.crop_image)
@@ -126,6 +127,12 @@ class Ui_Banalyzer(QWidget):
 
     def UpdateTitle(self):
         i_class = gbl_fmd.i_class
+
+        g = gbl_fmd.class_list
+        # have raceondition in PerformFMD
+        if i_class >= len(gbl_fmd.class_list):
+            i_class = 0
+
         index = str(0)
         title_string = gbl_fmd.class_list[i_class].test_name+" ("+index+"/"+str(len(gbl_fmd.class_list))+")"
         _translate = QtCore.QCoreApplication.translate
