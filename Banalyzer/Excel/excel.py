@@ -19,7 +19,7 @@ def ExcelReport():
     subjectid = '123456789'
     patid = '123456789'
     stagename = ''
-    nombre = 'Jane Doe'
+    nombre = gbl_fmd.class_list[img_num].patient_name
     gender = 'other'
     dob = 'A While Back'
     date = 'Today'

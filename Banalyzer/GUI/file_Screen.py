@@ -236,6 +236,7 @@ class Ui_filescreen(QWidget):
     def SaveFileData(self):
         # file and name need new var names. do path and name instead
         study_name = self.study.toPlainText()
+        patient_name = self.patient.toPlainText()
 
         path1 = self.path1.toPlainText()
         path2 = self.path2.toPlainText()
@@ -246,16 +247,16 @@ class Ui_filescreen(QWidget):
         # TODO if path is not empty but study is, prompt user to fill it in (red text)
         if path1 != "" :
             name = self.name1.toPlainText()
-            list.append(class_file.classFMD(name, path1, study_name))
+            list.append(class_file.classFMD(name, path1, study_name, patient_name))
         if path2 != "":
             name = self.name2.toPlainText()
-            list.append(class_file.classFMD(name, path2, study_name))
+            list.append(class_file.classFMD(name, path2, study_name, patient_name))
         if path3 != "":
             name = self.name3.toPlainText()
-            list.append(class_file.classFMD(name, path3, study_name))
+            list.append(class_file.classFMD(name, path3, study_name, patient_name))
         if path4 != "":
             name = self.name4.toPlainText()
-            list.append(class_file.classFMD(name, path4, study_name))
+            list.append(class_file.classFMD(name, path4, study_name, patient_name))
         gbl_fmd.class_list = list
         gbl_fmd.i_class = 0
 
