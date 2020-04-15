@@ -255,7 +255,7 @@ class Ui_filescreen(QWidget):
             list.append(class_file.classFMD(name, path3, study_name))
         if path4 != "":
             name = self.name4.toPlainText()
-            list.append(class_file.classFMD(name, path3, study_name))
+            list.append(class_file.classFMD(name, path4, study_name))
         gbl_fmd.class_list = list
         gbl_fmd.i_class = 0
 
