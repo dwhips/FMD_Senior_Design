@@ -11,15 +11,15 @@ def PrintHi():
 
 def ExcelReport():
 
-#Variables (From program)
+#Variables (regardless of i_class val)
     img_num = gbl_fmd.i_class
     studyname = gbl_fmd.class_list[img_num].study_name
+    nombre = gbl_fmd.class_list[img_num].patient_name
     studyid = '11'
     studytype = ''
     subjectid = '123456789'
     patid = '123456789'
     stagename = ''
-    nombre = gbl_fmd.class_list[img_num].patient_name
     gender = 'other'
     dob = 'A While Back'
     date = 'Today'
@@ -30,10 +30,10 @@ def ExcelReport():
     interpreterID = ''
     baseimgfilename = ''
     basesdyfilename = ''
-    pixelsize = 3.5 #This is hardcoded as of right now
+
     roilength = ''
     frameinitial = ''
-    frametotal = len(gbl_fmd.class_list[-1].diameter_arr)
+
     framevalid = ''
     framereject = ''
     frameexclud = ''
@@ -123,6 +123,17 @@ def ExcelReport():
 
     for i in range(gbl_fmd.i_class + 1):
         img_num = i
+
+
+
+
+
+        #Variables
+        frametotal = len(gbl_fmd.class_list[img_num].diameter_arr)
+        pixelsize = gbl_fmd.class_list[img_num].pixel2real_conversion
+
+
+
         studynametest = gbl_fmd.class_list[img_num].study_name +  ' - ' + gbl_fmd.class_list[img_num].test_name
         # Names
         sumstudyname = 'Summary - ' + studynametest
@@ -183,7 +194,7 @@ def ExcelReport():
         datab.set_row(0,20,headerf)
 
         # Writing Pixel Diameters in Second Column
-        datab.write_column(1, 1, gbl_fmd.class_list[-1].diameter_arr)
+        datab.write_column(1, 1, gbl_fmd.class_list[img_num].diameter_arr)
         #datab.write_column(1, 2, gbl_fmd.class_list[-1].REALDIAMARR)
 
 

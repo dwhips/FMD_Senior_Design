@@ -71,6 +71,7 @@ class classFMD:
     def SetPixel2Real(self):
         self.pixel2real_conversion = FMDCalcs.CalcPixel2RealConversion()
 
+
 # practice class. not used in our final product
 class classSTUDENT(classFMD):
 
