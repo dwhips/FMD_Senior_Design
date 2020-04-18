@@ -8,14 +8,13 @@ import xlsxwriter
 
 def PrintHi():
     print("printing %dif")
-    print(gbl_fmd.class_list[0].percent_dif)
-
+    print(gbl_fmd.i_class)
 def ExcelReport():
 
 #Variables (regardless of i_class val)
     img_num = gbl_fmd.i_class
-    studyname = gbl_fmd.class_list[img_num].study_name
-    nombre = gbl_fmd.class_list[img_num].patient_name
+    studyname = gbl_fmd.class_list[0].study_name
+    nombre = gbl_fmd.class_list[0].patient_name
     studyid = '11'
     studytype = ''
     subjectid = '123456789'
@@ -107,7 +106,7 @@ def ExcelReport():
 
 
 
-    for i in range(gbl_fmd.i_class + 1):
+    for i in range(gbl_fmd.i_class):
         img_num = i
 
         #Variables
@@ -181,7 +180,7 @@ def ExcelReport():
         # Writing Pixel Diameters in Second Column
         datab.write_column(1, 1, gbl_fmd.class_list[img_num].diameter_arr)
         #datab.write_column(1, 2, gbl_fmd.class_list[-1].REALDIAMARR)
-
+        datab.write_column(1,9,gbl_fmd.class_list[img_num].percent_dif)
 
         #Formatting and Frame #
         for row_num in range(1,frametotal,1):
@@ -194,7 +193,7 @@ def ExcelReport():
         #Upper Labels
         datab.write('A1','Frame'); datab.write('B1','AVG Pixel Diameter'); datab.write('C1','BDIAMM')
         datab.write('D1','Patient ID'); datab.write('E1','STYPE'); datab.write('F1','SDATE')
-        datab.write('G1','STIME'); datab.write('H1','MSEC'); datab.write('I1','COND')
+        datab.write('G1','STIME'); datab.write('H1','MSEC'); datab.write('I1','COND'); datab.write('J1','% Dif')
 
         basechart = wb.add_chart({'type': 'scatter', 'subtype': 'straight_with_markers'})
         basechartystr = '=\'' + datastudyname + '\'!$B$2:$B$' + str(frametotal)

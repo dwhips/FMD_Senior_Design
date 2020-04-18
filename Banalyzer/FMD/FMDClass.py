@@ -73,9 +73,10 @@ class classFMD:
         self.pixel2real_conversion = FMDCalcs.CalcPixel2RealConversion()
 
     def PercentDif(self):
-        for i in range(length(self.diameter_arr)):
-            self.percent_dif[i] = 100*(self.diameter_arr[0]-self.diameterarr[i])/self.diameter_arr[0]
-
+        print(len(self.diameter_arr))
+        for i in range(len(self.diameter_arr)):
+            print(i)
+            self.percent_dif.append(100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0])
 # practice class. not used in our final product
 class classSTUDENT(classFMD):
 
