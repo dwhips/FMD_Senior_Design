@@ -31,6 +31,8 @@ def ExcelReport():
     baseimgfilename = ''
     basesdyfilename = ''
 
+
+    pixelsize = 10  # gbl_fmd.class_list[img_num].pixel2real_conversion
     roilength = ''
     frameinitial = ''
 
@@ -95,8 +97,8 @@ def ExcelReport():
     subsum.write('G1','Date Analyzed'); subsum.write('G2', date)
     subsum.write('H1','Condition'); subsum.write('H2', 'Baseline'); subsum.write('H3', 'Deflation')
     subsum.write('I1','Image File'); subsum.write('I2', baseimgfilename), subsum.write('I3', rhimgfilename)
-    subsum.write('J1','Image Frames'); subsum.write('J2', frametotal); subsum.write('J3', rhframetotal)
-    subsum.write('K1','Length(sec.)'); subsum.write('K2', frametotal/fps); subsum.write('K3', rhframetotal/fps)
+    #subsum.write('J1','Image Frames'); subsum.write('J2', frametotal); subsum.write('J3', rhframetotal)  #commented for now for frame total
+    #subsum.write('K1','Length(sec.)'); subsum.write('K2', frametotal/fps); subsum.write('K3', rhframetotal/fps) #commented for not for frame total
     subsum.write('L1','DIAMETER')
     subsum.write('M1','Average Diameter')
     subsum.write('N1','Minimum Diameter')
@@ -130,7 +132,7 @@ def ExcelReport():
 
         #Variables
         frametotal = len(gbl_fmd.class_list[img_num].diameter_arr)
-        pixelsize = gbl_fmd.class_list[img_num].pixel2real_conversion
+
 
 
 
