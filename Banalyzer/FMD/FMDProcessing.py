@@ -87,7 +87,11 @@ def PerformFMD(image_path, image_obj):
             for i in range(0, len(gbl_fmd.class_list)):
                 PerformFMDHelper(image_path, image_obj)
                 gbl_fmd.i_class += 1
-
+                print("printing %dif")
+                gbl_fmd.class_list[i].PercentDif()
+                print(gbl_fmd.class_list[i].percent_dif)
+            excel.PrintHi()
+            excel.ExcelReport()
         # need to verify next file, so set up first frame of next index
         else:
             print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
@@ -98,6 +102,7 @@ def PerformFMD(image_path, image_obj):
     else:  # user hasnt selected an xy
         print("User hasnt selected xy")
         # Need user indication to select xy
+
 
 
 # for perfroming the fmd after all the files have been verified
@@ -140,8 +145,7 @@ def PerformFMDHelper(image_path, image_obj):
         print("Image %i Complete" % i_frame, "\n")
         i_frame += 1
         success, image = artery_avi.read()
-    excel.PrintHi()
-    excel.ExcelReport()
+
 
 
 # populates the first frame when pixmap artery image is clicked

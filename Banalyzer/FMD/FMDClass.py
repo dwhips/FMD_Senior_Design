@@ -13,6 +13,7 @@ class classFMD:
         self.patient_name = patient_name
         self.diameter_arr = []
         self.conf_arr = []
+        self.percent_dif = []
         self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved
         self.cropped_bounds = []  # [start row, end row,  start col, end col]
         self.max_image_size = []  # [max row, max col]
@@ -71,6 +72,9 @@ class classFMD:
     def SetPixel2Real(self):
         self.pixel2real_conversion = FMDCalcs.CalcPixel2RealConversion()
 
+    def PercentDif(self):
+        for i in range(length(self.diameter_arr)):
+            self.percent_dif[i] = 100*(self.diameter_arr[0]-self.diameterarr[i])/self.diameter_arr[0]
 
 # practice class. not used in our final product
 class classSTUDENT(classFMD):

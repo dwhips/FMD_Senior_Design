@@ -7,7 +7,8 @@ import Global.gbl_fmd_class_list as gbl_fmd
 import xlsxwriter
 
 def PrintHi():
-    print(gbl_fmd.i_class)
+    print("printing %dif")
+    print(gbl_fmd.class_list[0].percent_dif)
 
 def ExcelReport():
 
