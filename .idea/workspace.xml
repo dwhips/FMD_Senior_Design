@@ -4,7 +4,6 @@
     <list default="true" id="b5d34086-c6f4-4757-8ca3-4debc5532597" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Banalyzer/Excel/excel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/Excel/excel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Banalyzer/FMD/FMDClass.py" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/FMD/FMDClass.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Banalyzer/GUI/fmd_report_example.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Banalyzer/GUI/fmd_report_example.xlsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,6 +14,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Banalyzer/Excel/excel.py" root0="SKIP_INSPECTION" />
   </component>
   <component name="IgnoredFileRootStore">
     <option name="generatedRoots">

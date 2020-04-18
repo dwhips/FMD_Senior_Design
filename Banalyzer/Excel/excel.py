@@ -1,7 +1,7 @@
 #Putting Variables Into Excel
 #This progam generates the excel template and also places the data into an excel-viewable format
 import sys
-
+import numpy as np
 sys.path.append('../')  # could be hacky, need to figure out how to share between files
 import Global.gbl_fmd_class_list as gbl_fmd
 import xlsxwriter
@@ -28,8 +28,6 @@ def ExcelReport():
     probeID = ''
     sonographerID = ''
     interpreterID = ''
-    baseimgfilename = ''
-    basesdyfilename = ''
 
 
     pixelsize = 10  # gbl_fmd.class_list[img_num].pixel2real_conversion
@@ -49,8 +47,7 @@ def ExcelReport():
     fps = 10
     mspf = fps*10  #milliseconds per frame
 
-    rhimgfilename = ''
-    rhdyfilename = ''
+
     rhframeinitial = ''
     rhframetotal = 500
     rhframevalid = ''
@@ -93,22 +90,8 @@ def ExcelReport():
     subsum.write('C1','Last Name'); subsum.write('C2',nombre)
     subsum.write('D1','Study ID'); subsum.write('D2', studyid)
     subsum.write('E1','Reader ID'); subsum.write('E2', interpreterID)
-    subsum.write('F1','Date Scanned'); subsum.write('F2', imagingdate)
-    subsum.write('G1','Date Analyzed'); subsum.write('G2', date)
-    subsum.write('H1','Condition'); subsum.write('H2', 'Baseline'); subsum.write('H3', 'Deflation')
-    subsum.write('I1','Image File'); subsum.write('I2', baseimgfilename), subsum.write('I3', rhimgfilename)
-    #subsum.write('J1','Image Frames'); subsum.write('J2', frametotal); subsum.write('J3', rhframetotal)  #commented for now for frame total
-    #subsum.write('K1','Length(sec.)'); subsum.write('K2', frametotal/fps); subsum.write('K3', rhframetotal/fps) #commented for not for frame total
-    subsum.write('L1','DIAMETER')
-    subsum.write('M1','Average Diameter')
-    subsum.write('N1','Minimum Diameter')
-    subsum.write('O1','Maximum Diameter')
-    subsum.write('P1','Diameter Max (3-sec-smoothed)')
-    subsum.write('Q1','Diameter Max (5-sec-smoothed)')
-    subsum.write('R1','Diameter Max (10-sec-smoothed)')
-    subsum.write('S1','Flow Velocity Avg (meter/sec)')
-    subsum.write('T1','Flow Velocity Max (meter/sec)')
-    subsum.write('U1','Flow velocity integral avg (meters')
+
+
 
 
 
@@ -126,17 +109,16 @@ def ExcelReport():
     for i in range(gbl_fmd.i_class + 1):
         img_num = i
 
-
-
-
-
         #Variables
         frametotal = len(gbl_fmd.class_list[img_num].diameter_arr)
-
-
-
-
         studynametest = gbl_fmd.class_list[img_num].study_name +  ' - ' + gbl_fmd.class_list[img_num].test_name
+        filename = gbl_fmd.class_list[img_num].file_path
+        #baselineflag = gbl_fmd.class_list[img_num].base_flag
+        #if (baselineflag == 1):
+        #    condition = "Baseline"
+        #else:
+        #    condition = gbl_fmd.class_list[img_num].test_name
+
         # Names
         sumstudyname = 'Summary - ' + studynametest
         datastudyname = 'Data - ' + studynametest
@@ -170,8 +152,8 @@ def ExcelReport():
         sumb.write('A15','Probe-ID'); sumb.write('B15',probeID)
         sumb.write('A16','Sonographer-ID'); sumb.write('B16',sonographerID)
         sumb.write('A17','Interpreter-ID'); sumb.write('B17',interpreterID)
-        sumb.write('A18','SDY-filename'); sumb.write('B18',basesdyfilename)
-        sumb.write('A19','Image-filename'); sumb.write('B19',baseimgfilename)
+        sumb.write('A18','SDY-filename'); sumb.write('B18',filename)
+        sumb.write('A19','Image-filename'); sumb.write('B19',filename)
         sumb.write('A20','Pixel-siz-mm/p'); sumb.write('B20',pixelsize)
         sumb.write('A21','ROI-length-mm'); sumb.write('B21',roilength)
         sumb.write('A22','Frame-initialized'); sumb.write('B22',frameinitial)
@@ -221,7 +203,24 @@ def ExcelReport():
         basechart.set_title({'name':'Baseline Test Diameter'})
         sumb.insert_chart('D1', basechart)
 
+        #Subject Summary Information (Dependent on Trial)
+        subsum.write('F1','Date Scanned'); subsum.write(img_num + 1, 5, imagingdate)
+        subsum.write('G1','Date Analyzed'); subsum.write(img_num + 1, 6, date)
+        #subsum.write('H1','Condition'); subsum.write(img_num + 1, 7, condition)
+        subsum.write('I1','Image File'); subsum.write(img_num + 1, 8, filename)
+        subsum.write('J1','Image Frames'); subsum.write(img_num + 1, 9, frametotal)  #commented for now for frame total
+        subsum.write('K1','Length(sec.)'); subsum.write(img_num + 1, 10, frametotal/fps) #commented for now for frame total
 
+        subsum.write('L1', 'DIAMETER')
+        subsum.write('M1', 'Average Diameter'); subsum.write(img_num + 1, 12, np.mean(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, np.min(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, np.max(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('P1', 'Diameter Max (3-sec-smoothed)')
+        subsum.write('Q1', 'Diameter Max (5-sec-smoothed)')
+        subsum.write('R1', 'Diameter Max (10-sec-smoothed)')
+        subsum.write('S1', 'Flow Velocity Avg (meter/sec)')
+        subsum.write('T1', 'Flow Velocity Max (meter/sec)')
+        subsum.write('U1', 'Flow velocity integral avg (meters')
 
     wb.close()
 
