@@ -157,7 +157,6 @@ def PerformFMDHelper(image_path, image_obj):
 
 # populates the first frame when pixmap artery image is clicked
 def VerifyFrame1(image_path, image_obj):
-    g = gbl_fmd.class_list
     i_class = gbl_fmd.i_class
     print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)
     print("print xy in FMDproccessing ", gbl_fmd.class_list[i_class].GetXY())
