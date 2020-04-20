@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
-
+import Excel.excel as excel
 
 class Ui_excel_screen(QWidget):
     def setupUi(self, excel_screen):
@@ -83,6 +83,7 @@ class Ui_excel_screen(QWidget):
         self.ok_btn.setFont(font)
         self.ok_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.ok_btn.setObjectName("ok_btn")
+        self.ok_btn.clicked.connect(self.SaveExcelFile)
 
         # Set the central widget
         excel_screen.setCentralWidget(self.excel_screen)
@@ -91,8 +92,16 @@ class Ui_excel_screen(QWidget):
         QtCore.QMetaObject.connectSlotsByName(self.excel_screen)
 
     def ChooseFolder(self):
-        OutputFolder = QFileDialog.getExistingDirectory(self, "Select Output Folder")
-        self.excel_folder.setText(OutputFolder)
+        folder_path = QFileDialog.getExistingDirectory(self, "Select Output Folder")
+        self.excel_folder.setText(folder_path+"/")
+        print(folder_path)
+
+    def SaveExcelFile(self):
+        folder_path = self.excel_folder.toPlainText()
+        excel_file_name = self.excel_file_name.toPlainText()
+        # excel.PrintHi()
+        excel.ExcelReport(folder_path, excel_file_name)
+        print("Excel Finished")
 
     def retranslateUi(self, excel_screen):
         _translate = QtCore.QCoreApplication.translate

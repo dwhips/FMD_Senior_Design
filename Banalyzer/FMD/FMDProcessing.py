@@ -91,8 +91,7 @@ def PerformFMD(image_path, image_obj):
                 gbl_fmd.i_class += 1
                 print("printing %dif")
                 gbl_fmd.class_list[i].PercentDif()
-            excel.PrintHi()
-            excel.ExcelReport()
+
         # need to verify next file, so set up first frame of next index
         else:
             print("showing global class name FMDProcessing  ", gbl_fmd.class_list[i_class].test_name)

@@ -9,7 +9,7 @@ import xlsxwriter
 def PrintHi():
     print("printing %dif")
     print(gbl_fmd.i_class)
-def ExcelReport():
+def ExcelReport(folder_path, excel_file_name):
 
 #Variables (regardless of i_class val)
     img_num = gbl_fmd.i_class
@@ -61,7 +61,9 @@ def ExcelReport():
 
 
     #Creating workbook fmd_report
-    wb = xlsxwriter.Workbook('fmd_report_example.xlsx')
+    excel_path = folder_path + excel_file_name + '.xlsx'
+    wb = xlsxwriter.Workbook(excel_path)
+    # wb = xlsxwriter.Workbook('fmd_report_example.xlsx')
 
     #Workbook Formats
     headerf = wb.add_format()
