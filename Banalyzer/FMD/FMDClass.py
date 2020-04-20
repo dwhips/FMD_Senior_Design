@@ -20,7 +20,7 @@ class classFMD:
         self.widget_size = []  # [row, col]    pixel size of widget storing image
         self.pixel2real_conversion = None
         self.real_diam_arr = []
-        self.accepted_contour = False # if false, user still needs to accept the FMD measurements
+        self.threshold = None
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):

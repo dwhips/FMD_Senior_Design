@@ -116,6 +116,8 @@ class Ui_Banalyzer(QWidget):
         self.thresh_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self.fmd_screen)
         self.thresh_slider.setGeometry(
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.85, windowwidth * 0.8, windowheight * 0.1))
+        self.thresh_slider.setRange(0, 255)
+        self.thresh_slider.valueChanged.connect(self.SliderChanged)
 
         # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)
@@ -157,6 +159,12 @@ class Ui_Banalyzer(QWidget):
         print("Testing class xy in brachial_ui: ", gbl_fmd.class_list[i_class].CheckXY())
         fmd_proc.VerifyFrame1(gbl_fmd.class_list[i_class].file_path, self.crop_image)
         print("GetPos crashing here?")
+
+    def SliderChanged(self):
+        i_class = gbl_fmd.i_class
+        slider_val = self.thresh_slider.value()
+        print(slider_val)
+        gbl_fmd.class_list[i_class].threshold = slider_val
 
     def retranslateUi(self, Banalyzer):
         _translate = QtCore.QCoreApplication.translate

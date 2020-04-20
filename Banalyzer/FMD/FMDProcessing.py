@@ -33,7 +33,14 @@ def Populate(img, img_obj):
     # Invert Image
     copy = np.invert(img)  # !!!!!!!!!!!!!!!!!!!!! used to see if quality of image changes
     # Perform Threshold
-    _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
+    if gbl_fmd.class_list[i_class].threshold == None:
+        _ , otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
+        print(cv2.THRESH_OTSU)
+        gbl_fmd.class_list[i_class].threshold = cv2.THRESH_BINARY
+    else:
+        thresh = gbl_fmd.class_list[i_class].threshold
+        _, otsu_threshold = cv2.threshold(copy, thresh, 255, cv2.THRESH_BINARY)
+
     # Find contours (edges)
     otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE,
                                         cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
