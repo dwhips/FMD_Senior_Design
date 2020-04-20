@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import time  # just for delay, ill probably delete this
 import Excel.excel as excel
+import pydicom
 
 import sys
 
@@ -118,44 +119,19 @@ def PerformFMD(image_path, image_obj):
 def PerformFMDHelper(image_path, image_obj):
     i_class = gbl_fmd.i_class
 
-    artery_avi = cv2.VideoCapture(image_path)
-    if not artery_avi.isOpened():
-        print("Couldn't open file")
-        # change to a button alert
-        return
-    success, image = artery_avi.read()
+    artery_numpy = GetFileImage(image_path)
 
-    # Process and contour each .avi frame ===============================
-    # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
-    # should be saved in the user settings
-    sample_start_row = 144  # measurements are based off the 640x480 sample image
-    sample_end_row = 408
-    sample_start_col = 159
-    sample_end_col = 518
-
-    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col,
-                                              sample_end_col)
-    gbl_fmd.class_list[i_class].SetMaxImageSize(len(image[0]), len(image[1]))
+    # gbl_fmd.class_list[i_class].SetMaxImageSize(len(image[0]), len(image[1]))
     row = gbl_fmd.class_list[i_class].GetCropRow()
     col = gbl_fmd.class_list[i_class].GetCropCol()
 
     # should be removing this as the first frame will update all of these
     gbl_fmd.class_list[i_class].SetPixel2Real()
 
-    i_frame = 0
-
-    # if gbl_fmd.class_list[i_class].accepted_contour:
-    while success:
+    for image in artery_numpy:
+        #image = artery_numpy[i_frame]
         image = image[row[0]:row[1], col[0]:col[1]]
-        # cv2.imwrite(image_path + "frame%i.jpg" % i_frame, image
-        time.sleep(.01)  # TODO REMOVE
         Populate(image, image_obj)
-
-        print("Image %i Complete" % i_frame, "\n")
-        i_frame += 1
-        success, image = artery_avi.read()
-
-
 
 # populates the first frame when pixmap artery image is clicked
 def VerifyFrame1(image_path, image_obj):
@@ -174,34 +150,20 @@ def VerifyFrame1(image_path, image_obj):
         print("user has not defined xy click")
         # TODO have a popup or some error indication that they should click the gui
 
-
-# gets and returns first frame image
 def GetFirstFrame(image_path):
     i_class = gbl_fmd.i_class
+    artery_numpy = GetFileImage(image_path)
 
-    artery_avi = cv2.VideoCapture(image_path)
-    if not artery_avi.isOpened():
-        print("Couldn't open file")
-        # change to a button alert
-        return
-    success, image = artery_avi.read()
-    # Process and contour each .avi frame ===============================
-    # !!!!!!!!!!!!!!!!!!Delete once cropping method determined!!!!!!!!!!
-    # should be saved in the user settings
-    sample_start_row = 144  # measurements are based off the 640x480 sample image
-    sample_end_row = 408
-    sample_start_col = 159
-    sample_end_col = 518
+    SetCropBounds(image_path)
+    # gbl_fmd.class_list[i_class].SetPixel2Real()
 
-    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
-    # gbl_fmd.class_list[i_class].SetMaxImageSize(len(image[0]), len(image[1]))
     row = gbl_fmd.class_list[i_class].GetCropRow()
     col = gbl_fmd.class_list[i_class].GetCropCol()
 
     # gbl_fmd.class_list[i_class].SetPixel2Real()
-
-    image = image[row[0]:row[1], col[0]:col[1]]
-    return image
+    artery_numpy = artery_numpy[0]
+    artery_numpy = artery_numpy[row[0]:row[1], col[0]:col[1]]
+    return artery_numpy
 
 
 # updates pixmap cropimage to the first frame image
@@ -212,3 +174,50 @@ def SetFirstFrame(image_path, image_obj):
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
     cv2.imwrite(image_path + "init_frame.jpg", image)
     GUI.OpenCv2QImage(image, image_obj)
+
+# verifies the diacom is a .file extension
+def CheckAviFile(image_path):
+    if image_path.endswith('.avi'):
+        return True
+    return False
+
+# converts a .file extension to png
+def ConvertFromDicom(image_path):
+    dicom = pydicom.read_file(image_path)
+    dicom = dicom.pixel_array
+    return dicom
+
+# gets file of .avi or dicom type and returns usable image type as numpy of pixel values
+def GetFileImage(image_path):
+    if CheckAviFile(image_path):
+        artery_avi = cv2.VideoCapture(image_path)
+        if not artery_avi.isOpened():
+            print("Couldn't open file")
+            # change to a button alert
+            return None
+        success, image = artery_avi.read()
+        i_frame = 0
+        image_numpy = []
+        while success:
+            image_numpy.append(image)
+            print("Image %i Complete" % i_frame, "\n")
+            i_frame += 1
+            success, image = artery_avi.read()
+        return image_numpy
+    else:
+        return ConvertFromDicom(image_path)
+
+# sets crop bounds based on the file type (.avi vs dicom)
+def SetCropBounds(file_path):
+    if CheckAviFile(file_path):
+        sample_start_row = 144  # measurements are based off the 640x480 sample image
+        sample_end_row = 408
+        sample_start_col = 159
+        sample_end_col = 518
+    else:
+        sample_start_row = 0
+        sample_end_row = 600
+        sample_start_col = 0
+        sample_end_col = 600
+    i_class = gbl_fmd.i_class
+    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)

@@ -16,7 +16,7 @@ class classFMD:
         self.percent_dif = []
         self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved
         self.cropped_bounds = []  # [start row, end row,  start col, end col]
-        self.max_image_size = []  # [max row, max col]
+        # self.max_image_size = []  # [max row, max col]
         self.widget_size = []  # [row, col]    pixel size of widget storing image
         self.pixel2real_conversion = None
         self.real_diam_arr = []
