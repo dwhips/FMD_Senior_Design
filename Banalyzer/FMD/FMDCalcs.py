@@ -43,7 +43,7 @@ def BoxCenterLine(rec):
 
 # checks for points that are perpendicular to the center-line
 # tang is tangent coord [[xa ya] [xb yb]] so two coord
-def TangDiamMean(contour, tang):
+def TangDiacmean(contour, tang):
     # need to look into why the xa xb are inverse what I thought.
     # probably need to change the box center line function
     xb = tang[0][0]
@@ -58,7 +58,7 @@ def TangDiamMean(contour, tang):
     tang_slope = -(1 / slope)  # negative reciprocal
     # print("neg recip slope: ", tang_slope)
 
-    # for now imma hardcode 10 points. later should be iterative with left/right buffer width
+    # for now icma hardcode 10 points. later should be iterative with left/right buffer width
     # this part finds 10 points on the centerline and uses the tangent to find points on the contour
     n_bins = 10
     length = CoordDist(tang[0], tang[1])
@@ -80,30 +80,46 @@ def ContourMean(contour, length):
 # the scale is 56X767 pixels (4 cm(?) in 767 pixels
 # the cropped image is 359*264 pixels
 # ^ as acquired from screenshots so both should be relative
-def CalcPixel2RealConversion():
-    i_class = gbl_fmd.i_class
+def CalcPixel2RealRatio():
+    # TODO this one does cm per pixel so icm has 767/4 pixels. maybe its a data type error
+    original_pixel_scale = 767  # pixel size of reference cm size
+    n_cm_seg = 4  # number of reference segments in original scale (one segment is cm length)
+    pixels_per_cm = original_pixel_scale / n_cm_seg
+    #n_cm_per_pixel = 1 / pixels_per_cm # maybe keep it as npixel to make more precise?
 
+    # need to have the xy stuff work
+    cropped_pixel_x = 552  # found manually, crop size of the .avi file
+    cropped_pixel_y = 397  # found manually
+    widg_x = gbl_fmd.class_list[0].widget_size[0]
+    widg_y = gbl_fmd.class_list[0].widget_size[1]
+    # the x and y dimensions between the widget and the original cropped image need to
+    # be the same in order for the conversion to not care about x vs y stretching
+    x_ratio = widg_x/cropped_pixel_x
+    y_ratio = widg_y/cropped_pixel_y
+
+    avg_ratio = (x_ratio + y_ratio) / 2 # change of pixel strech
+    print(avg_ratio*pixels_per_cm, " pixels in 1 cm")
+    return avg_ratio*pixels_per_cm  # NOW ITS SHIFT OF HOW MANY PIXELS ARE IN A CM
+
+def CalcPixel2RealRatioOG():
     original_pixel_scale = 767  # pixel size of reference cm size
     n_cm_seg = 4  # number of reference segments in original scale (one segment is cm length)
     pixels_per_cm = original_pixel_scale / n_cm_seg
     n_cm_per_pixel = 1 / pixels_per_cm # maybe keep it as npixel to make more precise?
-
+    print("should equal 1: ", n_cm_per_pixel * pixels_per_cm)
     # need to have the xy stuff work
-    cropped_pixel_x = 359  # found manually (this is the 'frame 0' stuff, so it is scaled to my original gui size)
-    cropped_pixel_y = 264  # found manually
-    unshrunk_crop_x = 726  # (this is the crop of of the .avi, so its the original image scale)
-    scale = unshrunk_crop_x/cropped_pixel_x  # the x crop should be the same, i couldnt tell how large the y crop was
-    cropped_pixel_x *= scale
-    cropped_pixel_y *= scale
-
-    widge_x = gbl_fmd.class_list[0].widget_size[0]
-    widge_y = gbl_fmd.class_list[0].widget_size[1]
+    cropped_pixel_x = 552  # found manually, crop size of the .avi file
+    cropped_pixel_y = 397  # found manually
+    widg_x = gbl_fmd.class_list[0].widget_size[0]
+    widg_y = gbl_fmd.class_list[0].widget_size[1]
     # the x and y dimensions between the widget and the original cropped image need to
     # be the same in order for the conversion to not care about x vs y stretching
-    x_ratio = widge_x/cropped_pixel_x
-    y_ratio = widge_y/cropped_pixel_y
-    print("x ratio: ", x_ratio)
-    print("y ratio: ", y_ratio)
+    x_ratio = widg_x/cropped_pixel_x
+    y_ratio = widg_y/cropped_pixel_y
 
     avg_ratio = (x_ratio + y_ratio) / 2
     return avg_ratio*n_cm_per_pixel
+
+def CalcPixel2Real(pixel_diam, ratio):
+    print(pixel_diam, " pixels  / ", ratio, "pixels/cm")
+    return pixel_diam / ratio

@@ -19,8 +19,9 @@ class classFMD:
         self.max_image_size = []  # [max row, max col]
         self.widget_size = []  # [row, col]    pixel size of widget storing image
         self.pixel2real_conversion = None
-        self.REALDIAMARR = []
-        self.accepted_contour = False # if false, user still needs to accept the FMD measurements
+        self.real_diam_arr = [] # in cm
+        self.finished_processing = False
+        #self.accepted_contour = False # if false, user still needs to accept the FMD measurements
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
@@ -70,13 +71,16 @@ class classFMD:
         self.widget_size = [width, height]
 
     def SetPixel2Real(self):
-        self.pixel2real_conversion = FMDCalcs.CalcPixel2RealConversion()
+        self.pixel2real_conversion = FMDCalcs.CalcPixel2RealRatio()
+        print("Pixel 2 real conversion: ", self.pixel2real_conversion)
 
     def PercentDif(self):
-        print(len(self.diameter_arr))
         for i in range(len(self.diameter_arr)):
-            print(i)
             self.percent_dif.append(100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0])
+
+    def ConvertPix2Real(self, pixel_diam):
+        self.real_diam_arr.append(FMDCalcs.CalcPixel2Real(pixel_diam, self.pixel2real_conversion))
+
 # practice class. not used in our final product
 class classSTUDENT(classFMD):
 

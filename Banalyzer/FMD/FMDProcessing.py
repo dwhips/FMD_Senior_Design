@@ -11,6 +11,7 @@ import sys
 
 sys.path.append('../')  # could be hacky, need to figure out how to share between files
 import Global.gbl_fmd_class_list as gbl_fmd
+#import GUI.main_ui.py as main_ui
 
 ############Remove the im_x and such and change colors to resources file##############
 RED = (0, 0, 255)  # opencv uses BGR not RGB
@@ -49,20 +50,38 @@ def Populate(img, img_obj):
             simp_box = cv2.minAreaRect(otsu_contours[i_shape])
             simp_box = cv2.boxPoints(simp_box)
             cv2.drawContours(img, [np.int0(simp_box)], 0, BLUE, 2)
-            # cv2.drawContours(img, )
-            # print(simp_box)
             center_xy = FMDCalcs.BoxCenterLine(simp_box)
-            #          dead = FMDCalcs.TangDiamMean(otsu_contours, center_xy)
-            #         cv2.circle(img, tuple([0, dead]), 3, RED, 2)
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
+
             length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
-            # might need to create namespaces to shorthand these calls
             gbl_fmd.class_list[i_class].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
+            # verify pix diam is clse to what is measured
+            # FOR DEBUGGING
+            xy = gbl_fmd.class_list[i_class].widget_size
+            xy = [xy[0]/2, xy[1]/2]
+            arr_diam = gbl_fmd.class_list[i_class].GetRecentDiam()
+            end_point_top = [int(xy[0] - 15), int(xy[1] + arr_diam)]
+            #end_point_bot = [int(xy[0] - 15), int((xy[1] - arr_diam / 2) + 100)]
+            a = tuple([int(xy[0]-15), int(xy[1])])
+            xy = [int(xy[0]), int(xy[1])]
+            cv2.line(img, a, tuple(end_point_top), RED, 1)
+            #cv2.line(img, a, tuple(end_point_bot), RED, 1)
+            half_width = int(xy[0])
+            half_height = int(xy[1])
+            cv2.line(img, tuple([half_width, 0]), tuple([half_width, int(xy[1]*2)]), RED, 1)
+            cv2.line(img, tuple([0, half_height]), tuple([int(half_width*2), half_height]), RED, 1)
+            # print("widget x: ", xy[0] * 2)
+            # print("widget y: ", xy[1] * 2)
+
+            # END DEBUGGING
             print("Diam:\t", gbl_fmd.class_list[i_class].GetRecentDiam(), " pixels")
-            print(gbl_fmd.class_list[i_class].pixel2real_conversion)
-            real_diam = gbl_fmd.class_list[i_class].GetRecentDiam() * gbl_fmd.class_list[i_class].pixel2real_conversion
-            print("Diam:\t", real_diam, " cm (avg width height, not accurate)")
-            gbl_fmd.class_list[i_class].REALDIAMARR = [gbl_fmd.class_list[i_class].REALDIAMARR, real_diam]
+            gbl_fmd.class_list[i_class].ConvertPix2Real(gbl_fmd.class_list[i_class].GetRecentDiam())
+            print("Real: \t", gbl_fmd.class_list[i_class].real_diam_arr[-1], "cm")
+            print("Real: \t", gbl_fmd.class_list[i_class].real_diam_arr[-1]*10, "mm")
+            # print(gbl_fmd.class_list[i_class].pixel2real_conversion)
+            # real_diam = gbl_fmd.class_list[i_class].GetRecentDiam() * gbl_fmd.class_list[i_class].pixel2real_conversion
+            # print("Diam:\t", real_diam, " mm (avg width height, not accurate)")
+            # gbl_fmd.class_list[i_class].REALDIAMARR = [gbl_fmd.class_list[i_class].REALDIAMARR, real_diam]
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
@@ -79,15 +98,13 @@ def PerformFMD(image_path, image_obj):
         i_class = gbl_fmd.i_class
 
         # all files have been verified, start processing
-        print(i_class, ": i class")
-        print("list length: ", len(gbl_fmd.class_list))
+        # print(i_class, ": i class")
+        # print("list length: ", len(gbl_fmd.class_list))
         if i_class >= len(gbl_fmd.class_list):
-            print("All verified")
             gbl_fmd.i_class = 0
             for i in range(0, len(gbl_fmd.class_list)):
                 PerformFMDHelper(image_path, image_obj)
                 gbl_fmd.i_class += 1
-                print("printing %dif")
                 gbl_fmd.class_list[i].PercentDif()
             excel.PrintHi()
             excel.ExcelReport()
@@ -101,7 +118,6 @@ def PerformFMD(image_path, image_obj):
     else:  # user hasnt selected an xy
         print("User hasnt selected xy")
         # Need user indication to select xy
-
 
 
 # for perfroming the fmd after all the files have been verified
@@ -144,7 +160,6 @@ def PerformFMDHelper(image_path, image_obj):
         print("Image %i Complete" % i_frame, "\n")
         i_frame += 1
         success, image = artery_avi.read()
-
 
 
 # populates the first frame when pixmap artery image is clicked
