@@ -9,7 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5.QtWidgets import QDesktopWidget, QFileDialog
 
 
 class Ui_excel_screen(QWidget):
@@ -51,6 +51,7 @@ class Ui_excel_screen(QWidget):
         self.choose_folder_btn.setFont(font)
         self.choose_folder_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.choose_folder_btn.setObjectName("choose_folder_btn")
+        self.choose_folder_btn.clicked.connect(self.ChooseFolder)
 
         # Excel File Name Text Box
         self.excel_file_name = QtWidgets.QTextBrowser(self.excel_screen)
@@ -88,6 +89,10 @@ class Ui_excel_screen(QWidget):
 
         self.retranslateUi(self.excel_screen)
         QtCore.QMetaObject.connectSlotsByName(self.excel_screen)
+
+    def ChooseFolder(self):
+        OutputFolder = QFileDialog.getExistingDirectory(self, "Select Output Folder")
+        self.excel_folder.setText(OutputFolder)
 
     def retranslateUi(self, excel_screen):
         _translate = QtCore.QCoreApplication.translate
