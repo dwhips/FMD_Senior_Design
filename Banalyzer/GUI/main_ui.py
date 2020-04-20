@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QWidget, QMainWindow, QPushButton, QFileDialog
 from file_Screen import Ui_filescreen
 from fmd_screen import Ui_Banalyzer
 from start_page import Ui_start_screen
+from excel_screen import Ui_excel_screen
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QDesktopWidget
 import sys
@@ -37,7 +38,13 @@ class mywindow(QMainWindow):
         self.ui = Ui_Banalyzer()
         self.ui.setupUi(self)
         self.ui.back_btn.clicked.connect(self.ChooseFMD)
+        self.ui.retry_btn.clicked.connect(self.ExcelScreen)
 
+    # Moves to Excel Screen
+    def ExcelScreen(self):
+        self.ui = Ui_excel_screen()
+        self.ui.setupUi(self)
+        self.ui.back_btn.clicked.connect(self.Run)
 
 app = QtWidgets.QApplication([])
 application = mywindow()
