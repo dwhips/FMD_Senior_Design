@@ -36,10 +36,12 @@ def Populate(img, img_obj):
     if gbl_fmd.class_list[i_class].threshold == None:
         _ , otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
         print(cv2.THRESH_OTSU)
-        gbl_fmd.class_list[i_class].threshold = cv2.THRESH_BINARY
-    else:
-        thresh = gbl_fmd.class_list[i_class].threshold
+        gbl_fmd.class_list[i_class].threshold = ['otsu', cv2.THRESH_OTSU]
+    elif gbl_fmd.class_list[i_class].threshold[0] == 'binary':
+        thresh = gbl_fmd.class_list[i_class].threshold[1]
         _, otsu_threshold = cv2.threshold(copy, thresh, 255, cv2.THRESH_BINARY)
+    elif gbl_fmd.class_list[i_class].threshold[0] == 'otsu':
+        _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
 
     # Find contours (edges)
     otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE,

@@ -164,7 +164,7 @@ class Ui_Banalyzer(QWidget):
         i_class = gbl_fmd.i_class
         slider_val = self.thresh_slider.value()
         print(slider_val)
-        gbl_fmd.class_list[i_class].threshold = slider_val
+        gbl_fmd.class_list[i_class].threshold = ['binary', slider_val]
         # update the image to the current thresh
         fmd_proc.VerifyFrame1(gbl_fmd.class_list[i_class].file_path, self.crop_image)
 
