@@ -44,7 +44,7 @@ class mywindow(QMainWindow):
     def ExcelScreen(self):
         self.ui = Ui_excel_screen()
         self.ui.setupUi(self)
-        self.ui.back_btn.clicked.connect(self.Run)
+        self.ui.back_btn.clicked.connect(self.ChooseFMD)
 
 app = QtWidgets.QApplication([])
 application = mywindow()

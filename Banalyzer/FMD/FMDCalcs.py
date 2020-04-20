@@ -107,3 +107,6 @@ def CalcPixel2RealConversion():
 
     avg_ratio = (x_ratio + y_ratio) / 2
     return avg_ratio*n_cm_per_pixel
+
+def CalcPixel2Real(pixel_diam, pixel2real_conversion):
+    return pixel_diam * pixel2real_conversion

@@ -58,11 +58,13 @@ def Populate(img, img_obj):
             length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
             # might need to create namespaces to shorthand these calls
             gbl_fmd.class_list[i_class].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
-            print("Diam:\t", gbl_fmd.class_list[i_class].GetRecentDiam(), " pixels")
+            pixel_diam = gbl_fmd.class_list[i_class].GetRecentDiam()
+            print("Diam:\t", pixel_diam, " pixels")
+
             print(gbl_fmd.class_list[i_class].pixel2real_conversion)
-            real_diam = gbl_fmd.class_list[i_class].GetRecentDiam() * gbl_fmd.class_list[i_class].pixel2real_conversion
+            gbl_fmd.class_list[i_class].ConvertPix2Real(pixel_diam)
+            real_diam = gbl_fmd.class_list[i_class].real_diam_arr[-1]
             print("Diam:\t", real_diam, " cm (avg width height, not accurate)")
-            gbl_fmd.class_list[i_class].REALDIAMARR = [gbl_fmd.class_list[i_class].REALDIAMARR, real_diam]
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
