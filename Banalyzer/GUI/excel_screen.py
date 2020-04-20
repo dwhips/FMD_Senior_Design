@@ -30,7 +30,7 @@ class Ui_excel_screen(QWidget):
         self.excel_screen.setStyleSheet("background:rgb(177, 185, 199)")
 
         # Excel Folder Text Box
-        self.excel_folder = QtWidgets.QTextBrowser(self.excel_screen)
+        self.excel_folder = QtWidgets.QTextEdit(self.excel_screen)
         self.excel_folder.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.2, windowwidth*0.25, windowheight*0.2))
         self.excel_folder.setStyleSheet("background:rgb(255, 255, 255)")
         self.excel_folder.setObjectName("excel_folder")
@@ -54,7 +54,7 @@ class Ui_excel_screen(QWidget):
         self.choose_folder_btn.clicked.connect(self.ChooseFolder)
 
         # Excel File Name Text Box
-        self.excel_file_name = QtWidgets.QTextBrowser(self.excel_screen)
+        self.excel_file_name = QtWidgets.QTextEdit(self.excel_screen)
         self.excel_file_name.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.5, windowwidth*0.25, windowheight*0.2))
         self.excel_file_name.setStyleSheet("background:rgb(255, 255, 255)")
         self.excel_file_name.setObjectName("excel_file_name")
