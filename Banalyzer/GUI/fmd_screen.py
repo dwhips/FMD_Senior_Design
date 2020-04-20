@@ -11,8 +11,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMainWindow
 from PyQt5.QtWidgets import QDesktopWidget
 
-import GUI.GUIHelper as GUIHelper
-
 import sys
 sys.path.append('../')  # could be hacky
 import Global.gbl_fmd_class_list as gbl_fmd
@@ -68,6 +66,10 @@ class Ui_Banalyzer(QWidget):
         self.accept_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.accept_btn.setObjectName("accept_btn")
         # if the user is still verifying the files, this will just switch to the first frame of the next file
+        # if gbl_fmd.class_list[0].finished_processing == True:
+        #    self.accept_btn.clicked.connect(lambda: fmd_proc.PerformFMD(gbl_fmd.class_list[i_class].file_path,
+        #                                                                self.crop_image))
+        # else:
         self.accept_btn.clicked.connect(lambda: fmd_proc.PerformFMD(gbl_fmd.class_list[i_class].file_path,
                                                                     self.crop_image))
         self.accept_btn.clicked.connect(self.UpdateTitle)
@@ -103,7 +105,8 @@ class Ui_Banalyzer(QWidget):
         image_width = self.crop_image.frameGeometry().width()
         image_height = self.crop_image.frameGeometry().height()
         g = gbl_fmd.class_list # for debugging TODO delete later
-        gbl_fmd.class_list[i_class].SetWidgetSize(image_width, image_height)
+        gbl_fmd.class_list[i_class].SetWidgetSize(image_width, image_height)   # TODO DELETE IF THIS IS THE WIDGET SIZE BUG
+
         # update the crop image to the first frame of the first inputted file
         fmd_proc.SetFirstFrame(gbl_fmd.class_list[i_class].file_path, self.crop_image)
 
@@ -139,6 +142,16 @@ class Ui_Banalyzer(QWidget):
     # THIS SHIT DONT WORK
     def GetPos(self, event):
         i_class = gbl_fmd.i_class
+
+
+        # TODO verify this is the bug
+        image_width = self.crop_image.frameGeometry().width()
+        image_height = self.crop_image.frameGeometry().height()
+        g = gbl_fmd.class_list  # for debugging TODO delete later
+        gbl_fmd.class_list[i_class].SetWidgetSize(image_width, image_height)
+        print("Resizgin the widget specs in class")
+
+
         # x = event.pos().x()
         x = event.x()
         y = event.y()
