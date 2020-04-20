@@ -38,7 +38,7 @@ class mywindow(QMainWindow):
         self.ui = Ui_Banalyzer()
         self.ui.setupUi(self)
         self.ui.back_btn.clicked.connect(self.ChooseFMD)
-        self.ui.retry_btn.clicked.connect(self.ExcelScreen)
+        self.ui.excel_btn.clicked.connect(self.ExcelScreen)
 
     # Moves to Excel Screen
     def ExcelScreen(self):

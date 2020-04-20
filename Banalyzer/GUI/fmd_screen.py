@@ -5,11 +5,9 @@
 # Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QMainWindow
-from PyQt5.QtWidgets import QDesktopWidget
+from PyQt5.QtWidgets import QDesktopWidget, QSlider
 
 import GUI.GUIHelper as GUIHelper
 
@@ -75,10 +73,10 @@ class Ui_Banalyzer(QWidget):
         self.buttons.addWidget(self.accept_btn)
 
         # Retry Button
-        self.retry_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
-        self.retry_btn.setStyleSheet("background:rgb(255, 255, 255)")
-        self.retry_btn.setObjectName("retry_btn")
-        self.buttons.addWidget(self.retry_btn)
+        self.excel_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
+        self.excel_btn.setStyleSheet("background:rgb(255, 255, 255)")
+        self.excel_btn.setObjectName("excel_btn")
+        self.buttons.addWidget(self.excel_btn)
 
         # Manual select button
         self.manual_btn = QtWidgets.QPushButton(self.verticalLayoutWidget)
@@ -113,6 +111,11 @@ class Ui_Banalyzer(QWidget):
             QtCore.QRect(windowwidth * 0.01, windowheight * 0.01, windowwidth * 0.05, windowheight * 0.03))
         self.back_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.back_btn.setObjectName("pushButton")
+
+        # Threshold slider
+        self.thresh_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self.fmd_screen)
+        self.thresh_slider.setGeometry(
+            QtCore.QRect(windowwidth * 0.1, windowheight * 0.85, windowwidth * 0.8, windowheight * 0.1))
 
         # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)
@@ -159,7 +162,7 @@ class Ui_Banalyzer(QWidget):
         _translate = QtCore.QCoreApplication.translate
         Banalyzer.setWindowTitle(_translate("Banalyzer", "MU Brachial Analyzer"))
         self.accept_btn.setText(_translate("Banalyzer", "Acceptable"))
-        self.retry_btn.setText(_translate("Banalyzer", "Retry"))
+        self.excel_btn.setText(_translate("Banalyzer", "Save To Excel"))
         self.manual_btn.setText(_translate("Banalyzer", "Manual"))
         self.back_btn.setText(_translate("Banalyzer", "Back"))
         # self.title.setText(_translate("start_screen", "Study info"))
