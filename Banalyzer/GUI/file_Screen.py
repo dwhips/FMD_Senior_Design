@@ -9,7 +9,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QFileDialog, QDesktopWidget
+from PyQt5.QtWidgets import QWidget, QFileDialog, QDesktopWidget, QCheckBox
 
 import sys
 
@@ -122,6 +122,24 @@ class Ui_filescreen(QWidget):
         self.path4.setStyleSheet("background: rgb(255, 255, 255)")
         self.path4.setObjectName("path4")
         self.layout_paths.addWidget(self.path4)
+
+        # Create the baseline checkboxes
+        baseline_checkbox1 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox1.move(windowwidth*0.4, windowheight*0.35)
+        baseline_checkbox1.resize(windowwidth*0.08, windowheight*0.05)
+
+        baseline_checkbox2 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox2.move(windowwidth*0.4, windowheight*0.5)
+        baseline_checkbox2.resize(windowwidth*0.08, windowheight*0.05)
+
+        baseline_checkbox3 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox3.move(windowwidth*0.4, windowheight*0.65)
+        baseline_checkbox3.resize(windowwidth*0.08, windowheight*0.05)
+
+        baseline_checkbox4 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox4.move(windowwidth*0.4, windowheight*0.8)
+        baseline_checkbox4.resize(windowwidth*0.08, windowheight*0.05)
+
 
         # link to FIleIndexCLick when user clicks on name or file path textbox. Indicates the block currently selected
         self.name1.mousePressEvent = lambda x: self.FileIndexClick(1)
