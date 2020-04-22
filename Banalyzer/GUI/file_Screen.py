@@ -269,7 +269,7 @@ class Ui_filescreen(QWidget):
         self.path_label.setText(_translate("filescreen", "File Path"))
         self.name_label.setText(_translate("filescreen", "Test Name"))
         self.study_label.setText(_translate("filescreen", "Study Name"))
-        self.patient_label.setText(_translate("filescreen", "Patient Name"))
+        self.patient_label.setText(_translate("filescreen", "Patient ID"))
         self.run_btn.setText(_translate("filescreen", "RUN"))
         self.name1.setHtml(_translate("filescreen",
                                       "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
