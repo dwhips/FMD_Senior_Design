@@ -14,13 +14,14 @@ class classFMD:
         self.diameter_arr = []
         self.conf_arr = []
         self.percent_dif = []
+        self.percent_dif_flag = []
         self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved
         self.cropped_bounds = []  # [start row, end row,  start col, end col]
         # self.max_image_size = []  # [max row, max col]
         self.widget_size = []  # [row, col]    pixel size of widget storing image
         self.pixel2real_conversion = None
         self.real_diam_arr = []
-        self.threshold = None
+        self.threshold = 40
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
@@ -75,6 +76,15 @@ class classFMD:
     def PercentDif(self):
         for i in range(len(self.diameter_arr)):
             self.percent_dif.append(100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0])
+
+            # %Difference Flags From This:  For now threshold has to be hardcoded?!?
+            if ((100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0]) > 40):
+                self.percent_dif_flag.append(1)
+            elif ((100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0]) < (-40)):
+                self.percent_dif_flag.append(1)
+            else:
+                self.percent_dif_flag.append(0)
+
 
     def ConvertPix2Real(self, pixel_diam):
         self.real_diam_arr.append(FMDCalcs.CalcPixel2Real(pixel_diam, self.pixel2real_conversion))

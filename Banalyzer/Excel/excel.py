@@ -179,27 +179,29 @@ def ExcelReport(folder_path, excel_file_name):
         datab.set_column('A:AC',25)
         datab.set_row(0,20,headerf)
 
-        # Writing Pixel Diameters in Second Column
+        # Writing Columnar Data
         datab.write_column(1, 1, gbl_fmd.class_list[img_num].diameter_arr)
         #datab.write_column(1, 2, gbl_fmd.class_list[-1].REALDIAMARR)
-        datab.write_column(1,9,gbl_fmd.class_list[img_num].percent_dif)
+        datab.write_column(1,6,gbl_fmd.class_list[img_num].percent_dif)
+        datab.write_column(1,7,gbl_fmd.class_list[img_num].percent_dif_flag)
 
         #Formatting and Frame #
         for row_num in range(1,frametotal,1):
             datab.write(row_num, 0, row_num)  #Writing frame number
-            datab.write(row_num,7,row_num*mspf-mspf)  #Writing MSEC
+            datab.write(row_num,4,row_num*mspf-mspf)  #Writing MSEC
             if (row_num%2 == 1):
                 datab.set_row(row_num,15,bg)
 
 
         #Upper Labels
         datab.write('A1','Frame'); datab.write('B1','AVG Pixel Diameter'); datab.write('C1','BDIAMM')
-        datab.write('D1','Patient ID'); datab.write('E1','STYPE'); datab.write('F1','SDATE')
-        datab.write('G1','STIME'); datab.write('H1','MSEC'); datab.write('I1','COND'); datab.write('J1','% Dif')
+        datab.write('D1','Patient ID'); datab.write('E1','MSEC'); datab.write('F1','COND');
+        datab.write('G1','Percent Dif'); datab.write('H1','Dif Flag'); datab.write('G1',' ')
 
+        #Chart
         basechart = wb.add_chart({'type': 'scatter', 'subtype': 'straight_with_markers'})
         basechartystr = '=\'' + datastudyname + '\'!$B$2:$B$' + str(frametotal)
-        basechartxstr = '=\'' + datastudyname + '\'!$H$2:$H$' + str(frametotal)
+        basechartxstr = '=\'' + datastudyname + '\'!$C$2:$C$' + str(frametotal)
         basechart.add_series({'values': basechartystr, 'categories': basechartxstr})
         basechart.set_x_axis({'name': 'Time (ms)'});basechart.set_y_axis({'name': 'Diameter (pixels)'})
         basechart.set_title({'name':'Baseline Test Diameter'})

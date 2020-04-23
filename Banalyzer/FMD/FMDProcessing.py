@@ -99,8 +99,8 @@ def PerformFMD(image_path, image_obj):
             for i in range(0, len(gbl_fmd.class_list)):
                 PerformFMDHelper(image_path, image_obj)
                 gbl_fmd.i_class += 1
-                print("printing %dif")
                 gbl_fmd.class_list[i].PercentDif()
+                print("printed %dif")
 
         # need to verify next file, so set up first frame of next index
         else:
