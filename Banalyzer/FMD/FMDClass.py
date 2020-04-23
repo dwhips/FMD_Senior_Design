@@ -21,7 +21,7 @@ class classFMD:
         self.widget_size = []  # [row, col]    pixel size of widget storing image
         self.pixel2real_conversion = None
         self.real_diam_arr = []
-        self.threshold = 40
+        self.threshold = None
 
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):

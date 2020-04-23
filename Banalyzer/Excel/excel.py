@@ -17,17 +17,11 @@ def ExcelReport(folder_path, excel_file_name):
     nombre = gbl_fmd.class_list[0].patient_name
     studyid = '11'
     studytype = ''
-    subjectid = '123456789'
-    patid = '123456789'
-    stagename = ''
+    subjectid = gbl_fmd.class_list[0].patient_name
     gender = 'other'
-    dob = 'A While Back'
     date = 'Today'
     imagingdate = 'Yesterday'
-    machineID = 'GE Ultrasound'
-    probeID = ''
-    sonographerID = ''
-    interpreterID = ''
+
 
 
     pixelsize = 10  # gbl_fmd.class_list[img_num].pixel2real_conversion
@@ -39,25 +33,9 @@ def ExcelReport(folder_path, excel_file_name):
     frameexclud = ''
     frameedit = ''
     framenotanal = ''
-    confidence = ''
-    trend = ''
-    trendmse = ''
-    reproduc = ''
-    readingnum = ''
+    confidence = '40%'
     fps = 10
     mspf = fps*10  #milliseconds per frame
-
-
-    rhframeinitial = ''
-    rhframetotal = 500
-    rhframevalid = ''
-    rhframereject = ''
-    rhframeexclud = ''
-    rhframeedit = ''
-    rhframenotanal = ''
-
-
-
 
 
     #Creating workbook fmd_report
@@ -91,7 +69,7 @@ def ExcelReport(folder_path, excel_file_name):
     subsum.write('B1','First Name'); subsum.write('B2', nombre)
     subsum.write('C1','Last Name'); subsum.write('C2',nombre)
     subsum.write('D1','Study ID'); subsum.write('D2', studyid)
-    subsum.write('E1','Reader ID'); subsum.write('E2', interpreterID)
+
 
 
 
@@ -140,36 +118,27 @@ def ExcelReport(folder_path, excel_file_name):
         sumb.write('A1','BRACHIAL-REPORT',headerf)
         sumb.write('A2','Report-date'); sumb.write('B2',date)
         sumb.write('A3','Subject-ID'); sumb.write('B3',subjectid)
-        sumb.write('A4','Pat-ID-type'); sumb.write('B4',patid)
-        sumb.write('A5','Study-ID'); sumb.write('B5',studyid)
-        sumb.write('A6','Study-type'); sumb.write('B6',studytype)
-        sumb.write('A7','Condition'); sumb.write('B7','Baseline')
-        sumb.write('A8','StageName'); sumb.write('B8',stagename)
-        sumb.write('A9','Subject-Gender'); sumb.write('B9',gender)
-        sumb.write('A10','Name'); sumb.write('B10',nombre)
-        sumb.write('A11','Date-of-birth'); sumb.write('B11',dob)
-        sumb.write('A12','Imaging-date'); sumb.write('B12',imagingdate)
-        sumb.write('A13','Analysis-date'); sumb.write('B13',date)
-        sumb.write('A14','Machine-ID'); sumb.write('B14',machineID)
-        sumb.write('A15','Probe-ID'); sumb.write('B15',probeID)
-        sumb.write('A16','Sonographer-ID'); sumb.write('B16',sonographerID)
-        sumb.write('A17','Interpreter-ID'); sumb.write('B17',interpreterID)
-        sumb.write('A18','SDY-filename'); sumb.write('B18',filename)
-        sumb.write('A19','Image-filename'); sumb.write('B19',filename)
-        sumb.write('A20','Pixel-siz-mm/p'); sumb.write('B20',pixelsize)
-        sumb.write('A21','ROI-length-mm'); sumb.write('B21',roilength)
-        sumb.write('A22','Frame-initialized'); sumb.write('B22',frameinitial)
-        sumb.write('A23','Frames-total'); sumb.write('B23',frametotal)
-        sumb.write('A24','Frames-valid'); sumb.write('B24',framevalid)
-        sumb.write('A25','Frames-reject'); sumb.write('B25',framereject)
-        sumb.write('A26','Frames-exclud'); sumb.write('B26',frameexclud)
-        sumb.write('A27','Frames-edited'); sumb.write('B27',frameedit)
-        sumb.write('A28','Frames-notanal'); sumb.write('B28',framenotanal)
-        sumb.write('A29','Confid-thresh'); sumb.write('B29',confidence)
-        sumb.write('A30','Trend-thresh'); sumb.write('B30',trend)
-        sumb.write('A31','Trend-MSE-mm'); sumb.write('B31',trendmse)
-        sumb.write('A32','Reproduc-round'); sumb.write('B32',reproduc)
-        sumb.write('A33','Reading-number'); sumb.write('B33',readingnum)
+        sumb.write('A4','Study-ID'); sumb.write('B5',studyid)
+        sumb.write('A5','Study-type'); sumb.write('B6',studytype)
+        sumb.write('A6','Condition'); sumb.write('B7','Baseline')
+        sumb.write('A7','Subject-Gender'); sumb.write('B9',gender)
+        sumb.write('A8','Name'); sumb.write('B10',nombre)
+        sumb.write('A9','Imaging-date'); sumb.write('B12',imagingdate)
+        sumb.write('A10','Analysis-date'); sumb.write('B13',date)
+        sumb.write('A11','SDY-filename'); sumb.write('B18',filename)
+        sumb.write('A12','Image-filename'); sumb.write('B19',filename)
+        sumb.write('A13','Pixel-siz-mm/p'); sumb.write('B20',pixelsize)
+        sumb.write('A14','ROI-length-mm'); sumb.write('B21',roilength)
+        sumb.write('A15','Frame-initialized'); sumb.write('B22',frameinitial)
+        sumb.write('A16','Frames-total'); sumb.write('B23',frametotal)
+        sumb.write('A17','Frames-valid'); sumb.write('B24',framevalid)
+        sumb.write('A18','Frames-reject'); sumb.write('B25',framereject)
+        sumb.write('A19','Frames-exclud'); sumb.write('B26',frameexclud)
+        sumb.write('A20','Frames-edited'); sumb.write('B27',frameedit)
+        sumb.write('A21','Frames-notanal'); sumb.write('B28',framenotanal)
+        sumb.write('A22','Confid-thresh'); sumb.write('B29',confidence)
+
+
 
 
     #Worksheet Baseline Data
@@ -201,7 +170,7 @@ def ExcelReport(folder_path, excel_file_name):
         #Chart
         basechart = wb.add_chart({'type': 'scatter', 'subtype': 'straight_with_markers'})
         basechartystr = '=\'' + datastudyname + '\'!$B$2:$B$' + str(frametotal)
-        basechartxstr = '=\'' + datastudyname + '\'!$C$2:$C$' + str(frametotal)
+        basechartxstr = '=\'' + datastudyname + '\'!$E$2:$E$' + str(frametotal)
         basechart.add_series({'values': basechartystr, 'categories': basechartxstr})
         basechart.set_x_axis({'name': 'Time (ms)'});basechart.set_y_axis({'name': 'Diameter (pixels)'})
         basechart.set_title({'name':'Baseline Test Diameter'})
