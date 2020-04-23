@@ -2,6 +2,7 @@
 #This progam generates the excel template and also places the data into an excel-viewable format
 import sys
 import numpy as np
+import datetime
 sys.path.append('../')  # could be hacky, need to figure out how to share between files
 import Global.gbl_fmd_class_list as gbl_fmd
 import xlsxwriter
@@ -19,7 +20,9 @@ def ExcelReport(folder_path, excel_file_name):
     studytype = ''
     subjectid = gbl_fmd.class_list[0].patient_name
     gender = 'other'
-    date = 'Today'
+    rawdate = datetime.datetime.today()
+    date = rawdate.strftime('%b %d, %Y  (%m-%d-%y)')
+    print(date)
     imagingdate = 'Yesterday'
 
 
@@ -69,8 +72,6 @@ def ExcelReport(folder_path, excel_file_name):
     subsum.write('B1','First Name'); subsum.write('B2', nombre)
     subsum.write('C1','Last Name'); subsum.write('C2',nombre)
     subsum.write('D1','Study ID'); subsum.write('D2', studyid)
-
-
 
 
 
