@@ -7,6 +7,8 @@ import numpy as np
 import time  # just for delay, ill probably delete this
 import Excel.excel as excel
 import pydicom
+from skimage import exposure
+import PIL
 
 import sys
 
@@ -165,7 +167,6 @@ def GetFirstFrame(image_path):
     artery_numpy = artery_numpy[row[0]:row[1], col[0]:col[1]]
     return artery_numpy
 
-
 # updates pixmap cropimage to the first frame image
 def SetFirstFrame(image_path, image_obj):
     print("set first frame image path : ", image_path)
@@ -182,9 +183,50 @@ def CheckAviFile(image_path):
     return False
 
 # converts a .file extension to png
+# dicom file is ygb_FULL_422, neeed > rbg (for cv2 imreader)
 def ConvertFromDicom(image_path):
+    # TODO try dcmread() if not working
     dicom = pydicom.read_file(image_path)
+
+    pix_dicom = dicom.pixel_array
+    #new_dicom = pydicom.dcmread(image_path, force=True)
+    #new_dicom.pixel_array
+    # dicom = pydicom.dcmread(image_path)
+    # frames = pydicom.encaps.generate_pixel_data_frame(dicom.pixel_array)
+    # print(dicom.file_meta)
+
+    #for i in range(1000):
+    #    merge_dicom = []
+    #    for j in range(100):
+    #        merge_dicom.append(pix_dicom[j])
+    #    i+=100
+    #    cv2.imshow('dicom frame?', merge_dicom)
+    #    print(i)
+    #    cv2.waitKey(0)
+    #frame_1 = pix_dicom[0]
+    cv2.imwrite(image_path+".png", pix_dicom)
+   # cv2.imshow('dicom frame?', frame_1)
+    #cv2.waitKey(0)
+    # slice = dicom._dataset_slice(dicom)
+    # img_shape = list(dicom.pixel_array.shape)
+    #img2d = dicom.pixel_array
+    #img2d = cv2.cvtColor(img2d, cv2.COLOR_)
+    #cv2.imshow('dicom bgr', img2d)
+    #cv2.waitKey(0)
+
+
     dicom = dicom.pixel_array
+    dicom = exposure.equalize_adapthist(dicom)
+    # max_dicom = max(dicom)
+    # ratio = 255 / max_dicom
+    # dicom = [x * ratio for x in dicom]
+
+    cv2.imshow('dicom', dicom)
+    cv2.waitKey(0)
+
+    new_dicom = pydicom.dcmread(image_path, force=True)
+    cv2.imshow('dicom', new_dicom.pixel_array)
+    cv2.waitKey(0)
     return dicom
 
 # gets file of .avi or dicom type and returns usable image type as numpy of pixel values
