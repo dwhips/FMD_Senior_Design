@@ -26,7 +26,7 @@ im_x, im_y, click_allowed = 150, 150, True
 ########################
 
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
-def Populate(img, img_obj):
+def Populate(img, img_obj, SaveDiamData):
     i_class = gbl_fmd.i_class
     # Convert image to grayscale
     img = cv2.cvtColor(img,
@@ -67,16 +67,18 @@ def Populate(img, img_obj):
             #          dead = FMDCalcs.TangDiamMean(otsu_contours, center_xy)
             #         cv2.circle(img, tuple([0, dead]), 3, RED, 2)
             cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
-            length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
-            # might need to create namespaces to shorthand these calls
-            gbl_fmd.class_list[i_class].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
-            pixel_diam = gbl_fmd.class_list[i_class].GetRecentDiam()
-            print("Diam:\t", pixel_diam, " pixels")
+            
+            if SaveDiamData:
+                length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
+                # might need to create namespaces to shorthand these calls
+                gbl_fmd.class_list[i_class].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
+                pixel_diam = gbl_fmd.class_list[i_class].GetRecentDiam()
+                print("Diam:\t", pixel_diam, " pixels")
 
-            print(gbl_fmd.class_list[i_class].pixel2real_conversion)
-            gbl_fmd.class_list[i_class].ConvertPix2Real(pixel_diam)
-            real_diam = gbl_fmd.class_list[i_class].real_diam_arr[-1]
-            print("Diam:\t", real_diam, " cm (avg width height, not accurate)")
+                print(gbl_fmd.class_list[i_class].pixel2real_conversion)
+                gbl_fmd.class_list[i_class].ConvertPix2Real(pixel_diam)
+                real_diam = gbl_fmd.class_list[i_class].real_diam_arr[-1]
+                print("Diam:\t", real_diam, " cm (avg width height, not accurate)")
     GUI.OpenCv2QImage(img, img_obj)
     # cv2.imshow("Image with detected contours", img)
 
@@ -133,7 +135,7 @@ def PerformFMDHelper(image_path, image_obj):
     for image in artery_numpy:
         #image = artery_numpy[i_frame]
         image = image[row[0]:row[1], col[0]:col[1]]
-        Populate(image, image_obj)
+        Populate(image, image_obj, True)
 
 # populates the first frame when pixmap artery image is clicked
 def VerifyFrame1(image_path, image_obj):
@@ -144,8 +146,7 @@ def VerifyFrame1(image_path, image_obj):
         image = GetFirstFrame(image_path)
         gbl_fmd.class_list[i_class].SetPixel2Real()
 
-        # time.sleep(.01)  # TODO REMOVE
-        Populate(image, image_obj)
+        Populate(image, image_obj, False)
         print("Verifed frame 1", "\n")
     else:
         # this edge case should never happen. this funciton should only trigger if user clicks
