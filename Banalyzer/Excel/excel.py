@@ -37,7 +37,7 @@ def ExcelReport(folder_path, excel_file_name):
     frameedit = ''
     framenotanal = ''
     confidence = '40%'
-    fps = 10
+    fps = 49
     mspf = fps*10  #milliseconds per frame
 
 
@@ -166,6 +166,8 @@ def ExcelReport(folder_path, excel_file_name):
             datab.write(row_num, 0, row_num)  #Writing frame number
             datab.write(row_num,4, row_num*mspf-mspf)  #Writing MSEC
             datab.write(row_num,2, gbl_fmd.class_list[img_num].diameter_arr[row_num] * pixelsize)
+
+
             if (row_num%2 == 1):
                 datab.set_row(row_num,15,bg)
 
@@ -196,9 +198,63 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('M1', 'Average Diameter'); subsum.write(img_num + 1, 12, np.mean(gbl_fmd.class_list[img_num].diameter_arr))
         subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, np.min(gbl_fmd.class_list[img_num].diameter_arr))
         subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, np.max(gbl_fmd.class_list[img_num].diameter_arr))
+
+        avg = []
+        avg.clear()
+        #calculating 3-second avg max
+        if (frametotal > fps*3):
+            k = fps*3
+            while (k < frametotal):
+                sum = 0
+                j = k - (fps*3)
+                while (j < k):
+                    sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
+                    j = j + 1
+                avg.append(sum / (fps*3))
+                k = k + 1
+            avg3max = np.max(avg) * pixelsize
+        else:
+            avg3max = 'Clip Too Short'
+
+        avg.clear()
+        #calculating 5-second avg max
+        if (frametotal > fps*5):
+            k = fps*5
+            while (k < frametotal):
+                sum = 0
+                j = k - (fps*5)
+                while (j < k):
+                    sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
+                    j = j + 1
+                avg.append(sum / (fps*5))
+                k = k + 1
+            avg5max = np.max(avg) * pixelsize
+        else:
+            avg5max = 'Clip Too Short'
+
+        avg.clear()
+        #calculating 10-second avg max
+        if (frametotal > fps*10):
+            k = fps*5
+            while (k < frametotal):
+                sum = 0
+                j = k - (fps*10)
+                while (j < k):
+                    sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
+                    j = j + 1
+                avg.append(sum / (fps*10))
+                k = k + 1
+            avg10max = np.max(avg) * pixelsize
+        else:
+            avg10max = 'Clip Too Short'
+
+
+
+        print('out of loop')
         subsum.write('P1', 'Diameter Max (3-sec-smoothed)')
-        subsum.write('Q1', 'Diameter Max (5-sec-smoothed)')
-        subsum.write('R1', 'Diameter Max (10-sec-smoothed)')
+        subsum.write(img_num + 1, 15, avg3max)
+        subsum.write('Q1', 'Diameter Max (5-sec-smoothed)'); subsum.write(img_num + 1, 16, avg5max)
+        subsum.write('R1', 'Diameter Max (10-sec-smoothed)'); subsum.write(img_num + 1, 17, avg10max)
         subsum.write('S1', 'Flow Velocity Avg (meter/sec)')
         subsum.write('T1', 'Flow Velocity Max (meter/sec)')
         subsum.write('U1', 'Flow velocity integral avg (meters')
