@@ -101,6 +101,7 @@ def PerformFMD(image_path, image_obj):
             print("All verified")
             gbl_fmd.i_class = 0
             for i in range(0, len(gbl_fmd.class_list)):
+                image_path = gbl_fmd.class_list[i].file_path
                 PerformFMDHelper(image_path, image_obj)
                 gbl_fmd.i_class += 1
                 gbl_fmd.class_list[i].PercentDif()
