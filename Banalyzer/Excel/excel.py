@@ -49,7 +49,12 @@ def ExcelReport(folder_path, excel_file_name):
     #Workbook Formats
     headerf = wb.add_format()
     bg = wb.add_format()
+    tablef = wb.add_format()
+    tablefb = wb.add_format()
 
+    tablef.set_border()
+    tablefb.set_border()
+    tablefb.set_bold()
     headerf.set_bold()
     headerf.set_italic()
     headerf.set_font_color('brown')
@@ -198,6 +203,15 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('T1', 'Flow Velocity Max (meter/sec)')
         subsum.write('U1', 'Flow velocity integral avg (meters')
 
+
+        subsum.write(11, 1, 'MAX', tablefb)
+        subsum.write(11, 2, 'MIN', tablefb)
+        subsum.write(11, 3, 'MEAN', tablefb)
+        subsum.write(11, 4, 'DILATION', tablefb)
+        subsum.write(img_num+12, 0, gbl_fmd.class_list[img_num].test_name, tablefb)
+        subsum.write(img_num+12, 1, np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
+        subsum.write(img_num+12, 2, np.min(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
+        subsum.write(img_num+12, 3, np.mean(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
 
 
     wb.close()
