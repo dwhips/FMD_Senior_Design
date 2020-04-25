@@ -156,17 +156,23 @@ def VerifyFrame1(image_path, image_obj):
 
 def GetFirstFrame(image_path):
     i_class = gbl_fmd.i_class
-    artery_numpy = GetFileImage(image_path)
 
-    SetCropBounds(image_path)
-    # gbl_fmd.class_list[i_class].SetPixel2Real()
+    if gbl_fmd.class_list[i_class].frame1pixelvals is None:
+        artery_numpy = GetFileImageFrame1(image_path)
+        SetCropBounds(image_path)
+        # gbl_fmd.class_list[i_class].SetPixel2Real()
 
-    row = gbl_fmd.class_list[i_class].GetCropRow()
-    col = gbl_fmd.class_list[i_class].GetCropCol()
+        row = gbl_fmd.class_list[i_class].GetCropRow()
+        col = gbl_fmd.class_list[i_class].GetCropCol()
 
-    # gbl_fmd.class_list[i_class].SetPixel2Real()
-    artery_numpy = artery_numpy[0]
-    artery_numpy = artery_numpy[row[0]:row[1], col[0]:col[1]]
+        # gbl_fmd.class_list[i_class].SetPixel2Real()
+        #artery_numpy = artery_numpy[0]
+        artery_numpy = artery_numpy[row[0]:row[1], col[0]:col[1]]
+
+        # set first frame pixel vals
+        gbl_fmd.class_list[i_class].frame1pixelvals = artery_numpy
+    else:
+        artery_numpy = gbl_fmd.class_list[i_class].frame1pixelvals
     return artery_numpy
 
 # updates pixmap cropimage to the first frame image
@@ -175,7 +181,7 @@ def SetFirstFrame(image_path, image_obj):
     image = GetFirstFrame(image_path)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-    cv2.imwrite(image_path + "init_frame.jpg", image)
+    cv2.imwrite(image_path + "init_frame.jpg", image) # TOO do we need this? why are we making jpegs
     GUI.OpenCv2QImage(image, image_obj)
 
 # verifies the diacom is a .file extension
@@ -248,6 +254,22 @@ def GetFileImage(image_path):
             i_frame += 1
             success, image = artery_avi.read()
         return image_numpy
+    else:
+        return ConvertFromDicom(image_path)
+
+# gets file of .avi or dicom type and returns usable image type as numpy of pixel values
+def GetFileImageFrame1(image_path):
+    if CheckAviFile(image_path):
+        artery_avi = cv2.VideoCapture(image_path)
+        if not artery_avi.isOpened():
+            print("Couldn't open file")
+            # change to a button alert
+            return None
+        success, image = artery_avi.read()
+        i_frame = 0
+        print("Image %i Complete" % i_frame, "\n")
+        success, image = artery_avi.read()
+        return image
     else:
         return ConvertFromDicom(image_path)
 
