@@ -195,9 +195,9 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('K1','Length(sec.)'); subsum.write(img_num + 1, 10, frametotal/fps) #commented for now for frame total
 
         subsum.write('L1', 'DIAMETER')
-        subsum.write('M1', 'Average Diameter'); subsum.write(img_num + 1, 12, np.mean(gbl_fmd.class_list[img_num].diameter_arr))
-        subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, np.min(gbl_fmd.class_list[img_num].diameter_arr))
-        subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, np.max(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('M1', 'Average Diameter'); subsum.write(img_num + 1, 12, pixelsize * np.mean(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, pixelsize * np.min(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, pixelsize * np.max(gbl_fmd.class_list[img_num].diameter_arr))
 
         avg = []
         avg.clear()
