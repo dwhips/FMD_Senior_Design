@@ -27,7 +27,7 @@ def ExcelReport(folder_path, excel_file_name):
 
 
 
-    pixelsize = 10  # gbl_fmd.class_list[img_num].pixel2real_conversion
+    pixelsize = .06    #mm/pixel # gbl_fmd.class_list[img_num].pixel2real_conversion
     roilength = ''
     frameinitial = ''
 
@@ -119,25 +119,25 @@ def ExcelReport(folder_path, excel_file_name):
         sumb.write('A1','BRACHIAL-REPORT',headerf)
         sumb.write('A2','Report-date'); sumb.write('B2',date)
         sumb.write('A3','Subject-ID'); sumb.write('B3',subjectid)
-        sumb.write('A4','Study-ID'); sumb.write('B5',studyid)
-        sumb.write('A5','Study-type'); sumb.write('B6',studytype)
-        sumb.write('A6','Condition'); sumb.write('B7','Baseline')
-        sumb.write('A7','Subject-Gender'); sumb.write('B9',gender)
-        sumb.write('A8','Name'); sumb.write('B10',nombre)
-        sumb.write('A9','Imaging-date'); sumb.write('B12',imagingdate)
-        sumb.write('A10','Analysis-date'); sumb.write('B13',date)
-        sumb.write('A11','SDY-filename'); sumb.write('B18',filename)
-        sumb.write('A12','Image-filename'); sumb.write('B19',filename)
-        sumb.write('A13','Pixel-siz-mm/p'); sumb.write('B20',pixelsize)
-        sumb.write('A14','ROI-length-mm'); sumb.write('B21',roilength)
-        sumb.write('A15','Frame-initialized'); sumb.write('B22',frameinitial)
-        sumb.write('A16','Frames-total'); sumb.write('B23',frametotal)
-        sumb.write('A17','Frames-valid'); sumb.write('B24',framevalid)
-        sumb.write('A18','Frames-reject'); sumb.write('B25',framereject)
-        sumb.write('A19','Frames-exclud'); sumb.write('B26',frameexclud)
-        sumb.write('A20','Frames-edited'); sumb.write('B27',frameedit)
-        sumb.write('A21','Frames-notanal'); sumb.write('B28',framenotanal)
-        sumb.write('A22','Confid-thresh'); sumb.write('B29',confidence)
+        sumb.write('A4','Study-ID'); sumb.write('B4',studyid)
+        sumb.write('A5','Study-type'); sumb.write('B5',studytype)
+        sumb.write('A6','Condition'); sumb.write('B6','Baseline')
+        sumb.write('A7','Subject-Gender'); sumb.write('B7',gender)
+        sumb.write('A8','Name'); sumb.write('B8',nombre)
+        sumb.write('A9','Imaging-date'); sumb.write('B9',imagingdate)
+        sumb.write('A10','Analysis-date'); sumb.write('B10',date)
+        sumb.write('A11','SDY-filename'); sumb.write('B11',filename)
+        sumb.write('A12','Image-filename'); sumb.write('B12',filename)
+        sumb.write('A13','Pixel-siz-mm/p'); sumb.write('B13',pixelsize)
+        sumb.write('A14','ROI-length-mm'); sumb.write('B14',roilength)
+        sumb.write('A15','Frame-initialized'); sumb.write('B15',frameinitial)
+        sumb.write('A16','Frames-total'); sumb.write('B16',frametotal)
+        sumb.write('A17','Frames-valid'); sumb.write('B17',framevalid)
+        sumb.write('A18','Frames-reject'); sumb.write('B18',framereject)
+        sumb.write('A19','Frames-exclud'); sumb.write('B19',frameexclud)
+        sumb.write('A20','Frames-edited'); sumb.write('B20',frameedit)
+        sumb.write('A21','Frames-notanal'); sumb.write('B21',framenotanal)
+        sumb.write('A22','Confid-thresh'); sumb.write('B22',confidence)
 
 
 
@@ -151,6 +151,7 @@ def ExcelReport(folder_path, excel_file_name):
 
         # Writing Columnar Data
         datab.write_column(1, 1, gbl_fmd.class_list[img_num].diameter_arr)
+        #datab.write_column(1, 2, (gbl_fmd.class_list[img_num].diameter_arr *(1.0/pixelsize)))
         #datab.write_column(1, 2, gbl_fmd.class_list[-1].REALDIAMARR)
         datab.write_column(1,6,gbl_fmd.class_list[img_num].percent_dif)
         datab.write_column(1,7,gbl_fmd.class_list[img_num].percent_dif_flag)
@@ -158,7 +159,8 @@ def ExcelReport(folder_path, excel_file_name):
         #Formatting and Frame #
         for row_num in range(1,frametotal,1):
             datab.write(row_num, 0, row_num)  #Writing frame number
-            datab.write(row_num,4,row_num*mspf-mspf)  #Writing MSEC
+            datab.write(row_num,4, row_num*mspf-mspf)  #Writing MSEC
+            datab.write(row_num,2, gbl_fmd.class_list[img_num].diameter_arr[row_num] * pixelsize)
             if (row_num%2 == 1):
                 datab.set_row(row_num,15,bg)
 
@@ -169,12 +171,12 @@ def ExcelReport(folder_path, excel_file_name):
         datab.write('G1','Percent Dif'); datab.write('H1','Dif Flag'); datab.write('G1',' ')
 
         #Chart
-        basechart = wb.add_chart({'type': 'scatter', 'subtype': 'straight_with_markers'})
-        basechartystr = '=\'' + datastudyname + '\'!$B$2:$B$' + str(frametotal)
-        basechartxstr = '=\'' + datastudyname + '\'!$E$2:$E$' + str(frametotal)
+        basechart = wb.add_chart({'type': 'scatter', 'subtype': 'straight'})
+        basechartystr = '=\'' + datastudyname + '\'!$C$2:$C$' + str(frametotal)
+        basechartxstr = '=\'' + datastudyname + '\'!$A$2:$A$' + str(frametotal)
         basechart.add_series({'values': basechartystr, 'categories': basechartxstr})
-        basechart.set_x_axis({'name': 'Time (ms)'});basechart.set_y_axis({'name': 'Diameter (pixels)'})
-        basechart.set_title({'name':'Baseline Test Diameter'})
+        basechart.set_x_axis({'name': 'Frame Index'});basechart.set_y_axis({'name': 'Diameter (mm)'})
+        basechart.set_title({'name':'Diameter'})
         sumb.insert_chart('D1', basechart)
 
         #Subject Summary Information (Dependent on Trial)
@@ -195,6 +197,8 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('S1', 'Flow Velocity Avg (meter/sec)')
         subsum.write('T1', 'Flow Velocity Max (meter/sec)')
         subsum.write('U1', 'Flow velocity integral avg (meters')
+
+
 
     wb.close()
 

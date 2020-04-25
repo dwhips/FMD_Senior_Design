@@ -253,10 +253,16 @@ def GetFileImage(image_path):
 # sets crop bounds based on the file type (.avi vs dicom)
 def SetCropBounds(file_path):
     if CheckAviFile(file_path):
-        sample_start_row = 144  # measurements are based off the 640x480 sample image
-        sample_end_row = 408
-        sample_start_col = 159
-        sample_end_col = 518
+        sample_start_row = 100
+        sample_end_row = 600
+        sample_start_col = 360
+        sample_end_col = 600
+        #sample_start_row = 144  # measurements are based off the 640x480 sample image
+        #sample_end_row = 408
+        #sample_start_col = 159
+        #sample_end_col = 518
+
+
     else:
         sample_start_row = 0
         sample_end_row = 600
