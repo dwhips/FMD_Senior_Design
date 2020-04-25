@@ -92,9 +92,13 @@ def ExcelReport(folder_path, excel_file_name):
     subsum.write('D6','Time to peak (s)')
 
 
+    temp = gbl_fmd.class_list
 
     for i in range(gbl_fmd.i_class):
         img_num = i
+
+        if (gbl_fmd.class_list[img_num].test_name == ''):
+            gbl_fmd.class_list[img_num].test_name = str(img_num)
 
         #Variables
         frametotal = len(gbl_fmd.class_list[img_num].diameter_arr)
@@ -110,6 +114,7 @@ def ExcelReport(folder_path, excel_file_name):
         sumstudyname = 'Summary - ' + studynametest
         datastudyname = 'Data - ' + studynametest
     #Worksheet Baseline Summary
+
         sumb = wb.add_worksheet(sumstudyname)
 
     #Format
@@ -251,7 +256,7 @@ def ExcelReport(folder_path, excel_file_name):
 
 
 
-        print('out of loop')
+
         subsum.write('P1', 'Diameter Max (3-sec-smoothed)'); subsum.write(img_num + 1, 15, avg3max)
         subsum.write('Q1', 'Diameter Max (5-sec-smoothed)'); subsum.write(img_num + 1, 16, avg5max)
         subsum.write('R1', 'Diameter Max (10-sec-smoothed)'); subsum.write(img_num + 1, 17, avg10max)
@@ -268,7 +273,7 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write(img_num+12, 1, np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
         subsum.write(img_num+12, 2, np.min(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
         subsum.write(img_num+12, 3, np.mean(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
-
+        print('out of loop')
 
     wb.close()
 
