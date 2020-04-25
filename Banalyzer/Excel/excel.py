@@ -37,7 +37,8 @@ def ExcelReport(folder_path, excel_file_name):
     frameedit = ''
     framenotanal = ''
     confidence = '40%'
-    fps = 49
+    fps = 49.6
+    fpsint = 49
     mspf = fps*10  #milliseconds per frame
 
 
@@ -202,15 +203,15 @@ def ExcelReport(folder_path, excel_file_name):
         avg = []
         avg.clear()
         #calculating 3-second avg max
-        if (frametotal > fps*3):
-            k = fps*3
+        if (frametotal > fpsint*3):
+            k = fpsint*3
             while (k < frametotal):
                 sum = 0
-                j = k - (fps*3)
+                j = k - (fpsint*3)
                 while (j < k):
                     sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
                     j = j + 1
-                avg.append(sum / (fps*3))
+                avg.append(sum / (fpsint*3))
                 k = k + 1
             avg3max = np.max(avg) * pixelsize
         else:
@@ -218,15 +219,15 @@ def ExcelReport(folder_path, excel_file_name):
 
         avg.clear()
         #calculating 5-second avg max
-        if (frametotal > fps*5):
-            k = fps*5
+        if (frametotal > fpsint*5):
+            k = fpsint*5
             while (k < frametotal):
                 sum = 0
-                j = k - (fps*5)
+                j = k - (fpsint*5)
                 while (j < k):
                     sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
                     j = j + 1
-                avg.append(sum / (fps*5))
+                avg.append(sum / (fpsint*5))
                 k = k + 1
             avg5max = np.max(avg) * pixelsize
         else:
@@ -234,15 +235,15 @@ def ExcelReport(folder_path, excel_file_name):
 
         avg.clear()
         #calculating 10-second avg max
-        if (frametotal > fps*10):
-            k = fps*5
+        if (frametotal > fpsint*10):
+            k = fpsint*5
             while (k < frametotal):
                 sum = 0
-                j = k - (fps*10)
+                j = k - (fpsint*10)
                 while (j < k):
                     sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
                     j = j + 1
-                avg.append(sum / (fps*10))
+                avg.append(sum / (fpsint*10))
                 k = k + 1
             avg10max = np.max(avg) * pixelsize
         else:
@@ -251,8 +252,7 @@ def ExcelReport(folder_path, excel_file_name):
 
 
         print('out of loop')
-        subsum.write('P1', 'Diameter Max (3-sec-smoothed)')
-        subsum.write(img_num + 1, 15, avg3max)
+        subsum.write('P1', 'Diameter Max (3-sec-smoothed)'); subsum.write(img_num + 1, 15, avg3max)
         subsum.write('Q1', 'Diameter Max (5-sec-smoothed)'); subsum.write(img_num + 1, 16, avg5max)
         subsum.write('R1', 'Diameter Max (10-sec-smoothed)'); subsum.write(img_num + 1, 17, avg10max)
         subsum.write('S1', 'Flow Velocity Avg (meter/sec)')
