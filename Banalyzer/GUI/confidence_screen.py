@@ -39,12 +39,7 @@ class Ui_confidence_screen(QWidget):
         self.frame_list.setGeometry(QtCore.QRect(windowwidth*0.7, windowheight*0.1, windowwidth*0.25, windowheight*0.7))
         self.frame_list.setStyleSheet("background:rgb(255, 255, 255)")
         self.frame_list.setObjectName("frame_list")
-        item = QtWidgets.QListWidgetItem()
-        self.frame_list.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.frame_list.addItem(item)
-        item = QtWidgets.QListWidgetItem()
-        self.frame_list.addItem(item)
+        self.SetListFrames()
 
         # Make the threshold slider
         self.threshold_slider = QtWidgets.QSlider(self.confidence_screen)
@@ -83,17 +78,24 @@ class Ui_confidence_screen(QWidget):
         self.retranslateUi(self.confidence_screen)
         QtCore.QMetaObject.connectSlotsByName(self.confidence_screen)
 
+    def SetListFrames(self):
+        failed_i_file_arr = []
+        failed_i_frame_arr = []
+        for i_file in range(len(gbl_fmd.class_list)):
+            frames_conf = gbl_fmd.class_list[i_file].percent_dif_flag
+            file_name = gbl_fmd.class_list[i_file].test_name
+            for i_frame in range(len(frames_conf)):
+                if frames_conf[i_frame]:
+                    failed_i_file_arr.append(i_file)
+                    failed_i_frame_arr.append(i_frame)
+                    list_name = "Frame: " + str(i_frame) + " " + file_name
+                    self.frame_list.addItem(list_name)
+
     def retranslateUi(self, confidence_screen):
         _translate = QtCore.QCoreApplication.translate
         confidence_screen.setWindowTitle(_translate("confidence_screen", "MU Brachial Analyzer"))
         __sortingEnabled = self.frame_list.isSortingEnabled()
         self.frame_list.setSortingEnabled(False)
-        item = self.frame_list.item(0)
-        item.setText(_translate("confidence_screen", "Frame0"))
-        item = self.frame_list.item(1)
-        item.setText(_translate("confidence_screen", "Frame1"))
-        item = self.frame_list.item(2)
-        item.setText(_translate("confidence_screen", "Frame2"))
         self.frame_list.setSortingEnabled(__sortingEnabled)
         self.screen_title.setText(_translate("confidence_screen", "Manual Frame Editor"))
         self.accept_btn.setText(_translate("confidence_screen", "Accept"))
