@@ -26,6 +26,14 @@ def ExcelReport(folder_path, excel_file_name):
     imagingdate = 'Yesterday'
 
 
+    avg3max = []
+    avg3 = []
+    avg5max = []
+    avg5 = []
+    avg10max = []
+    avg10 = []
+    avg = []
+
 
     pixelsize = .06    #mm/pixel # gbl_fmd.class_list[img_num].pixel2real_conversion
     roilength = ''
@@ -96,6 +104,7 @@ def ExcelReport(folder_path, excel_file_name):
 
     for i in range(gbl_fmd.i_class):
         img_num = i
+        pixdiam = gbl_fmd.class_list[img_num].diameter_arr
 
         if (gbl_fmd.class_list[img_num].test_name == ''):
             gbl_fmd.class_list[img_num].test_name = str(img_num)
@@ -153,6 +162,7 @@ def ExcelReport(folder_path, excel_file_name):
 
 
 
+
     #Worksheet Baseline Data
         datab = wb.add_worksheet(datastudyname)
 
@@ -205,7 +215,7 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, pixelsize * np.min(gbl_fmd.class_list[img_num].diameter_arr))
         subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, pixelsize * np.max(gbl_fmd.class_list[img_num].diameter_arr))
 
-        avg = []
+
         avg.clear()
         #calculating 3-second avg max
         if (frametotal > fpsint*3):
@@ -218,9 +228,11 @@ def ExcelReport(folder_path, excel_file_name):
                     j = j + 1
                 avg.append(sum / (fpsint*3))
                 k = k + 1
-            avg3max = np.max(avg) * pixelsize
+            avg3max.append(np.max(avg) * pixelsize)
+            avg3.append(np.mean(avg) * pixelsize)
         else:
-            avg3max = 'Clip Too Short'
+            avg3max.append(none)
+            avg3.append(none)
 
         avg.clear()
         #calculating 5-second avg max
@@ -234,9 +246,11 @@ def ExcelReport(folder_path, excel_file_name):
                     j = j + 1
                 avg.append(sum / (fpsint*5))
                 k = k + 1
-            avg5max = np.max(avg) * pixelsize
+            avg5max.append(np.max(avg) * pixelsize)
+            avg5.append(np.mean(avg) * pixelsize)
         else:
-            avg5max = 'Clip Too Short'
+            avg5max.append(none)
+            avg5.append(none)
 
         avg.clear()
         #calculating 10-second avg max
@@ -250,16 +264,37 @@ def ExcelReport(folder_path, excel_file_name):
                     j = j + 1
                 avg.append(sum / (fpsint*10))
                 k = k + 1
-            avg10max = np.max(avg) * pixelsize
+            avg10max.append(np.max(avg) * pixelsize)
+            avg10.append(np.mean(avg) * pixelsize)
         else:
-            avg10max = 'Clip Too Short'
+            avg10max.append(none)
+            avg10.append(none)
 
+        # Table Summary
+        sumb.write('D17', 'No AVG', tablefb)
+        sumb.write('D18', '3-sec AVG', tablefb)
+        sumb.write('D19', '5-sec AVG', tablefb)
+        sumb.write('D20', '10-sec AVG', tablefb)
+        sumb.write('E16', 'Unscaled %FMD', tablefb)
+        sumb.write('F16', 'Allometrically Scaled %FMD', tablefb)
+        sumb.write('G16', 'Time to peak (s)', tablefb)
 
+        # %FMD's
+        sumb.write('E17', ((np.max(pixdiam)*pixelsize-np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize)/(np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize)*100), tablef)
+        sumb.write('E18', (((avg3max[img_num]-avg3[0])/avg3[0])*100), tablef)
+        sumb.write('E19', (((avg5max[img_num]-avg5[0])/avg5[0])*100), tablef)
+        sumb.write('E20', (((avg10max[img_num]-avg10[0])/avg10[0])*100), tablef)
 
+        # Allometrically Scaled
+        sumb.write('F17', ((np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize)/(np.power((np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize),0.89))), tablef)
+        sumb.write('F18', (avg3max[img_num]/(np.power(avg3[0],0.89))), tablef)
+        sumb.write('F19', (avg5max[img_num]/(np.power(avg5[0],0.89))), tablef)
+        sumb.write('F20', (avg10max[img_num]/(np.power(avg10[0],0.89))), tablef)
 
-        subsum.write('P1', 'Diameter Max (3-sec-smoothed)'); subsum.write(img_num + 1, 15, avg3max)
-        subsum.write('Q1', 'Diameter Max (5-sec-smoothed)'); subsum.write(img_num + 1, 16, avg5max)
-        subsum.write('R1', 'Diameter Max (10-sec-smoothed)'); subsum.write(img_num + 1, 17, avg10max)
+        #Top Two Rows Averages
+        subsum.write('P1', 'Diameter Max (3-sec-smoothed)'); subsum.write(img_num + 1, 15, avg3max[img_num])
+        subsum.write('Q1', 'Diameter Max (5-sec-smoothed)'); subsum.write(img_num + 1, 16, avg5max[img_num])
+        subsum.write('R1', 'Diameter Max (10-sec-smoothed)'); subsum.write(img_num + 1, 17, avg10max[img_num])
         subsum.write('S1', 'Flow Velocity Avg (meter/sec)')
         subsum.write('T1', 'Flow Velocity Max (meter/sec)')
         subsum.write('U1', 'Flow velocity integral avg (meters')
@@ -273,6 +308,7 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write(img_num+12, 1, np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
         subsum.write(img_num+12, 2, np.min(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
         subsum.write(img_num+12, 3, np.mean(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
+        #subsum.write(img_num+12, 4, ((np.mean(gbl_fmd.class_list[img_num].diameter_arr)/(np.mean(gbl_fmd.class_list[0].diamter_arr)))-1.0), tablef) #percent dilation, not working for some reason
         print('out of loop')
 
     wb.close()
