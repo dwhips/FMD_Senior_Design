@@ -20,12 +20,14 @@ import FMD.FMDClass as class_file
 import FMD.FMDProcessing as fmd_proc
 import GUI.GUIHelper as GUI
 
-
 class Ui_confidence_screen(QWidget):
     def setupUi(self, confidence_screen):
         # Get the size of the screen
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
+
+        # TODO first change of global var
+        gbl_fmd.i_class = 0
 
         # width and height of the created window
         windowwidth = width / 2
@@ -52,9 +54,9 @@ class Ui_confidence_screen(QWidget):
             QtCore.QRect(windowwidth * 0.7, windowheight * 0.1, windowwidth * 0.25, windowheight * 0.7))
         self.frame_list.setStyleSheet("background:rgb(255, 255, 255)")
         self.frame_list.setObjectName("frame_list")
-        framefile_list = self.SetListFrames()
-        pix_frames_sorted = self.GetFailedFrames(framefile_list)
-        self.frame_list.currentItemChanged.connect(lambda: self.ListClicked(pix_frames_sorted))
+        gbl_fmd.framefile_list = self.SetListFrames()
+        pix_frames_sorted = self.GetFailedFrames(gbl_fmd.framefile_list)
+        self.frame_list.currentItemChanged.connect(lambda: self.ListClicked(pix_frames_sorted, gbl_fmd.framefile_list))
 
         # Make the threshold slider
         self.threshold_slider = QtWidgets.QSlider(self.confidence_screen)
@@ -82,6 +84,7 @@ class Ui_confidence_screen(QWidget):
             QtCore.QRect(windowwidth * 0.2, windowheight * 0.7, windowwidth * 0.1, windowheight * 0.05))
         self.accept_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.accept_btn.setObjectName("accept_btn")
+        self.accept_btn.clicked.connect(lambda: self.AcceptClicked(pix_frames_sorted, gbl_fmd.framefile_list))
 
         # Discard Button
         self.discard_btn = QtWidgets.QPushButton(self.confidence_screen)
@@ -89,6 +92,7 @@ class Ui_confidence_screen(QWidget):
             QtCore.QRect(windowwidth * 0.4, windowheight * 0.7, windowwidth * 0.1, windowheight * 0.05))
         self.discard_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.discard_btn.setObjectName("discard_btn")
+        self.discard_btn.clicked.connect(self.DiscardClicked)
 
         # Create the Done Button
         self.done_btn = QtWidgets.QPushButton(self.confidence_screen)
@@ -104,10 +108,47 @@ class Ui_confidence_screen(QWidget):
         QtCore.QMetaObject.connectSlotsByName(self.confidence_screen)
 
     # when list clicked, change to that index
-    def ListClicked(self, pix_array):
+    def ListClicked(self, pix_array, framefile_list):
         i = self.frame_list.currentRow()
         print(str(i))
         self.LoadFailedFrame(pix_array[i])
+        i_file = framefile_list[0]
+        gbl_fmd.i_class = i_file[i]
+
+    def AcceptClicked(self, pix_array, framefile_list):
+        print("Accept clicked")
+        i_list = self.frame_list.currentRow()
+        i_file = framefile_list[0][i_list]
+        i_frame = framefile_list[1][i_list]
+        i_pix_array = pix_array[i_list]
+
+        # this gets a little funky. Below adds the diam found to the end of the class arr
+        fmd_proc.Populate(i_pix_array, self.crop_image, True)
+        # now get and remove the diam from class arr
+        new_diam_real = gbl_fmd.class_list[i_file].real_diam_arr[-1]
+        new_diam_pixel = gbl_fmd.class_list[i_file].diameter_arr[-1]
+        gbl_fmd.class_list[i_file].real_diam_arr.pop()
+        gbl_fmd.class_list[i_file].diameter_arr.pop()
+        # now replace the diam with the proper diam
+        gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = new_diam_real
+        gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_real
+        # remove the accepted list from widget list and framefile list
+        #self.frame_list.takeItem(self.frame_list.row(i_list))
+        self.RemoveiList(i_list)
+        gbl_fmd.framefile_list.pop(i_list)
+
+        # load next frame
+        if len(gbl_fmd.framefile_list) > 0:
+            if i_list < len(gbl_fmd.framefile_list):
+                self.LoadFailedFrame(pix_array[i_list+1])
+
+    def RemoveiList(self, i):
+        listItems = self.frame_list.selectedItems()
+        for item in listItems:
+            self.frame_list.takeItem(self.frame_list.row(item))
+
+    def DiscardClicked(self):
+        print("Discard Clicked")
 
     # TODO later just have pix arr values stored in gbl class? too big?
     # gets pixvalues of failed frames
@@ -123,7 +164,6 @@ class Ui_confidence_screen(QWidget):
 
     # updates the pixmap and processes it
     def LoadFailedFrame(self, pix_array):
-        gbl_fmd.i_class = 0  # TODO make i_class equal to the class given by file
         fmd_proc.Populate(pix_array, self.crop_image, False)
 
     # gets user click position
