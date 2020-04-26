@@ -10,17 +10,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QFileDialog, QDesktopWidget, QCheckBox
+import cv2
 
 import sys
 
 sys.path.append('../')  # could be hacky
 import Global.gbl_fmd_class_list as gbl_fmd
 import FMD.FMDClass as class_file
+import FMD.FMDProcessing as fmd_proc
+import GUI.GUIHelper as GUI
 
 
 class Ui_confidence_screen(QWidget):
     def setupUi(self, confidence_screen):
-
         # Get the size of the screen
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
@@ -34,12 +36,27 @@ class Ui_confidence_screen(QWidget):
         self.confidence_screen.setObjectName("confidence_screen")
         self.confidence_screen.setStyleSheet("background: rgb(177,185,199)")
 
+        # Cropped FMD Image
+        self.crop_image = QtWidgets.QLabel(self.confidence_screen)
+        self.crop_image.setGeometry(
+            QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
+        self.crop_image.setAutoFillBackground(False)
+        self.crop_image.setText("")
+        self.crop_image.mousePressEvent = self.GetPos
+        self.crop_image.setScaledContents(True)
+        self.crop_image.setObjectName("crop_image")
+        # for pixel dimensions
+        image_width = self.crop_image.frameGeometry().width()
+        image_height = self.crop_image.frameGeometry().height()
+
         # Create the Scrolling List
         self.frame_list = QtWidgets.QListWidget(self.confidence_screen)
         self.frame_list.setGeometry(QtCore.QRect(windowwidth*0.7, windowheight*0.1, windowwidth*0.25, windowheight*0.7))
         self.frame_list.setStyleSheet("background:rgb(255, 255, 255)")
         self.frame_list.setObjectName("frame_list")
-        self.SetListFrames()
+        framefile_list = self.SetListFrames()
+        pix_frames_sorted = self.GetFailedFrames(framefile_list)
+        self.frame_list.currentItemChanged.connect(lambda: self.ListClicked(pix_frames_sorted))
 
         # Make the threshold slider
         self.threshold_slider = QtWidgets.QSlider(self.confidence_screen)
@@ -78,6 +95,39 @@ class Ui_confidence_screen(QWidget):
         self.retranslateUi(self.confidence_screen)
         QtCore.QMetaObject.connectSlotsByName(self.confidence_screen)
 
+
+
+    def ListClicked(self, pix_array):
+        i = self.frame_list.currentRow()
+        print(str(i))
+        self.LoadFailedFrame(pix_array[i])
+
+
+    def GetFailedFrames(self, ff_list):
+        # get frames needed
+        frames_sorted = fmd_proc.GetiFrameiFilePixels(ff_list)
+
+        if len(frames_sorted) == 0:
+            print("No diam values are unreasonable")
+        else:# update pixmap to index 0
+            self.LoadFailedFrame(frames_sorted[0])
+        return frames_sorted
+
+    def LoadFailedFrame(self, pix_array):
+        gbl_fmd.i_class = 0
+        fmd_proc.Populate(pix_array, self.crop_image, False)
+        # image = cv2.cvtColor(pix_array, cv2.COLOR_BGR2GRAY)
+        # GUI.OpenCv2QImage(image, self.crop_image)
+
+
+    def GetPos(self, event):
+        i_class = gbl_fmd.i_class
+        # x = event.pos().x()
+        x = event.x()
+        y = event.y()
+        gbl_fmd.class_list[i_class].UpdateXY(x, y)
+        print(gbl_fmd.class_list[i_class].GetXY())
+
     def SetListFrames(self):
         failed_i_file_arr = []
         failed_i_frame_arr = []
@@ -90,6 +140,7 @@ class Ui_confidence_screen(QWidget):
                     failed_i_frame_arr.append(i_frame)
                     list_name = "Frame: " + str(i_frame) + " " + file_name
                     self.frame_list.addItem(list_name)
+        return [failed_i_file_arr, failed_i_frame_arr]
 
     def retranslateUi(self, confidence_screen):
         _translate = QtCore.QCoreApplication.translate
