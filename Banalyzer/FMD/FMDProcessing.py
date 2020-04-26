@@ -201,10 +201,10 @@ def GetiFrameiFilePixels(fileframe_list):
         row = gbl_fmd.class_list[0].GetCropRow()
         col = gbl_fmd.class_list[0].GetCropCol()
 
-        #for i in range(len(pixel_sorted)):
-        #    # image = artery_numpy[i_frame]
-        #    frame = pixel_sorted[i]
-        #    pixel_sorted[i] = frame[row[0]:row[1], col[0]:col[1]]
+        for i in range(len(pixel_sorted)):
+            # image = artery_numpy[i_frame]
+            frame = pixel_sorted[i]
+            pixel_sorted[i] = frame[row[0]:row[1], col[0]:col[1]]
         return pixel_sorted
 
 
