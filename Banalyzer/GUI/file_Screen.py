@@ -182,10 +182,17 @@ class Ui_filescreen(QWidget):
         self.name2.mousePressEvent = lambda x: self.FileIndexClick(2)
         self.name3.mousePressEvent = lambda x: self.FileIndexClick(3)
         self.name4.mousePressEvent = lambda x: self.FileIndexClick(4)
+        self.name5.mousePressEvent = lambda x: self.FileIndexClick(5)
+        self.name6.mousePressEvent = lambda x: self.FileIndexClick(6)
+        self.name7.mousePressEvent = lambda x: self.FileIndexClick(7)
+
         self.path1.mousePressEvent = lambda x: self.FileIndexClick(1)
         self.path2.mousePressEvent = lambda x: self.FileIndexClick(2)
         self.path3.mousePressEvent = lambda x: self.FileIndexClick(3)
         self.path4.mousePressEvent = lambda x: self.FileIndexClick(4)
+        self.path5.mousePressEvent = lambda x: self.FileIndexClick(5)
+        self.path6.mousePressEvent = lambda x: self.FileIndexClick(6)
+        self.path7.mousePressEvent = lambda x: self.FileIndexClick(7)
 
         self.FileIndexClick(1)
 
@@ -242,11 +249,17 @@ class Ui_filescreen(QWidget):
         self.path2.setStyleSheet("background: rgb(255, 255, 255)")
         self.path3.setStyleSheet("background: rgb(255, 255, 255)")
         self.path4.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path5.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path6.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path7.setStyleSheet("background: rgb(255, 255, 255)")
         # reset name text background color
         self.name1.setStyleSheet("background: rgb(255, 255, 255)")
         self.name2.setStyleSheet("background: rgb(255, 255, 255)")
         self.name3.setStyleSheet("background: rgb(255, 255, 255)")
         self.name4.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name5.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name6.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name7.setStyleSheet("background: rgb(255, 255, 255)")
 
         # no cases in python, so if else
         # change selected blocks to green
@@ -266,6 +279,18 @@ class Ui_filescreen(QWidget):
             self.name4.setStyleSheet("background: rgb(0, 204, 102)")
             self.path4.setStyleSheet("background: rgb(0, 204, 102)")
             self.i_file_selected = 4
+        elif i_file == 5:
+            self.name5.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path5.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 5
+        elif i_file == 6:
+            self.name6.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path6.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 6
+        elif i_file == 7:
+            self.name7.setStyleSheet("background: rgb(0, 204, 102)")
+            self.path7.setStyleSheet("background: rgb(0, 204, 102)")
+            self.i_file_selected = 7
         else:
             x = 0
             print("FileIndexClick edge case reached")
@@ -284,6 +309,12 @@ class Ui_filescreen(QWidget):
             self.path3.setText(file_path)
         elif self.i_file_selected == 4:
             self.path4.setText(file_path)
+        elif self.i_file_selected == 5:
+            self.path5.setText(file_path)
+        elif self.i_file_selected == 6:
+            self.path6.setText(file_path)
+        elif self.i_file_selected == 7:
+            self.path7.setText(file_path)
         else:
             print("Reach choose file edge case")
 
@@ -296,6 +327,9 @@ class Ui_filescreen(QWidget):
         path2 = self.path2.toPlainText()
         path3 = self.path3.toPlainText()
         path4 = self.path4.toPlainText()
+        path5 = self.path5.toPlainText()
+        path6 = self.path6.toPlainText()
+        path7 = self.path7.toPlainText()
 
         list = []
         # TODO if path is not empty but study is, prompt user to fill it in (red text)
@@ -311,6 +345,15 @@ class Ui_filescreen(QWidget):
         if path4 != "":
             name = self.name4.toPlainText()
             list.append(class_file.classFMD(name, path4, study_name, patient_name))
+        if path5 != "":
+            name = self.name5.toPlainText()
+            list.append(class_file.classFMD(name, path5, study_name, patient_name))
+        if path6 != "":
+            name = self.name6.toPlainText()
+            list.append(class_file.classFMD(name, path6, study_name, patient_name))
+        if path7 != "":
+            name = self.name7.toPlainText()
+            list.append(class_file.classFMD(name, path7, study_name, patient_name))
         gbl_fmd.class_list = list
         gbl_fmd.i_class = 0
 
