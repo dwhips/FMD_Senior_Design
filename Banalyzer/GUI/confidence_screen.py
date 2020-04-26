@@ -64,7 +64,7 @@ class Ui_confidence_screen(QWidget):
         self.threshold_slider.setOrientation(QtCore.Qt.Horizontal)
         self.threshold_slider.setObjectName("threshold_slider")
         self.threshold_slider.setRange(0, 255)
-        # self.threshold_slider.valueChanged.connect(self.SliderChanged)  ADD the functionality later
+        self.threshold_slider.valueChanged.connect(lambda: self.SliderChanged(pix_frames_sorted[self.frame_list.currentRow()]))
 
         # Create the screen title
         self.screen_title = QtWidgets.QLabel(self.confidence_screen)
@@ -118,11 +118,8 @@ class Ui_confidence_screen(QWidget):
         return frames_sorted
 
     def LoadFailedFrame(self, pix_array):
-        gbl_fmd.i_class = 0
+        gbl_fmd.i_class = 0 # TODO make i_class equal to the class given by file
         fmd_proc.Populate(pix_array, self.crop_image, False)
-        # image = cv2.cvtColor(pix_array, cv2.COLOR_BGR2GRAY)
-        # GUI.OpenCv2QImage(image, self.crop_image)
-
 
     def GetPos(self, event):
         i_class = gbl_fmd.i_class
@@ -131,6 +128,15 @@ class Ui_confidence_screen(QWidget):
         y = event.y()
         gbl_fmd.class_list[i_class].UpdateXY(x, y)
         print(gbl_fmd.class_list[i_class].GetXY())
+
+    def SliderChanged(self, pix_array):
+        # TODO make sure gblfmd is right
+        i_class = gbl_fmd.i_class
+        slider_val = self.threshold_slider.value()
+        print(slider_val)
+        gbl_fmd.class_list[i_class].threshold = ['binary', slider_val]
+        # update the image to the current thresh
+        self.LoadFailedFrame(pix_array)
 
     def SetListFrames(self):
         failed_i_file_arr = []
