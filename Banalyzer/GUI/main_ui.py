@@ -52,6 +52,7 @@ class mywindow(QMainWindow):
     def Confidence(self):
         self.ui = Ui_confidence_screen()
         self.ui.setupUi(self)
+        # self.ui.done_btn.clicked.connect(self.Run)
 
 app = QtWidgets.QApplication([])
 application = mywindow()

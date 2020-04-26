@@ -87,7 +87,11 @@ class Ui_confidence_screen(QWidget):
         self.discard_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.discard_btn.setObjectName("discard_btn")
 
-        # Add a back button here?
+        # Create the Done Button
+        self.done_btn = QtWidgets.QPushButton(self.confidence_screen)
+        self.done_btn.setGeometry(QtCore.QRect(windowwidth*0.88, windowheight*0.93, windowwidth*0.1, windowheight*0.05))
+        self.done_btn.setStyleSheet("background:rgb(255, 255, 255)")
+        self.done_btn.setObjectName("done_btn")
 
         # Set the central widget
         confidence_screen.setCentralWidget(self.confidence_screen)
@@ -151,3 +155,4 @@ class Ui_confidence_screen(QWidget):
         self.screen_title.setText(_translate("confidence_screen", "Manual Frame Editor"))
         self.accept_btn.setText(_translate("confidence_screen", "Accept"))
         self.discard_btn.setText(_translate("confidence_screen", "Discard"))
+        self.done_btn.setText(_translate("confidence_screen", "Done"))

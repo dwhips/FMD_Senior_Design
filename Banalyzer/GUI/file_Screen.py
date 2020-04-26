@@ -97,6 +97,18 @@ class Ui_filescreen(QWidget):
         self.name4.setStyleSheet("background: rgb(255, 255, 255)")
         self.name4.setObjectName("name4")
         self.layout_names.addWidget(self.name4)
+        self.name5 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name5.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name5.setObjectName("name5")
+        self.layout_names.addWidget(self.name5)
+        self.name6 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name6.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name6.setObjectName("name6")
+        self.layout_names.addWidget(self.name6)
+        self.name7 = QtWidgets.QTextEdit(self.verticalLayoutWidget)
+        self.name7.setStyleSheet("background: rgb(255, 255, 255)")
+        self.name7.setObjectName("name7")
+        self.layout_names.addWidget(self.name7)
 
         # section for the second column layout
         self.verticalLayoutWidget2 = QtWidgets.QWidget(self.filescreen)
@@ -122,23 +134,47 @@ class Ui_filescreen(QWidget):
         self.path4.setStyleSheet("background: rgb(255, 255, 255)")
         self.path4.setObjectName("path4")
         self.layout_paths.addWidget(self.path4)
+        self.path5 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path5.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path5.setObjectName("path5")
+        self.layout_paths.addWidget(self.path5)
+        self.path6 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path6.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path6.setObjectName("path6")
+        self.layout_paths.addWidget(self.path6)
+        self.path7 = QtWidgets.QTextEdit(self.verticalLayoutWidget2)
+        self.path7.setStyleSheet("background: rgb(255, 255, 255)")
+        self.path7.setObjectName("path7")
+        self.layout_paths.addWidget(self.path7)
 
         # Create the baseline checkboxes
         baseline_checkbox1 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox1.move(windowwidth*0.4, windowheight*0.35)
+        baseline_checkbox1.move(windowwidth*0.4, windowheight*0.34)
         baseline_checkbox1.resize(windowwidth*0.08, windowheight*0.05)
 
         baseline_checkbox2 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox2.move(windowwidth*0.4, windowheight*0.5)
+        baseline_checkbox2.move(windowwidth*0.4, windowheight*0.42)
         baseline_checkbox2.resize(windowwidth*0.08, windowheight*0.05)
 
         baseline_checkbox3 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox3.move(windowwidth*0.4, windowheight*0.65)
+        baseline_checkbox3.move(windowwidth*0.4, windowheight*0.5)
         baseline_checkbox3.resize(windowwidth*0.08, windowheight*0.05)
 
         baseline_checkbox4 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox4.move(windowwidth*0.4, windowheight*0.8)
+        baseline_checkbox4.move(windowwidth*0.4, windowheight*0.59)
         baseline_checkbox4.resize(windowwidth*0.08, windowheight*0.05)
+
+        baseline_checkbox5 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox5.move(windowwidth*0.4, windowheight*0.67)
+        baseline_checkbox5.resize(windowwidth*0.08, windowheight*0.05)
+
+        baseline_checkbox6 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox6.move(windowwidth*0.4, windowheight*0.75)
+        baseline_checkbox6.resize(windowwidth*0.08, windowheight*0.05)
+
+        baseline_checkbox7 = QCheckBox("Baseline", self.filescreen)
+        baseline_checkbox7.move(windowwidth*0.4, windowheight*0.83)
+        baseline_checkbox7.resize(windowwidth*0.08, windowheight*0.05)
 
 
         # link to FIleIndexCLick when user clicks on name or file path textbox. Indicates the block currently selected
@@ -157,25 +193,25 @@ class Ui_filescreen(QWidget):
         # Set up the study name box
         self.study = QtWidgets.QTextEdit(self.filescreen)
         self.study.setGeometry(
-            QtCore.QRect(windowwidth * 0.6, windowheight * 0.35, windowwidth * 0.15, windowheight * 0.07))
+            QtCore.QRect(windowwidth * 0.8, windowheight * 0.35, windowwidth * 0.15, windowheight * 0.07))
         self.study.setStyleSheet("background: rgb(255, 255, 255)")
 
         # Study name box label
         self.study_label = QtWidgets.QLabel(self.filescreen)
         self.study_label.setGeometry(
-            QtCore.QRect(windowwidth * 0.62, windowheight * 0.3, windowwidth * 0.1, windowheight * 0.05))
+            QtCore.QRect(windowwidth * 0.82, windowheight * 0.3, windowwidth * 0.1, windowheight * 0.05))
         self.study_label.setAlignment(Qt.AlignCenter)
 
         # Patient Name Box
         self.patient = QtWidgets.QTextEdit(self.filescreen)
         self.patient.setGeometry(
-            QtCore.QRect(windowwidth * 0.6, windowheight * 0.5, windowwidth * 0.15, windowheight * 0.07))
+            QtCore.QRect(windowwidth * 0.8, windowheight * 0.5, windowwidth * 0.15, windowheight * 0.07))
         self.patient.setStyleSheet("background: rgb(255, 255, 255)")
 
         # Patient Name Box Label
         self.patient_label = QtWidgets.QLabel(self.filescreen)
         self.patient_label.setGeometry(
-            QtCore.QRect(windowwidth * 0.62, windowheight * 0.45, windowwidth * 0.1, windowheight * 0.05))
+            QtCore.QRect(windowwidth * 0.82, windowheight * 0.45, windowwidth * 0.1, windowheight * 0.05))
         self.patient_label.setAlignment(Qt.AlignCenter)
 
         # Back button
@@ -188,7 +224,7 @@ class Ui_filescreen(QWidget):
         # Choose File Button
         self.chooseFile_btn = QtWidgets.QPushButton(self.filescreen)
         self.chooseFile_btn.setGeometry(
-            QtCore.QRect(windowwidth * 0.4, windowheight * 0.4, windowwidth * 0.15, windowheight * 0.05))
+            QtCore.QRect(windowwidth * 0.6, windowheight * 0.35, windowwidth * 0.15, windowheight * 0.05))
         self.chooseFile_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.chooseFile_btn.setObjectName("chooseFile_btn")
         self.chooseFile_btn.clicked.connect(self.ChooseFile)  # !!!!!!!!!!!!
