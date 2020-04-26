@@ -308,7 +308,7 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write(img_num+12, 1, np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
         subsum.write(img_num+12, 2, np.min(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
         subsum.write(img_num+12, 3, np.mean(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
-        #subsum.write(img_num+12, 4, ((np.mean(gbl_fmd.class_list[img_num].diameter_arr)/(np.mean(gbl_fmd.class_list[0].diamter_arr)))-1.0), tablef) #percent dilation, not working for some reason
+        subsum.write(img_num+12, 4, ((np.mean(gbl_fmd.class_list[img_num].diameter_arr)/(np.mean(gbl_fmd.class_list[0].diameter_arr)))-1.0) * 100, tablef) #percent dilation, not working for some reason
         print('out of loop')
 
     wb.close()
