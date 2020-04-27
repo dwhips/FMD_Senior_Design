@@ -116,7 +116,7 @@ class Ui_confidence_screen(QWidget):
         gbl_fmd.i_class = i_file[i]
 
     def AcceptClicked(self, pix_array, framefile_list):
-        if len(framefile_list) != 0:
+        if len(framefile_list[0]) != 0:
             print("Accept clicked")
             i_list = self.frame_list.currentRow()
             i_file = framefile_list[0][i_list]
