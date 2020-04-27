@@ -132,7 +132,7 @@ class Ui_confidence_screen(QWidget):
             gbl_fmd.class_list[i_file].diameter_arr.pop()
             # now replace the diam with the proper diam
             gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = new_diam_real
-            gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_real
+            gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_pixel
             # remove the accepted list from widget list and framefile list
             #self.frame_list.takeItem(self.frame_list.row(i_list))
             self.RemoveiList(i_list)
@@ -148,12 +148,10 @@ class Ui_confidence_screen(QWidget):
             print("No more conf errors")
             # TODO error message
 
+    # removes i index of widget framelist
     def RemoveiList(self, i):
         curItem = self.frame_list.currentItem()
         self.frame_list.takeItem(i)
-        #listItems = self.frame_list.selectedItems()
-        #for item in listItems:
-        #    self.frame_list.takeItem(self.frame_list.row(item))
 
     def DiscardClicked(self):
         print("Discard Clicked")
