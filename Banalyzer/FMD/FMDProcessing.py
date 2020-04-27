@@ -188,24 +188,26 @@ def SetFirstFrame(image_path, image_obj):
 def GetiFrameiFilePixels(fileframe_list):
     # TODO for now i just have this loading in data. maybe we can store all
     #  the data but 7* files with a numpy arr seems a little too demanding. We will test it out
+    pixel_sorted = []
+    print(len(gbl_fmd.class_list))
+    deleteme = gbl_fmd.class_list
     for i in range(len(gbl_fmd.class_list)):
         pixel_nump = GetFileImage(gbl_fmd.class_list[i].file_path)
-        pixel_sorted = []
-
         for i_gui_list in range(len(fileframe_list[0])):
             if fileframe_list[0][i_gui_list] == i:
                 i_frame = fileframe_list[1][i_gui_list]
                 pixel_sorted.append(pixel_nump[i_frame])
         # TODO im scrambling to get this done. Will break if different files have different crops bt
         # that shouldnt happen as the machine type should stay same with each run
-        row = gbl_fmd.class_list[0].GetCropRow()
-        col = gbl_fmd.class_list[0].GetCropCol()
+    # assumes same crop for each
+    row = gbl_fmd.class_list[0].GetCropRow()
+    col = gbl_fmd.class_list[0].GetCropCol()
 
-        for i in range(len(pixel_sorted)):
-            # image = artery_numpy[i_frame]
-            frame = pixel_sorted[i]
-            pixel_sorted[i] = frame[row[0]:row[1], col[0]:col[1]]
-        return pixel_sorted
+    for i in range(len(pixel_sorted)):
+        # image = artery_numpy[i_frame]
+        frame = pixel_sorted[i]
+        pixel_sorted[i] = frame[row[0]:row[1], col[0]:col[1]]
+    return pixel_sorted
 
 
 # verifies the diacom is a .file extension

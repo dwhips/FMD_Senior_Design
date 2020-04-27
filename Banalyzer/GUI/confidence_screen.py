@@ -172,7 +172,11 @@ class Ui_confidence_screen(QWidget):
 
     # updates the pixmap and processes it
     def LoadFailedFrame(self, pix_array):
-        fmd_proc.Populate(pix_array, self.crop_image, False)
+        if len(pix_array) > 0:
+            fmd_proc.Populate(pix_array, self.crop_image, False)
+        else:
+            print("pix arr empty")
+            # TODO add UI indication
 
     # gets user click position
     def GetPos(self, event):
