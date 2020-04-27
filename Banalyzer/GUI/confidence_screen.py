@@ -116,36 +116,44 @@ class Ui_confidence_screen(QWidget):
         gbl_fmd.i_class = i_file[i]
 
     def AcceptClicked(self, pix_array, framefile_list):
-        print("Accept clicked")
-        i_list = self.frame_list.currentRow()
-        i_file = framefile_list[0][i_list]
-        i_frame = framefile_list[1][i_list]
-        i_pix_array = pix_array[i_list]
+        if len(framefile_list) != 0:
+            print("Accept clicked")
+            i_list = self.frame_list.currentRow()
+            i_file = framefile_list[0][i_list]
+            i_frame = framefile_list[1][i_list]
+            i_pix_array = pix_array[i_list]
 
-        # this gets a little funky. Below adds the diam found to the end of the class arr
-        fmd_proc.Populate(i_pix_array, self.crop_image, True)
-        # now get and remove the diam from class arr
-        new_diam_real = gbl_fmd.class_list[i_file].real_diam_arr[-1]
-        new_diam_pixel = gbl_fmd.class_list[i_file].diameter_arr[-1]
-        gbl_fmd.class_list[i_file].real_diam_arr.pop()
-        gbl_fmd.class_list[i_file].diameter_arr.pop()
-        # now replace the diam with the proper diam
-        gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = new_diam_real
-        gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_real
-        # remove the accepted list from widget list and framefile list
-        #self.frame_list.takeItem(self.frame_list.row(i_list))
-        self.RemoveiList(i_list)
-        gbl_fmd.framefile_list.pop(i_list)
+            # this gets a little funky. Below adds the diam found to the end of the class arr
+            fmd_proc.Populate(i_pix_array, self.crop_image, True)
+            # now get and remove the diam from class arr
+            new_diam_real = gbl_fmd.class_list[i_file].real_diam_arr[-1]
+            new_diam_pixel = gbl_fmd.class_list[i_file].diameter_arr[-1]
+            gbl_fmd.class_list[i_file].real_diam_arr.pop()
+            gbl_fmd.class_list[i_file].diameter_arr.pop()
+            # now replace the diam with the proper diam
+            gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = new_diam_real
+            gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_real
+            # remove the accepted list from widget list and framefile list
+            #self.frame_list.takeItem(self.frame_list.row(i_list))
+            self.RemoveiList(i_list)
+            gbl_fmd.framefile_list[0].pop(i_list)
+            gbl_fmd.framefile_list[1].pop(i_list)
 
-        # load next frame
-        if len(gbl_fmd.framefile_list) > 0:
-            if i_list < len(gbl_fmd.framefile_list):
-                self.LoadFailedFrame(pix_array[i_list+1])
+            deleteme = gbl_fmd.framefile_list
+            # load next frame
+            if len(gbl_fmd.framefile_list) > 0:
+                if i_list < len(gbl_fmd.framefile_list):
+                    self.LoadFailedFrame(pix_array[i_list+1])
+        else:
+            print("No more conf errors")
+            # TODO error message
 
     def RemoveiList(self, i):
-        listItems = self.frame_list.selectedItems()
-        for item in listItems:
-            self.frame_list.takeItem(self.frame_list.row(item))
+        curItem = self.frame_list.currentItem()
+        self.frame_list.takeItem(i)
+        #listItems = self.frame_list.selectedItems()
+        #for item in listItems:
+        #    self.frame_list.takeItem(self.frame_list.row(item))
 
     def DiscardClicked(self):
         print("Discard Clicked")
