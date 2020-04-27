@@ -118,6 +118,13 @@ class Ui_Banalyzer(QWidget):
         self.thresh_slider.setRange(0, 255)
         self.thresh_slider.valueChanged.connect(self.SliderChanged)
 
+        # Measure Width slider
+        self.area_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self.fmd_screen)
+        self.area_slider.setGeometry(
+            QtCore.QRect(windowwidth * 0.1, windowheight * 0.75, windowwidth * 0.4, windowheight * 0.1))
+        self.area_slider.setRange(0, 100)
+        self.area_slider.valueChanged.connect(self.AreaSliderChanged)
+
         # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)
 
@@ -164,6 +171,14 @@ class Ui_Banalyzer(QWidget):
         slider_val = self.thresh_slider.value()
         print(slider_val)
         gbl_fmd.class_list[i_class].threshold = ['binary', slider_val]
+        # update the image to the current thresh
+        fmd_proc.VerifyFrame1(gbl_fmd.class_list[i_class].file_path, self.crop_image)
+
+    def AreaSliderChanged(self):
+        i_class = gbl_fmd.i_class
+        slider_val = self.area_slider.value()
+        print(slider_val)
+        gbl_fmd.class_list[i_class].artery_slider_width = slider_val
         # update the image to the current thresh
         fmd_proc.VerifyFrame1(gbl_fmd.class_list[i_class].file_path, self.crop_image)
 

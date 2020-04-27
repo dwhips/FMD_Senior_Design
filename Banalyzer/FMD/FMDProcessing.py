@@ -16,9 +16,9 @@ sys.path.append('../')  # could be hacky, need to figure out how to share betwee
 import Global.gbl_fmd_class_list as gbl_fmd
 
 ############Remove the im_x and such and change colors to resources file##############
-RED = (0, 0, 255)  # opencv uses BGR not RGB
+BLUE = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
-BLUE = (255, 0, 0)
+RED = (255, 0, 0)
 # UI
 im_x, im_y, click_allowed = 150, 150, True
 
@@ -56,18 +56,27 @@ def Populate(img, img_obj, SaveDiamData):
     for i_shape in range(len(otsu_contours)):
         # are the coordinates contained within the shape
         if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
-            cv2.drawContours(img, otsu_contours, i_shape, GREEN, 1)
+            cv2.drawContours(img, otsu_contours, i_shape, BLUE, 1)
             # enclose box around the contour. This could also be used to re crop image and perform thresholding again
             simp_box = cv2.minAreaRect(otsu_contours[i_shape])
             simp_box = cv2.boxPoints(simp_box)
-            cv2.drawContours(img, [np.int0(simp_box)], 0, BLUE, 2)
-            # cv2.drawContours(img, )
-            # print(simp_box)
+            # cv2.drawContours(img, [np.int0(simp_box)], 0, BLUE, 2)
             center_xy = FMDCalcs.BoxCenterLine(simp_box)
-            #          dead = FMDCalcs.TangDiamMean(otsu_contours, center_xy)
-            #         cv2.circle(img, tuple([0, dead]), 3, RED, 2)
-            cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
+            # cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
 
+            # now draws user bounds (to restrict artery width measurement)
+            # TODO the opencv vs pyqt pixel dimensions dont line up
+            widge_height = gbl_fmd.class_list[i_class].opencv_widge_size[1]
+            widge_width = gbl_fmd.class_list[i_class].opencv_widge_size[0]
+            shift = gbl_fmd.class_list[i_class].artery_slider_width
+            left_bound = 0 + shift
+            right_bound = widge_width - shift
+
+            cv2.line(img, (left_bound, 0), (left_bound, widge_height), RED, 1)
+            cv2.line(img, (right_bound, 0), (right_bound, widge_height), RED, 1)
+            print(right_bound, " rb :" ,left_bound, "lb")
+
+            # calculates and saves the array measurements
             if SaveDiamData:
                 length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
                 # might need to create namespaces to shorthand these calls
@@ -184,7 +193,7 @@ def SetFirstFrame(image_path, image_obj):
     cv2.imwrite(image_path + "init_frame.jpg", image)  # TOO do we need this? why are we making jpegs
     GUI.OpenCv2QImage(image, image_obj)
 
-
+# for the conf page. This returns all the pixels that failed
 def GetiFrameiFilePixels(fileframe_list):
     # TODO for now i just have this loading in data. maybe we can store all
     #  the data but 7* files with a numpy arr seems a little too demanding. We will test it out
@@ -305,7 +314,7 @@ def GetFileImageFrame1(image_path):
 # sets crop bounds based on the file type (.avi vs dicom)
 def SetCropBounds(file_path):
     if CheckAviFile(file_path):
-        sample_start_row = 100
+        sample_start_row = 100 # crop for the new avi (dicom to avi)
         sample_end_row = 600
         sample_start_col = 360
         sample_end_col = 600
@@ -313,8 +322,6 @@ def SetCropBounds(file_path):
         # sample_end_row = 408
         # sample_start_col = 159
         # sample_end_col = 518
-
-
     else:
         sample_start_row = 0
         sample_end_row = 600

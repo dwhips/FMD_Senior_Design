@@ -19,12 +19,13 @@ class classFMD:
         self.cropped_bounds = []  # [start row, end row,  start col, end col]
         # self.max_image_size = []  # [max row, max col]
         self.widget_size = []  # [row, col]    pixel size of widget storing image
+        self.opencv_widge_size = [240, 498] # [row, col] for some reason the opencv and pyqt have different dimensions
         self.pixel2real_conversion = None
         self.real_diam_arr = []
         self.threshold = None
         self.frame1pixelvals = None # this stores the pixel list opencv uses for first frame from a file
                                 # this is done to reduce lookup speed when using the threshold slider
-
+        self.artery_slider_width = 0  # used to restrict the artery width for measuring
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
         self.diameter_arr = diameter_arr
