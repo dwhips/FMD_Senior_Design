@@ -19,6 +19,7 @@ import Global.gbl_fmd_class_list as gbl_fmd
 BLUE = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
+WHITE = (255, 255, 255)
 # UI
 im_x, im_y, click_allowed = 150, 150, True
 
@@ -72,8 +73,8 @@ def Populate(img, img_obj, SaveDiamData):
             left_bound = 0 + shift
             right_bound = widge_width - shift
 
-            cv2.line(img, (left_bound, 0), (left_bound, widge_height), RED, 1)
-            cv2.line(img, (right_bound, 0), (right_bound, widge_height), RED, 1)
+            cv2.line(img, (left_bound, 0), (left_bound, widge_height), WHITE, 1)
+            cv2.line(img, (right_bound, 0), (right_bound, widge_height), WHITE, 1)
             print(right_bound, " rb :" ,left_bound, "lb")
 
             # calculates and saves the array measurements

@@ -24,6 +24,8 @@ def BoxCenterLine(rec):
     c1 = rec[1]
     c2 = rec[2]
     c3 = rec[3]
+
+    print(max([c0[0], c1[0], c2[0], c3[0]]))
     # xy coord assuming bottom right is c0
     x1 = np.mean([c0[0], c1[0]])
     y1 = np.mean([c0[1], c1[1]])
@@ -39,7 +41,6 @@ def BoxCenterLine(rec):
     if CoordDist([x1, x2], [y1, y2]) > CoordDist([xa, xa], [yb, yb]):
         return np.array([[x1, y1], [x2, y2]])
     return np.array([[xa, ya], [xb, yb]])
-
 
 # checks for points that are perpendicular to the center-line
 # tang is tangent coord [[xa ya] [xb yb]] so two coord
@@ -96,8 +97,9 @@ def CalcPixel2RealConversion():
     cropped_pixel_x *= scale
     cropped_pixel_y *= scale
 
-    widge_x = gbl_fmd.class_list[0].widget_size[0]
-    widge_y = gbl_fmd.class_list[0].widget_size[1]
+    # USING THE OPENCV VALUES< NOT PYQT
+    widge_x = gbl_fmd.class_list[0].opencv_widge_size[0]
+    widge_y = gbl_fmd.class_list[0].opencv_widge_size[1]
     # the x and y dimensions between the widget and the original cropped image need to
     # be the same in order for the conversion to not care about x vs y stretching
     x_ratio = widge_x/cropped_pixel_x
