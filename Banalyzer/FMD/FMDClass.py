@@ -25,7 +25,9 @@ class classFMD:
         self.threshold = None
         self.frame1pixelvals = None # this stores the pixel list opencv uses for first frame from a file
                                 # this is done to reduce lookup speed when using the threshold slider
-        self.artery_slider_width = 0  # used to restrict the artery width for measuring
+        self.artery_slider_coord = [0, self.opencv_widge_size[0]]  # used to restrict the artery width for measuring [x0, x1]
+        self.is_baseline = False
+
     # Replaces class artery diameter array with input
     def AddDiameterArr(self, diameter_arr):
         self.diameter_arr = diameter_arr

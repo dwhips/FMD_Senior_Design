@@ -139,7 +139,6 @@ class Ui_confidence_screen(QWidget):
             gbl_fmd.framefile_list[0].pop(i_list)
             gbl_fmd.framefile_list[1].pop(i_list)
 
-            deleteme = gbl_fmd.framefile_list
             # load next frame
             if len(gbl_fmd.framefile_list) > 0:
                 if i_list < len(gbl_fmd.framefile_list):

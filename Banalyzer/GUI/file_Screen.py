@@ -147,36 +147,6 @@ class Ui_filescreen(QWidget):
         self.path7.setObjectName("path7")
         self.layout_paths.addWidget(self.path7)
 
-        # Create the baseline checkboxes
-        baseline_checkbox1 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox1.move(windowwidth*0.4, windowheight*0.34)
-        baseline_checkbox1.resize(windowwidth*0.08, windowheight*0.05)
-
-        baseline_checkbox2 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox2.move(windowwidth*0.4, windowheight*0.42)
-        baseline_checkbox2.resize(windowwidth*0.08, windowheight*0.05)
-
-        baseline_checkbox3 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox3.move(windowwidth*0.4, windowheight*0.5)
-        baseline_checkbox3.resize(windowwidth*0.08, windowheight*0.05)
-
-        baseline_checkbox4 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox4.move(windowwidth*0.4, windowheight*0.59)
-        baseline_checkbox4.resize(windowwidth*0.08, windowheight*0.05)
-
-        baseline_checkbox5 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox5.move(windowwidth*0.4, windowheight*0.67)
-        baseline_checkbox5.resize(windowwidth*0.08, windowheight*0.05)
-
-        baseline_checkbox6 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox6.move(windowwidth*0.4, windowheight*0.75)
-        baseline_checkbox6.resize(windowwidth*0.08, windowheight*0.05)
-
-        baseline_checkbox7 = QCheckBox("Baseline", self.filescreen)
-        baseline_checkbox7.move(windowwidth*0.4, windowheight*0.83)
-        baseline_checkbox7.resize(windowwidth*0.08, windowheight*0.05)
-
-
         # link to FIleIndexCLick when user clicks on name or file path textbox. Indicates the block currently selected
         self.name1.mousePressEvent = lambda x: self.FileIndexClick(1)
         self.name2.mousePressEvent = lambda x: self.FileIndexClick(2)
@@ -195,6 +165,38 @@ class Ui_filescreen(QWidget):
         self.path7.mousePressEvent = lambda x: self.FileIndexClick(7)
 
         self.FileIndexClick(1)
+
+        # Create the baseline checkboxes
+        self.baseline_checkbox1 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox1.move(windowwidth*0.4, windowheight*0.34)
+        self.baseline_checkbox1.resize(windowwidth*0.08, windowheight*0.05)
+
+        self.baseline_checkbox2 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox2.move(windowwidth*0.4, windowheight*0.42)
+        self.baseline_checkbox2.resize(windowwidth*0.08, windowheight*0.05)
+
+        self.baseline_checkbox3 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox3.move(windowwidth*0.4, windowheight*0.5)
+        self.baseline_checkbox3.resize(windowwidth*0.08, windowheight*0.05)
+
+        self.baseline_checkbox4 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox4.move(windowwidth*0.4, windowheight*0.59)
+        self.baseline_checkbox4.resize(windowwidth*0.08, windowheight*0.05)
+
+        self.baseline_checkbox5 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox5.move(windowwidth*0.4, windowheight*0.67)
+        self.baseline_checkbox5.resize(windowwidth*0.08, windowheight*0.05)
+
+        self.baseline_checkbox6 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox6.move(windowwidth*0.4, windowheight*0.75)
+        self.baseline_checkbox6.resize(windowwidth*0.08, windowheight*0.05)
+
+        self.baseline_checkbox7 = QCheckBox("Baseline", self.filescreen)
+        self.baseline_checkbox7.move(windowwidth*0.4, windowheight*0.83)
+        self.baseline_checkbox7.resize(windowwidth*0.08, windowheight*0.05)
+
+
+
 
 
         # Set up the study name box
@@ -356,6 +358,26 @@ class Ui_filescreen(QWidget):
             list.append(class_file.classFMD(name, path7, study_name, patient_name))
         gbl_fmd.class_list = list
         gbl_fmd.i_class = 0
+
+        self.UpdateBaselines()
+
+    # updates each file as a baseline or not depending on the baseline checkbox
+    def UpdateBaselines(self):
+        # TODO if index doesnt exist as a class, will break
+        if self.baseline_checkbox1.isChecked():
+            gbl_fmd.class_list[0].is_baseline = True
+        if self.baseline_checkbox2.isChecked():
+            gbl_fmd.class_list[1].is_baseline = True
+        if self.baseline_checkbox3.isChecked():
+            gbl_fmd.class_list[2].is_baseline = True
+        if self.baseline_checkbox4.isChecked():
+            gbl_fmd.class_list[3].is_baseline = True
+        if self.baseline_checkbox5.isChecked():
+            gbl_fmd.class_list[4].is_baseline = True
+        if self.baseline_checkbox6.isChecked():
+            gbl_fmd.class_list[5].is_baseline = True
+        if self.baseline_checkbox7.isChecked():
+            gbl_fmd.class_list[6].is_baseline = True
 
     def retranslateUi(self, filescreen):
         _translate = QtCore.QCoreApplication.translate

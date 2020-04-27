@@ -57,7 +57,7 @@ def Populate(img, img_obj, SaveDiamData):
     for i_shape in range(len(otsu_contours)):
         # are the coordinates contained within the shape
         if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
-            cv2.drawContours(img, otsu_contours, i_shape, BLUE, 1)
+            cv2.drawContours(img, otsu_contours, i_shape, GREEN, 1)
             # enclose box around the contour. This could also be used to re crop image and perform thresholding again
             simp_box = cv2.minAreaRect(otsu_contours[i_shape])
             simp_box = cv2.boxPoints(simp_box)
@@ -68,14 +68,11 @@ def Populate(img, img_obj, SaveDiamData):
             # now draws user bounds (to restrict artery width measurement)
             # TODO the opencv vs pyqt pixel dimensions dont line up
             widge_height = gbl_fmd.class_list[i_class].opencv_widge_size[1]
-            widge_width = gbl_fmd.class_list[i_class].opencv_widge_size[0]
-            shift = gbl_fmd.class_list[i_class].artery_slider_width
-            left_bound = 0 + shift
-            right_bound = widge_width - shift
+            left_bound = gbl_fmd.class_list[i_class].artery_slider_coord[0]
+            right_bound = gbl_fmd.class_list[i_class].artery_slider_coord[1]
 
             cv2.line(img, (left_bound, 0), (left_bound, widge_height), WHITE, 1)
             cv2.line(img, (right_bound, 0), (right_bound, widge_height), WHITE, 1)
-            print(right_bound, " rb :" ,left_bound, "lb")
 
             # calculates and saves the array measurements
             if SaveDiamData:

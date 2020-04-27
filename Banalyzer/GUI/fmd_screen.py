@@ -179,7 +179,14 @@ class Ui_Banalyzer(QWidget):
         slider_val = self.area_slider.value()
         print(slider_val)
         gbl_fmd.class_list[i_class].artery_slider_width = slider_val
-        # update the image to the current thresh
+
+        # update the global bounds (x)
+        widge_width = gbl_fmd.class_list[i_class].opencv_widge_size[0]
+        left_bound = 0 + slider_val
+        right_bound = widge_width - slider_val
+        gbl_fmd.class_list[i_class].artery_slider_coord = [left_bound, right_bound]
+
+        # update user image
         fmd_proc.VerifyFrame1(gbl_fmd.class_list[i_class].file_path, self.crop_image)
 
     def retranslateUi(self, Banalyzer):
