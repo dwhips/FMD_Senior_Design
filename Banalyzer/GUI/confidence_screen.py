@@ -22,12 +22,15 @@ import GUI.GUIHelper as GUI
 
 class Ui_confidence_screen(QWidget):
     def setupUi(self, confidence_screen):
+        # TODO first change of global var
+        gbl_fmd.i_class = 0
+        i_class = gbl_fmd.i_class
+        
         # Get the size of the screen
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
 
-        # TODO first change of global var
-        gbl_fmd.i_class = 0
+
 
         # width and height of the created window
         windowwidth = width / 2
@@ -40,8 +43,23 @@ class Ui_confidence_screen(QWidget):
 
         # Cropped FMD Image
         self.crop_image = QtWidgets.QLabel(self.confidence_screen)
+
+        # this is sized to scale with the inputted image to not stretch it
+        ideal_height = windowheight * 0.5
+        ideal_width = windowwidth * .55
+        pix_dimensions = gbl_fmd.class_list[i_class].opencv_widge_size
+        pix_ratio_xy = pix_dimensions[0]/pix_dimensions[1] # ratio of width/height
+        pix_ratio_yx = pix_dimensions[1]/pix_dimensions[0] # height / width
+        if pix_ratio_xy > pix_ratio_yx:
+            width = ideal_width
+            height = width * pix_ratio_yx
+        else:
+            height = ideal_height
+            width = height * pix_ratio_xy
+
         self.crop_image.setGeometry(
-            QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
+            QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, width, height))
+            # QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
         self.crop_image.setAutoFillBackground(False)
         self.crop_image.setText("")
         self.crop_image.mousePressEvent = self.GetPos
