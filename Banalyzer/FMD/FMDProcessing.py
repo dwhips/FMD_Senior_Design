@@ -41,14 +41,14 @@ def Populate(img, img_obj, SaveDiamData):
     copy = np.invert(img)  # need copy as processing on image will destroy quality
     # Perform Threshold
     if gbl_fmd.class_list[i_class].threshold == None:
-        _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
-        print(cv2.THRESH_OTSU)
-        gbl_fmd.class_list[i_class].threshold = ['otsu', cv2.THRESH_OTSU]
+        _, otsu_threshold = cv2.threshold(copy, 200, 255, cv2.THRESH_BINARY)
+        print(cv2.THRESH_BINARY)
+        gbl_fmd.class_list[i_class].threshold = ['binary', cv2.THRESH_BINARY]
     elif gbl_fmd.class_list[i_class].threshold[0] == 'binary':
         thresh = gbl_fmd.class_list[i_class].threshold[1]
         _, otsu_threshold = cv2.threshold(copy, thresh, 255, cv2.THRESH_BINARY)
     elif gbl_fmd.class_list[i_class].threshold[0] == 'otsu':
-        _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
+        _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_BINARY)
 
     # now draws user bounds (to restrict artery width measurement)
     cv2.line(otsu_threshold, (left_bound, 0), (left_bound, widge_height), BLACK, 1)
@@ -329,9 +329,9 @@ def SetCropBounds(file_path):
     if CheckAviFile(file_path):
         # change to flip x and y # TODO
         sample_start_y = 80  # crop for the new avi (dicom to avi)
-        sample_end_y = 400# 650
-        sample_start_x = 350
-        sample_end_x = 650
+        sample_end_y = 650# 650
+        sample_start_x = 150
+        sample_end_x = 800
         # sample_start_row = 100 # crop for the new avi (dicom to avi)
         # sample_end_row = 600
         # sample_start_col = 360
