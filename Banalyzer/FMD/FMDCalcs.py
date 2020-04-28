@@ -10,14 +10,6 @@ import Global.gbl_fmd_class_list as gbl_fmd
 # outputs the difference between two coordinates
 # c = [x y]
 def CoordDist(c0, c1):
-    i_class = gbl_fmd.i_class
-    left_bound = gbl_fmd.class_list[i_class].artery_slider_coord[0]
-    right_bound = gbl_fmd.class_list[i_class].artery_slider_coord[1]
-
-    #if c0[0] < left_bound:
-    #    c0 = tuple(left_bound, c0[1])
-    #if c1[0 > right_bound]:
-    #    c1 = tuple(right_bound, c1[1])
     dx2 = (c0[0] - c1[0]) ** 2
     dy2 = (c0[1] - c1[1]) ** 2
     return math.sqrt(dx2 + dy2)
@@ -49,6 +41,31 @@ def BoxCenterLine(rec):
     if CoordDist([x1, x2], [y1, y2]) > CoordDist([xa, xa], [yb, yb]):
         return np.array([[x1, y1], [x2, y2]])
     return np.array([[xa, ya], [xb, yb]])
+
+# turncates a lines coordinates to be at the bounds
+def TruncLineWidth(line, x_bounds):
+    left_x = x_bounds[0]
+    right_x = x_bounds[1]
+
+    x1 = line[0][0]
+    x2 = line[1][0]
+
+    if x1 < x2:
+        y1 = line[0][1]
+        y2 = line[1][1]
+    else:
+        x1 = line[1][0]
+        x2 = line[0][0]
+        y1 = line[1][1]
+        y2 = line[0][1]
+
+    dxdy = (y2 - y1)/(x1 - x2)
+    y_int = y1
+
+    left_y = y_int + left_x*dxdy
+    right_y = y_int + right_x*dxdy
+
+    return np.array([[left_x, left_y], [right_x, right_y]])
 
 # checks for points that are perpendicular to the center-line
 # tang is tangent coord [[xa ya] [xb yb]] so two coord
@@ -83,11 +100,14 @@ def TangDiamMean(contour, tang):
 
 # this area divided by center line to find the mean diameter
 def ContourMean(contour, length):
-    # need to truncate the contour by its bounds
     return cv2.contourArea(contour) / length
 
-
+# this finds out how much the pixel has been stretched by the pixmap as the
+# inputted image is fitted to the pixmap size
 def CalcPixel2RealConversion():
+    return .06  # pixels per mm for ge ultrasound
+
+def CalcPixel2RealConversion3():
     i_class = gbl_fmd.i_class
     pix_per_mm = .06  # pixels per mm for ge ultrasound
 
@@ -96,6 +116,12 @@ def CalcPixel2RealConversion():
     pix_width = pix_width[1] - pix_width[0]
     pix_height = gbl_fmd.class_list[i_class].cropped_bounds[1]
     pix_height = pix_height[1] - pix_height[0]
+
+    # delete after
+    t = pix_height
+    pix_height = pix_width
+    pix_width = t
+    # -----------
 
     # get the cv width and height
     cv_width = gbl_fmd.class_list[i_class].opencv_widge_size[0]

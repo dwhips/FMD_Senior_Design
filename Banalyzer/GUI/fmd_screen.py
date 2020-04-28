@@ -86,8 +86,23 @@ class Ui_Banalyzer(QWidget):
 
         # Cropped FMD Image
         self.crop_image = QtWidgets.QLabel(self.fmd_screen)
+
+        # this is sized to scale with the inputted image to not stretch it
+        ideal_height = windowheight * 0.5
+        ideal_width = windowwidth * .55
+        pix_dimensions = gbl_fmd.class_list[i_class].opencv_widge_size
+        pix_ratio_xy = pix_dimensions[0]/pix_dimensions[1] # ratio of width/height
+        pix_ratio_yx = pix_dimensions[1]/pix_dimensions[0] # height / width
+        if pix_ratio_xy > pix_ratio_yx:
+            width = ideal_width
+            height = width * pix_ratio_yx
+        else:
+            height = ideal_height
+            width = height * pix_ratio_xy
+
         self.crop_image.setGeometry(
-            QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
+            QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, width, height))
+            #QtCore.QRect(windowwidth * 0.1, windowheight * 0.2, windowwidth * 0.55, windowheight * 0.5))
         self.crop_image.setAutoFillBackground(False)
         self.crop_image.setText("")
         # setting it below is replaced by SetFirstFrame
@@ -122,7 +137,7 @@ class Ui_Banalyzer(QWidget):
         self.area_slider = QtWidgets.QSlider(QtCore.Qt.Horizontal, self.fmd_screen)
         self.area_slider.setGeometry(
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.75, windowwidth * 0.4, windowheight * 0.1))
-        self.area_slider.setRange(0, 100)
+        self.area_slider.setRange(0, pix_dimensions[0]/2-5)
         self.area_slider.valueChanged.connect(self.AreaSliderChanged)
         i_class = gbl_fmd.i_class
         gbl_fmd.class_list[i_class].artery_slider_coord = [0, gbl_fmd.class_list[i_class].opencv_widge_size[0]]

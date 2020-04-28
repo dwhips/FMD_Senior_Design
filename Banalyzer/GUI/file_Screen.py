@@ -16,6 +16,7 @@ import sys
 sys.path.append('../')  # could be hacky
 import Global.gbl_fmd_class_list as gbl_fmd
 import FMD.FMDClass as class_file
+import FMD.FMDProcessing as FMDproc
 
 
 class Ui_filescreen(QWidget):
@@ -360,6 +361,7 @@ class Ui_filescreen(QWidget):
         gbl_fmd.i_class = 0
 
         self.UpdateBaselines()
+        FMDproc.SetCropBounds(path1)
 
     # updates each file as a baseline or not depending on the baseline checkbox
     def UpdateBaselines(self):
