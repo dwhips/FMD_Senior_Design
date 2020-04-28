@@ -80,6 +80,7 @@ class classFMD:
 
     def PercentDif(self):
         self.percent_dif.append(0)
+        self.percent_dif_flag.append(0)
         for i in range(1, len(self.diameter_arr)):
             self.percent_dif.append(abs(100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0]))
 
