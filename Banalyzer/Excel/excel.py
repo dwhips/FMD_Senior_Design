@@ -102,7 +102,7 @@ def ExcelReport(folder_path, excel_file_name):
 
     temp = gbl_fmd.class_list
 
-    for i in range(gbl_fmd.i_class):
+    for i in range(len(gbl_fmd.class_list)):
         img_num = i
         pixdiam = gbl_fmd.class_list[img_num].diameter_arr
 
