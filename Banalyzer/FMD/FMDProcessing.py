@@ -79,7 +79,7 @@ def Populate(img, img_obj, SaveDiamData):
             center_xy = FMDCalcs.BoxCenterLine(simp_box)
             # cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
 
-            cv2.circle(img, (int(im_x), int(im_y)), 3, BLUE)
+            cv2.circle(img, (int(im_x), int(im_y)), 1, RED, 2)
             # now draws user bounds (to restrict artery width measurement)
             cv2.line(img, (left_bound, 0), (left_bound, widge_height), WHITE, 1)
             cv2.line(img, (right_bound, 0), (right_bound, widge_height), WHITE, 1)

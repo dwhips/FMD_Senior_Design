@@ -11,3 +11,4 @@ i_class = 0
 
 # for confidence screen. TODO If anyone is working on this code as legacy, definitely tear this out
 framefile_list = []
+pix_frames_sorted = []

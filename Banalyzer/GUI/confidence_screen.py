@@ -55,8 +55,8 @@ class Ui_confidence_screen(QWidget):
         self.frame_list.setStyleSheet("background:rgb(255, 255, 255)")
         self.frame_list.setObjectName("frame_list")
         gbl_fmd.framefile_list = self.SetListFrames()
-        pix_frames_sorted = self.GetFailedFrames(gbl_fmd.framefile_list)
-        self.frame_list.currentItemChanged.connect(lambda: self.ListClicked(pix_frames_sorted, gbl_fmd.framefile_list))
+        gbl_fmd.pix_frames_sorted = self.GetFailedFrames(gbl_fmd.framefile_list)
+        self.frame_list.currentItemChanged.connect(lambda: self.ListClicked(gbl_fmd.pix_frames_sorted, gbl_fmd.framefile_list))
 
         # Make the threshold slider
         self.threshold_slider = QtWidgets.QSlider(self.confidence_screen)
@@ -66,7 +66,7 @@ class Ui_confidence_screen(QWidget):
         self.threshold_slider.setObjectName("threshold_slider")
         self.threshold_slider.setRange(0, 255)
         self.threshold_slider.valueChanged.connect(
-            lambda: self.SliderChanged(pix_frames_sorted[self.frame_list.currentRow()]))
+            lambda: self.SliderChanged(gbl_fmd.pix_frames_sorted[self.frame_list.currentRow()]))
 
         # Create the screen title
         self.screen_title = QtWidgets.QLabel(self.confidence_screen)
@@ -84,7 +84,7 @@ class Ui_confidence_screen(QWidget):
             QtCore.QRect(windowwidth * 0.2, windowheight * 0.7, windowwidth * 0.1, windowheight * 0.05))
         self.accept_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.accept_btn.setObjectName("accept_btn")
-        self.accept_btn.clicked.connect(lambda: self.AcceptClicked(pix_frames_sorted, gbl_fmd.framefile_list))
+        self.accept_btn.clicked.connect(lambda: self.AcceptClicked(gbl_fmd.pix_frames_sorted, gbl_fmd.framefile_list))
 
         # Discard Button
         self.discard_btn = QtWidgets.QPushButton(self.confidence_screen)
@@ -130,19 +130,31 @@ class Ui_confidence_screen(QWidget):
             new_diam_pixel = gbl_fmd.class_list[i_file].diameter_arr[-1]
             gbl_fmd.class_list[i_file].real_diam_arr.pop()
             gbl_fmd.class_list[i_file].diameter_arr.pop()
+
+            print("old diam [",i_list, "]: ", gbl_fmd.class_list[i_file].real_diam_arr[i_frame])
+            print("New diam: ", new_diam_real)
+
+
             # now replace the diam with the proper diam
             gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = new_diam_real
             gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_pixel
+
+            print("saved diam: ", gbl_fmd.class_list[i_file].real_diam_arr[i_frame])
+
             # remove the accepted list from widget list and framefile list
-            #self.frame_list.takeItem(self.frame_list.row(i_list))
             self.RemoveiList(i_list)
             gbl_fmd.framefile_list[0].pop(i_list)
             gbl_fmd.framefile_list[1].pop(i_list)
+            # remove saved diam from sorted pix frames
+            gbl_fmd.pix_frames_sorted.pop(i_list)
+            pix_array = gbl_fmd.pix_frames_sorted
 
             # load next frame
             if len(gbl_fmd.framefile_list) > 0:
-                if i_list < len(gbl_fmd.framefile_list):
-                    self.LoadFailedFrame(pix_array[i_list+1])
+                if i_list < len(pix_array):
+                    # now go to next index and load image
+                    self.frame_list.setCurrentRow(i_list)
+                    self.LoadFailedFrame(pix_array[i_list])
         else:
             print("No more conf errors")
             # TODO error message
