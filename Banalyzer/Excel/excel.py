@@ -33,7 +33,10 @@ def ExcelReport(folder_path, excel_file_name):
     avg10max = []
     avg10 = []
     avg = []
-
+    ttp = []
+    ttp3 = []
+    ttp5 = []
+    ttp10 = []
 
     pixelsize = .06    #mm/pixel # gbl_fmd.class_list[img_num].pixel2real_conversion
     roilength = ''
@@ -45,7 +48,7 @@ def ExcelReport(folder_path, excel_file_name):
     frameedit = ''
     framenotanal = ''
     confidence = '40%'
-    fps = 16
+    fps = 16.0
     fpsint = 16
     mspf = fps*10  #milliseconds per frame
 
@@ -62,6 +65,7 @@ def ExcelReport(folder_path, excel_file_name):
     tablefb = wb.add_format()
 
     tablef.set_border()
+    tablef.set_text_wrap()
     tablefb.set_border()
     tablefb.set_bold()
     headerf.set_bold()
@@ -88,16 +92,6 @@ def ExcelReport(folder_path, excel_file_name):
     subsum.write('D1','Study ID'); subsum.write('D2', studyid)
 
 
-
-
-    #Table Summary
-    subsum.write('A7','No AVG')
-    subsum.write('A8','3-sec AVG')
-    subsum.write('A9','5-sec AVG')
-    subsum.write('A10','10-sec AVG')
-    subsum.write('B6','Unscaled %FMD')
-    subsum.write('C6','Allometrically Scaled %FMD')
-    subsum.write('D6','Time to peak (s)')
 
 
     temp = gbl_fmd.class_list
@@ -215,7 +209,7 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, pixelsize * np.min(gbl_fmd.class_list[img_num].diameter_arr))
         subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, pixelsize * np.max(gbl_fmd.class_list[img_num].diameter_arr))
 
-
+        ttp.append(np.argmax(gbl_fmd.class_list[img_num].diameter_arr)/fps)
         avg.clear()
         #calculating 3-second avg max
         if (frametotal > fpsint*3):
@@ -230,9 +224,11 @@ def ExcelReport(folder_path, excel_file_name):
                 k = k + 1
             avg3max.append(np.max(avg) * pixelsize)
             avg3.append(np.mean(avg) * pixelsize)
+            ttp3.append(np.argmax(avg)/fps + 1.5)
         else:
             avg3max.append(None)
             avg3.append(None)
+            ttp3.append(None)
 
         avg.clear()
         #calculating 5-second avg max
@@ -248,9 +244,11 @@ def ExcelReport(folder_path, excel_file_name):
                 k = k + 1
             avg5max.append(np.max(avg) * pixelsize)
             avg5.append(np.mean(avg) * pixelsize)
+            ttp5.append(np.argmax(avg) / fps + 2.5)
         else:
             avg5max.append(None)
             avg5.append(None)
+            ttp5.append(None)
 
         avg.clear()
         #calculating 10-second avg max
@@ -266,9 +264,11 @@ def ExcelReport(folder_path, excel_file_name):
                 k = k + 1
             avg10max.append(np.max(avg) * pixelsize)
             avg10.append(np.mean(avg) * pixelsize)
+            ttp10.append(np.argmax(avg) / fps + 5)
         else:
             avg10max.append(None)
             avg10.append(None)
+            ttp10.append(None)
 
         # Table Summary
         sumb.write('D17', 'No AVG', tablefb)
@@ -279,25 +279,24 @@ def ExcelReport(folder_path, excel_file_name):
         sumb.write('F16', 'Allometrically Scaled %FMD', tablefb)
         sumb.write('G16', 'Time to peak (s)', tablefb)
 
-        # %FMD's
-
+        # %FMD's, Allo Scaled, TTP
+        sumb.write('F17', ((np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize)/(np.power((np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize),0.89))), tablef)
         sumb.write('E17', ((np.max(pixdiam)*pixelsize-np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize)/(np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize)*100), tablef)
+        sumb.write('G17', (ttp[img_num]), tablef)
         if (avg3[img_num] is not None):
             sumb.write('E18', (((avg3max[img_num]-avg3[0])/avg3[0])*100), tablef)
+            sumb.write('F18', (avg3max[img_num]/(np.power(avg3[0],0.89))), tablef)
+            sumb.write('G18', ttp3[img_num], tablef)
         if (avg5[img_num] is not None):
             sumb.write('E19', (((avg5max[img_num]-avg5[0])/avg5[0])*100), tablef)
+            sumb.write('F19', (avg5max[img_num]/(np.power(avg5[0],0.89))), tablef)
+            sumb.write('G19', ttp5[img_num], tablef)
         if (avg10[img_num] is not None):
             sumb.write('E20', (((avg10max[img_num]-avg10[0])/avg10[0])*100), tablef)
-
-        # Allometrically Scaled
-
-        sumb.write('F17', ((np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize)/(np.power((np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize),0.89))), tablef)
-        if (avg3[img_num] is not None):
-            sumb.write('F18', (avg3max[img_num]/(np.power(avg3[0],0.89))), tablef)
-        if (avg5[img_num] is not None):
-            sumb.write('F19', (avg5max[img_num]/(np.power(avg5[0],0.89))), tablef)
-        if (avg10[img_num] is not None):
             sumb.write('F20', (avg10max[img_num]/(np.power(avg10[0],0.89))), tablef)
+            sumb.write('G20', ttp10[img_num], tablef)
+
+
 
         #Top Two Rows Averages
         subsum.write('P1', 'Diameter Max (3-sec-smoothed)'); subsum.write(img_num + 1, 15, avg3max[img_num])
