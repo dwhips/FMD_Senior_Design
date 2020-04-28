@@ -20,16 +20,23 @@ BLUE = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
-
+BLACK = (0, 0, 0)
 
 ########################
 
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
 def Populate(img, img_obj, SaveDiamData):
     i_class = gbl_fmd.i_class
+
+    # TODO the opencv vs pyqt pixel dimensions dont line up
+    widge_height = gbl_fmd.class_list[i_class].opencv_widge_size[1]
+    left_bound = gbl_fmd.class_list[i_class].artery_slider_coord[0]
+    right_bound = gbl_fmd.class_list[i_class].artery_slider_coord[1]
+
     # Convert image to grayscale
     img = cv2.cvtColor(img,
                        cv2.COLOR_BGR2GRAY)  # imread(temp_image_file_path + "frame%i.jpg" % i_frame, cv2.IMREAD_GRAYSCALE)
+
     # Gaussian smooth (need to investigate if we need)
     img = cv2.GaussianBlur(img, (7, 7), 0)
     # Invert Image
@@ -45,6 +52,10 @@ def Populate(img, img_obj, SaveDiamData):
     elif gbl_fmd.class_list[i_class].threshold[0] == 'otsu':
         _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
 
+    # now draws user bounds (to restrict artery width measurement)
+    cv2.line(otsu_threshold, (left_bound, 0), (left_bound, widge_height), BLACK, 1)
+    cv2.line(otsu_threshold, (right_bound, 0), (right_bound, widge_height), BLACK, 1)
+
     # Find contours (edges)
     otsu_contours, _ = cv2.findContours(otsu_threshold, cv2.RETR_TREE,
                                         cv2.CHAIN_APPROX_NONE)  # TREE vs EXTERNAL & SIMPLE vs NONE
@@ -59,7 +70,7 @@ def Populate(img, img_obj, SaveDiamData):
         im_y = gbl_fmd.class_list[i_class].xy_user_click[1]*(498/360) # same for height
 
         if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
-            otu = otsu_contours[i_shape]
+            # otu = otsu_contours[i_shape]
             cv2.drawContours(img, otsu_contours, i_shape, GREEN, 1)
             # enclose box around the contour. This could also be used to re crop image and perform thresholding again
             simp_box = cv2.minAreaRect(otsu_contours[i_shape])
@@ -68,12 +79,8 @@ def Populate(img, img_obj, SaveDiamData):
             center_xy = FMDCalcs.BoxCenterLine(simp_box)
             # cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
 
+            cv2.circle(img, (int(im_x), int(im_y)), 3, BLUE)
             # now draws user bounds (to restrict artery width measurement)
-            # TODO the opencv vs pyqt pixel dimensions dont line up
-            widge_height = gbl_fmd.class_list[i_class].opencv_widge_size[1]
-            left_bound = gbl_fmd.class_list[i_class].artery_slider_coord[0]
-            right_bound = gbl_fmd.class_list[i_class].artery_slider_coord[1]
-
             cv2.line(img, (left_bound, 0), (left_bound, widge_height), WHITE, 1)
             cv2.line(img, (right_bound, 0), (right_bound, widge_height), WHITE, 1)
 
@@ -317,11 +324,11 @@ def GetFileImageFrame1(image_path):
 # sets crop bounds based on the file type (.avi vs dicom)
 def SetCropBounds(file_path):
     if CheckAviFile(file_path):
-        # change to x and y TODO
-        sample_start_y = 200  # crop for the new avi (dicom to avi)
-        sample_end_y = 800
-        sample_start_x = 80
-        sample_end_x = 550
+        # change to flip x and y # TODO
+        sample_start_x = 80  # crop for the new avi (dicom to avi)
+        sample_end_x = 650
+        sample_start_y = 350
+        sample_end_y = 650
         # sample_start_row = 100 # crop for the new avi (dicom to avi)
         # sample_end_row = 600
         # sample_start_col = 360
