@@ -124,6 +124,8 @@ class Ui_Banalyzer(QWidget):
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.75, windowwidth * 0.4, windowheight * 0.1))
         self.area_slider.setRange(0, 100)
         self.area_slider.valueChanged.connect(self.AreaSliderChanged)
+        i_class = gbl_fmd.i_class
+        gbl_fmd.class_list[i_class].artery_slider_coord = [0, gbl_fmd.class_list[i_class].opencv_widge_size[0]]
 
         # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)

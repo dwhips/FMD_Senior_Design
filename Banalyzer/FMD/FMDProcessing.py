@@ -21,7 +21,6 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-
 ########################
 
 # populates all of the filtered/detected shape images. This function performs all aspects of their generation
@@ -32,6 +31,8 @@ def Populate(img, img_obj, SaveDiamData):
     widge_height = gbl_fmd.class_list[i_class].opencv_widge_size[1]
     left_bound = gbl_fmd.class_list[i_class].artery_slider_coord[0]
     right_bound = gbl_fmd.class_list[i_class].artery_slider_coord[1]
+
+    s = gbl_fmd.class_list[i_class].widget_size
 
     # Convert image to grayscale
     img = cv2.cvtColor(img,
@@ -62,14 +63,33 @@ def Populate(img, img_obj, SaveDiamData):
     # Convert image to color so contours can be printed in color
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
 
+    # draw user click
+    #im_x = gbl_fmd.class_list[i_class].widget_size[0]/gbl_fmd.class_list[i_class].xy_user_click[0]
+    #im_x = gbl_fmd.class_list[i_class].opencv_widge_size[0] / im_x
+
+    #im_y = gbl_fmd.class_list[i_class].widget_size[1]/gbl_fmd.class_list[i_class].xy_user_click[1]
+    #im_y = gbl_fmd.class_list[i_class].opencv_widge_size[1] / im_y
+
+    pyqt_coord = gbl_fmd.class_list[i_class].xy_user_click
+    click_coord = gbl_fmd.class_list[i_class].PyqtPix2CVPix(pyqt_coord)
+    cv2.circle(img, (int(click_coord[0]), int(click_coord[1])), 1, RED, 2)
+
     # If multiple shapes contain coordinate this will break. Need case
     for i_shape in range(len(otsu_contours)):
         # are the coordinates contained within the shape
         # need to convert the pyat xy position to opencv to check inside the contour
-        im_x = gbl_fmd.class_list[i_class].xy_user_click[0]*(240/528) # hardcoded opencv width/pyat width
-        im_y = gbl_fmd.class_list[i_class].xy_user_click[1]*(498/360) # same for height
+        pix_width = gbl_fmd.class_list[i_class].cropped_bounds[1]
+        pix_width = pix_width[1] - pix_width[0]
+        pix_height = gbl_fmd.class_list[i_class].cropped_bounds[0]
+        pix_height = pix_height[1] - pix_height[0]
+        # pyqt and cv have flipped rows and colomns. Everything about them is different sadly
+        cv_width = pix_width / 1.5# gbl_fmd.class_list[i_class].opencv_widge_size[0]
+        cv_height = pix_height / 1.06# gbl_fmd.class_list[i_class].opencv_widge_size[1]
 
-        if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
+        #im_x = gbl_fmd.class_list[i_class].xy_user_click[0]*(cv_width/pix_width) # hardcoded opencv width/pyat width
+        #im_y = gbl_fmd.class_list[i_class].xy_user_click[1]*(cv_height/pix_height) # same for height
+
+        if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (click_coord[0], click_coord[1]), False):
             # otu = otsu_contours[i_shape]
             cv2.drawContours(img, otsu_contours, i_shape, GREEN, 1)
             # enclose box around the contour. This could also be used to re crop image and perform thresholding again
@@ -79,7 +99,7 @@ def Populate(img, img_obj, SaveDiamData):
             center_xy = FMDCalcs.BoxCenterLine(simp_box)
             # cv2.line(img, tuple(center_xy[0]), tuple(center_xy[1]), RED, 2)
 
-            cv2.circle(img, (int(im_x), int(im_y)), 1, RED, 2)
+
             # now draws user bounds (to restrict artery width measurement)
             cv2.line(img, (left_bound, 0), (left_bound, widge_height), WHITE, 1)
             cv2.line(img, (right_bound, 0), (right_bound, widge_height), WHITE, 1)
@@ -325,22 +345,24 @@ def GetFileImageFrame1(image_path):
 def SetCropBounds(file_path):
     if CheckAviFile(file_path):
         # change to flip x and y # TODO
-        sample_start_x = 80  # crop for the new avi (dicom to avi)
-        sample_end_x = 650
-        sample_start_y = 350
+        sample_start_y = 80  # crop for the new avi (dicom to avi)
         sample_end_y = 650
+        sample_start_x = 350
+        sample_end_x = 650
         # sample_start_row = 100 # crop for the new avi (dicom to avi)
         # sample_end_row = 600
         # sample_start_col = 360
         # sample_end_col = 600
-        # sample_start_row = 144  # measurements are based off the 640x480 sample image
-        # sample_end_row = 408
-        # sample_start_col = 159
-        # sample_end_col = 518
+
+        #sample_start_y = 144  # measurements are based off the 640x480 sample image
+        #sample_end_y = 408
+        #sample_start_x = 159
+        #sample_end_x = 518
     else:
         sample_start_row = 0
         sample_end_row = 600
         sample_start_col = 0
         sample_end_col = 600
     i_class = gbl_fmd.i_class
-    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_x, sample_end_x, sample_start_y, sample_end_y)
+    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_y, sample_end_y, sample_start_x, sample_end_x)
+    gbl_fmd.class_list[i_class].opencv_widge_size = [sample_end_x - sample_start_x, sample_end_y - sample_start_y ]

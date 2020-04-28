@@ -16,16 +16,16 @@ class classFMD:
         self.percent_dif = []
         self.percent_dif_flag = []
         self.xy_user_click = [None, None]  # if [None, None] then user doesnt have click saved
-        self.cropped_bounds = []  # [start row, end row,  start col, end col]
+        self.cropped_bounds = []  # start y end y, start x and x (for cropping the original image)
         # self.max_image_size = []  # [max row, max col]
         self.widget_size = []  # [row, col]    pixel size of widget storing image
-        self.opencv_widge_size = [240, 498] # [row, col] for some reason the opencv and pyqt have different dimensions
+        self.opencv_widge_size = [] # [300, 558] # [row, col] for some reason the opencv and pyqt have different dimensions
         self.pixel2real_conversion = None
         self.real_diam_arr = []
         self.threshold = None
         self.frame1pixelvals = None # this stores the pixel list opencv uses for first frame from a file
                                 # this is done to reduce lookup speed when using the threshold slider
-        self.artery_slider_coord = [0, self.opencv_widge_size[0]]  # used to restrict the artery width for measuring [x0, x1]
+        self.artery_slider_coord = []  # used to restrict the artery width for measuring [x0, x1]
         self.is_baseline = False
 
     # Replaces class artery diameter array with input
@@ -60,8 +60,8 @@ class classFMD:
     def GetXY(self):
         return self.xy_user_click
 
-    def SetCropBounds(self, start_x, end_x, start_y, end_y):
-        self.cropped_bounds = [[start_x, end_x], [start_y, end_y]]
+    def SetCropBounds(self, start_y, end_y, start_x, end_x):
+        self.cropped_bounds = [[start_y, end_y], [start_x, end_x]]
 
     def GetCropRow(self):
         return self.cropped_bounds[0]
@@ -110,6 +110,17 @@ class classFMD:
                 self.percent_dif_flag.append(1)
             else:
                 self.percent_dif_flag.append(0)
+
+    # for some reason the positions given by pyqt (ie user xy click or widget size for crop image in fmd_page)
+    # are not the same as stuff drawn in opencv. This converts pyqt pixel position to cv position
+    def PyqtPix2CVPix(self, py_coord):
+        x = self.widget_size[0]/py_coord[0]
+        x = self.opencv_widge_size[0] / x
+
+        y = self.widget_size[1]/py_coord[1]
+        y = self.opencv_widge_size[1] / y
+
+        return [x, y]
 
     def ConvertPix2Real(self, pixel_diam):
         self.real_diam_arr.append(FMDCalcs.CalcPixel2Real(pixel_diam, self.pixel2real_conversion))
