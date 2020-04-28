@@ -115,7 +115,9 @@ class Ui_Banalyzer(QWidget):
         # for pixel dimensions
         image_width = self.crop_image.frameGeometry().width()
         image_height = self.crop_image.frameGeometry().height()
-        gbl_fmd.class_list[i_class].SetWidgetSize(image_width, image_height)
+        # SHould delete and have these setup. This was tmep fix for race conditions
+        for i in range(len(gbl_fmd.class_list)):
+            gbl_fmd.class_list[i].SetWidgetSize(image_width, image_height)
         # update the crop image to the first frame of the first inputted file
         fmd_proc.SetFirstFrame(gbl_fmd.class_list[i_class].file_path, self.crop_image)
 
@@ -139,8 +141,10 @@ class Ui_Banalyzer(QWidget):
             QtCore.QRect(windowwidth * 0.1, windowheight * 0.75, windowwidth * 0.4, windowheight * 0.1))
         self.area_slider.setRange(0, pix_dimensions[0]/2-5)
         self.area_slider.valueChanged.connect(self.AreaSliderChanged)
-        i_class = gbl_fmd.i_class
-        gbl_fmd.class_list[i_class].artery_slider_coord = [0, gbl_fmd.class_list[i_class].opencv_widge_size[0]]
+
+        # TODO should be broken out, especially if bounds change
+        for i in range(len(gbl_fmd.class_list)):
+            gbl_fmd.class_list[i].artery_slider_coord = [0, gbl_fmd.class_list[i_class].opencv_widge_size[0]]
 
         # Set the central widget
         Banalyzer.setCentralWidget(self.fmd_screen)
