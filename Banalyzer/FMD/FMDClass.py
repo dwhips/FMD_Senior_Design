@@ -60,8 +60,8 @@ class classFMD:
     def GetXY(self):
         return self.xy_user_click
 
-    def SetCropBounds(self, start_row, end_row, start_col, end_col):
-        self.cropped_bounds = [[start_row, end_row], [start_col, end_col]]
+    def SetCropBounds(self, start_x, end_x, start_y, end_y):
+        self.cropped_bounds = [[start_x, end_x], [start_y, end_y]]
 
     def GetCropRow(self):
         return self.cropped_bounds[0]

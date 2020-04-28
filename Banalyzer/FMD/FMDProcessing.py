@@ -318,10 +318,10 @@ def GetFileImageFrame1(image_path):
 def SetCropBounds(file_path):
     if CheckAviFile(file_path):
         # change to x and y TODO
-        sample_start_col = 200  # crop for the new avi (dicom to avi)
-        sample_end_col = 800
-        sample_start_row = 80
-        sample_end_row = 550
+        sample_start_y = 200  # crop for the new avi (dicom to avi)
+        sample_end_y = 800
+        sample_start_x = 80
+        sample_end_x = 550
         # sample_start_row = 100 # crop for the new avi (dicom to avi)
         # sample_end_row = 600
         # sample_start_col = 360
@@ -336,4 +336,4 @@ def SetCropBounds(file_path):
         sample_start_col = 0
         sample_end_col = 600
     i_class = gbl_fmd.i_class
-    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_row, sample_end_row, sample_start_col, sample_end_col)
+    gbl_fmd.class_list[i_class].SetCropBounds(sample_start_x, sample_end_x, sample_start_y, sample_end_y)

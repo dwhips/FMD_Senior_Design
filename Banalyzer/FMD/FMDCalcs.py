@@ -10,6 +10,14 @@ import Global.gbl_fmd_class_list as gbl_fmd
 # outputs the difference between two coordinates
 # c = [x y]
 def CoordDist(c0, c1):
+    i_class = gbl_fmd.i_class
+    left_bound = gbl_fmd.class_list[i_class].artery_slider_coord[0]
+    right_bound = gbl_fmd.class_list[i_class].artery_slider_coord[1]
+
+    #if c0[0] < left_bound:
+    #    c0 = tuple(left_bound, c0[1])
+    #if c1[0 > right_bound]:
+    #    c1 = tuple(right_bound, c1[1])
     dx2 = (c0[0] - c1[0]) ** 2
     dy2 = (c0[1] - c1[1]) ** 2
     return math.sqrt(dx2 + dy2)
@@ -73,15 +81,43 @@ def TangDiamMean(contour, tang):
     return y_int
 
 
-# this dose the center line area thing brian talked about
+# this area divided by center line to find the mean diameter
 def ContourMean(contour, length):
+    # need to truncate the contour by its bounds
     return cv2.contourArea(contour) / length
+
+
+def CalcPixel2RealConversion():
+    i_class = gbl_fmd.i_class
+    pix_per_mm = .06  # pixels per mm for ge ultrasound
+
+    # get the pixel crop width and height
+    pix_width = gbl_fmd.class_list[i_class].cropped_bounds[0]
+    pix_width = pix_width[1] - pix_width[0]
+    pix_height = gbl_fmd.class_list[i_class].cropped_bounds[1]
+    pix_height = pix_height[1] - pix_height[0]
+
+    # get the cv width and height
+    cv_width = gbl_fmd.class_list[i_class].opencv_widge_size[0]
+    cv_height = gbl_fmd.class_list[i_class].opencv_widge_size[1]
+
+    # find ratio between them
+    x_rat = pix_width / cv_width   # pix/cv
+    y_rat = pix_height / cv_height  # pix/cv
+
+    cv_per_mm_x = pix_per_mm / x_rat  # pix/ mm * cv /pix = cv / mm
+    cv_per_mm_y = pix_per_mm / y_rat
+
+    avg = (cv_per_mm_x + cv_per_mm_y) / 2
+
+    return avg
+
 
 # hardcoded stuff
 # the scale is 56X767 pixels (4 cm(?) in 767 pixels
 # the cropped image is 359*264 pixels
 # ^ as acquired from screenshots so both should be relative
-def CalcPixel2RealConversion():
+def CalcPixel2RealConversion2():
     i_class = gbl_fmd.i_class
 
     original_pixel_scale = 767  # pixel size of reference cm size
@@ -98,6 +134,7 @@ def CalcPixel2RealConversion():
     cropped_pixel_y *= scale
 
     # USING THE OPENCV VALUES< NOT PYQT
+    # the values given by contour and opencv are NOT pixel positions (found this out the hard way)
     widge_x = gbl_fmd.class_list[0].opencv_widge_size[0]
     widge_y = gbl_fmd.class_list[0].opencv_widge_size[1]
     # the x and y dimensions between the widget and the original cropped image need to
@@ -107,6 +144,7 @@ def CalcPixel2RealConversion():
     print("x ratio: ", x_ratio)
     print("y ratio: ", y_ratio)
 
+    # this ratio is in the cv form, not pixel
     avg_ratio = (x_ratio + y_ratio) / 2
     return avg_ratio*n_cm_per_pixel
 
