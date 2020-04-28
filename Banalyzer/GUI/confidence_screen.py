@@ -25,7 +25,7 @@ class Ui_confidence_screen(QWidget):
         # TODO first change of global var
         gbl_fmd.i_class = 0
         i_class = gbl_fmd.i_class
-        
+
         # Get the size of the screen
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
@@ -50,7 +50,7 @@ class Ui_confidence_screen(QWidget):
         pix_dimensions = gbl_fmd.class_list[i_class].opencv_widge_size
         pix_ratio_xy = pix_dimensions[0]/pix_dimensions[1] # ratio of width/height
         pix_ratio_yx = pix_dimensions[1]/pix_dimensions[0] # height / width
-        if pix_ratio_xy > pix_ratio_yx:
+        if pix_ratio_xy*ideal_height > pix_ratio_yx*ideal_width:
             width = ideal_width
             height = width * pix_ratio_yx
         else:

@@ -102,8 +102,7 @@ def TangDiamMean(contour, tang):
 def ContourMean(contour, length):
     return cv2.contourArea(contour) / length
 
-# this finds out how much the pixel has been stretched by the pixmap as the
-# inputted image is fitted to the pixmap size
+# the ratio of pixels to a real measurment
 def CalcPixel2RealConversion():
     return .06  # pixels per mm for ge ultrasound
 

@@ -196,10 +196,6 @@ class Ui_filescreen(QWidget):
         self.baseline_checkbox7.move(windowwidth*0.4, windowheight*0.83)
         self.baseline_checkbox7.resize(windowwidth*0.08, windowheight*0.05)
 
-
-
-
-
         # Set up the study name box
         self.study = QtWidgets.QTextEdit(self.filescreen)
         self.study.setGeometry(
