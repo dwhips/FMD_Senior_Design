@@ -79,6 +79,26 @@ class classFMD:
         self.pixel2real_conversion = FMDCalcs.CalcPixel2RealConversion()
 
     def PercentDif(self):
+        self.percent_dif.append(0)
+        for i in range(1, len(self.diameter_arr)):
+            self.percent_dif.append(abs(100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0]))
+
+            # %Difference Flags From This:  If the percent difference from the original threshold between any two
+            #consecutive threholds is greater than 1 or less than -1, the point will be flagged. Also if greater than
+            #5% off of original it will be flagged.
+
+            if ((self.percent_dif[i] - self.percent_dif[i-1]) > 1):
+                self.percent_dif_flag.append(1)
+            elif ((self.percent_dif[i] - self.percent_dif[i-1]) < -1):
+                self.percent_dif_flag.append(1)
+            elif (self.percent_dif[i] > 5):
+                self.percent_dif_flag.append(1)
+            elif (self.percent_dif_flag[i-1] == 1 and self.percent_dif[i] > 2):  #Stricter check if previous frame failed
+                self.percent_dif_flag.append(1)
+            else:
+                self.percent_dif_flag.append(0)
+
+    def PercentDifActual(self):
         for i in range(len(self.diameter_arr)):
             self.percent_dif.append(100 * (self.diameter_arr[0] - self.diameter_arr[i]) / self.diameter_arr[0])
 
@@ -89,7 +109,6 @@ class classFMD:
                 self.percent_dif_flag.append(1)
             else:
                 self.percent_dif_flag.append(0)
-
 
     def ConvertPix2Real(self, pixel_diam):
         self.real_diam_arr.append(FMDCalcs.CalcPixel2Real(pixel_diam, self.pixel2real_conversion))
