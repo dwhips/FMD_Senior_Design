@@ -20,8 +20,6 @@ BLUE = (0, 0, 255)  # opencv uses BGR not RGB
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
-# UI
-im_x, im_y, click_allowed = 150, 150, True
 
 
 ########################
@@ -35,7 +33,7 @@ def Populate(img, img_obj, SaveDiamData):
     # Gaussian smooth (need to investigate if we need)
     img = cv2.GaussianBlur(img, (7, 7), 0)
     # Invert Image
-    copy = np.invert(img)  # !!!!!!!!!!!!!!!!!!!!! used to see if quality of image changes
+    copy = np.invert(img)  # need copy as processing on image will destroy quality
     # Perform Threshold
     if gbl_fmd.class_list[i_class].threshold == None:
         _, otsu_threshold = cv2.threshold(copy, 0, 255, cv2.THRESH_OTSU)
@@ -56,7 +54,12 @@ def Populate(img, img_obj, SaveDiamData):
     # If multiple shapes contain coordinate this will break. Need case
     for i_shape in range(len(otsu_contours)):
         # are the coordinates contained within the shape
+        # need to convert the pyat xy position to opencv to check inside the contour
+        im_x = gbl_fmd.class_list[i_class].xy_user_click[0]*(240/528) # hardcoded opencv width/pyat width
+        im_y = gbl_fmd.class_list[i_class].xy_user_click[1]*(498/360) # same for height
+
         if 1 == cv2.pointPolygonTest(otsu_contours[i_shape], (im_x, im_y), False):
+            otu = otsu_contours[i_shape]
             cv2.drawContours(img, otsu_contours, i_shape, GREEN, 1)
             # enclose box around the contour. This could also be used to re crop image and perform thresholding again
             simp_box = cv2.minAreaRect(otsu_contours[i_shape])
@@ -76,6 +79,8 @@ def Populate(img, img_obj, SaveDiamData):
 
             # calculates and saves the array measurements
             if SaveDiamData:
+                otu = otsu_contours[i_shape]
+                deleteme = gbl_fmd.class_list[i_class].widget_size
                 length = FMDCalcs.CoordDist(tuple(center_xy[0]), tuple(center_xy[1]))
                 # might need to create namespaces to shorthand these calls
                 gbl_fmd.class_list[i_class].Add2DiameterArr(FMDCalcs.ContourMean(otsu_contours[i_shape], length))
@@ -312,10 +317,15 @@ def GetFileImageFrame1(image_path):
 # sets crop bounds based on the file type (.avi vs dicom)
 def SetCropBounds(file_path):
     if CheckAviFile(file_path):
-        sample_start_row = 100 # crop for the new avi (dicom to avi)
-        sample_end_row = 600
-        sample_start_col = 360
-        sample_end_col = 600
+        # change to x and y TODO
+        sample_start_col = 200  # crop for the new avi (dicom to avi)
+        sample_end_col = 800
+        sample_start_row = 80
+        sample_end_row = 550
+        # sample_start_row = 100 # crop for the new avi (dicom to avi)
+        # sample_end_row = 600
+        # sample_start_col = 360
+        # sample_end_col = 600
         # sample_start_row = 144  # measurements are based off the 640x480 sample image
         # sample_end_row = 408
         # sample_start_col = 159
