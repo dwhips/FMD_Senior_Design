@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QWidget
+import os
 
 
 class Ui_start_screen(QWidget):
@@ -56,6 +57,7 @@ class Ui_start_screen(QWidget):
         self.integral_btn.setFont(font)
         self.integral_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.integral_btn.setObjectName("integral_btn")
+        self.integral_btn.clicked.connect(self.ReadMe)
 
         # Set the central widget
         start_screen.setCentralWidget(self.start_screen)
@@ -63,9 +65,14 @@ class Ui_start_screen(QWidget):
         self.retranslateUi(start_screen)
         QtCore.QMetaObject.connectSlotsByName(start_screen)
 
+    def ReadMe(self):
+        file = "ReadMe.txt"
+        os.system(file)
+
+
     def retranslateUi(self, start_screen):
         _translate = QtCore.QCoreApplication.translate
         start_screen.setWindowTitle(_translate("start_screen", "MU Brachial Analyzer"))
         self.welcome_message.setText(_translate("start_screen", "Welcome to the Brachial FMD Analzyer Software!"))
         self.fmd_button.setText(_translate("start_screen", "Flow Mediated Dilation"))
-        self.integral_btn.setText(_translate("start_screen", "Flow Measurement"))
+        self.integral_btn.setText(_translate("start_screen", "ReadMe"))
