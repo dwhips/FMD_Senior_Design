@@ -10,8 +10,17 @@ import xlsxwriter
 def PrintHi():
     print("printing %dif")
     print(gbl_fmd.i_class)
-def ExcelReport(folder_path, excel_file_name):
 
+# removes any None elements from a list
+def RemoveNone(list):
+    temp = []
+    for i in range(len(list)):
+        if list[i] is not None:
+            temp.append(list[i])
+    return temp
+
+
+def ExcelReport(folder_path, excel_file_name):
 #Variables (regardless of i_class val)
     img_num = gbl_fmd.i_class
     studyname = gbl_fmd.class_list[0].study_name
@@ -91,20 +100,19 @@ def ExcelReport(folder_path, excel_file_name):
     subsum.write('C1','Last Name'); subsum.write('C2',nombre)
     subsum.write('D1','Study ID'); subsum.write('D2', studyid)
 
-
-
-
-    temp = gbl_fmd.class_list
+    first_file_cleaned_pixdiam = RemoveNone(gbl_fmd.class_list[0].diameter_arr)
 
     for i in range(len(gbl_fmd.class_list)):
         img_num = i
         pixdiam = gbl_fmd.class_list[img_num].diameter_arr
+        cleaned_pixdiam = RemoveNone(pixdiam)
+
 
         if (gbl_fmd.class_list[img_num].test_name == ''):
             gbl_fmd.class_list[img_num].test_name = str(img_num)
 
         #Variables
-        frametotal = len(gbl_fmd.class_list[img_num].diameter_arr)
+        frametotal = len(pixdiam)
         studynametest = gbl_fmd.class_list[img_num].study_name +  ' - ' + gbl_fmd.class_list[img_num].test_name
         filename = gbl_fmd.class_list[img_num].file_path
         #baselineflag = gbl_fmd.class_list[img_num].base_flag
@@ -153,10 +161,6 @@ def ExcelReport(folder_path, excel_file_name):
         sumb.write('A21','Frames-notanal'); sumb.write('B21',framenotanal)
         sumb.write('A22','Confid-thresh'); sumb.write('B22',confidence)
 
-
-
-
-
     #Worksheet Baseline Data
         datab = wb.add_worksheet(datastudyname)
 
@@ -165,22 +169,23 @@ def ExcelReport(folder_path, excel_file_name):
         datab.set_row(0,20,headerf)
 
         # Writing Columnar Data
-        datab.write_column(1, 1, gbl_fmd.class_list[img_num].diameter_arr)
-        #datab.write_column(1, 2, (gbl_fmd.class_list[img_num].diameter_arr *(1.0/pixelsize)))
+        datab.write_column(1, 1, pixdiam)
+        #datab.write_column(1, 2, (pixdiam *(1.0/pixelsize)))
         #datab.write_column(1, 2, gbl_fmd.class_list[-1].REALDIAMARR)
         datab.write_column(1,6,gbl_fmd.class_list[img_num].percent_dif)
         datab.write_column(1,7,gbl_fmd.class_list[img_num].percent_dif_flag)
 
         #Formatting and Frame #
-        for row_num in range(1,frametotal,1):
-            datab.write(row_num, 0, row_num)  #Writing frame number
-            datab.write(row_num,4, row_num*mspf-mspf)  #Writing MSEC
-            datab.write(row_num,2, gbl_fmd.class_list[img_num].diameter_arr[row_num] * pixelsize)
-
+        for row_num in range(frametotal):
+            datab.write(row_num+1, 0, row_num+1)  #Writing frame number
+            datab.write(row_num+1,4, row_num*mspf)  #Writing MSEC
+            if pixdiam[row_num] is None:
+                datab.write(row_num+1, 2, '')
+            else:
+                datab.write(row_num+1,2, pixdiam[row_num] * pixelsize)
 
             if (row_num%2 == 1):
                 datab.set_row(row_num,15,bg)
-
 
         #Upper Labels
         datab.write('A1','Frame'); datab.write('B1','AVG Pixel Diameter'); datab.write('C1','BDIAMM')
@@ -205,11 +210,11 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write('K1','Length(sec.)'); subsum.write(img_num + 1, 10, frametotal/fps) #commented for now for frame total
 
         subsum.write('L1', 'DIAMETER')
-        subsum.write('M1', 'Average Diameter'); subsum.write(img_num + 1, 12, pixelsize * np.mean(gbl_fmd.class_list[img_num].diameter_arr))
-        subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, pixelsize * np.min(gbl_fmd.class_list[img_num].diameter_arr))
-        subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, pixelsize * np.max(gbl_fmd.class_list[img_num].diameter_arr))
+        subsum.write('M1', 'Average Diameter'); subsum.write(img_num + 1, 12, pixelsize * np.mean(cleaned_pixdiam))
+        subsum.write('N1', 'Minimum Diameter'); subsum.write(img_num + 1, 13, pixelsize * np.min(cleaned_pixdiam))
+        subsum.write('O1', 'Maximum Diameter'); subsum.write(img_num + 1, 14, pixelsize * np.max(cleaned_pixdiam))
 
-        ttp.append(np.argmax(gbl_fmd.class_list[img_num].diameter_arr)/fps)
+        ttp.append(np.argmax(cleaned_pixdiam)/fps)
         avg.clear()
         #calculating 3-second avg max
         if (frametotal > fpsint*3):
@@ -218,7 +223,8 @@ def ExcelReport(folder_path, excel_file_name):
                 sum = 0
                 j = k - (fpsint*3)
                 while (j < k):
-                    sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
+                    if pixdiam[j] is not None:
+                        sum = sum + pixdiam[j]
                     j = j + 1
                 avg.append(sum / (fpsint*3))
                 k = k + 1
@@ -238,7 +244,8 @@ def ExcelReport(folder_path, excel_file_name):
                 sum = 0
                 j = k - (fpsint*5)
                 while (j < k):
-                    sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
+                    if pixdiam[j] is not None:
+                        sum = sum + pixdiam[j]
                     j = j + 1
                 avg.append(sum / (fpsint*5))
                 k = k + 1
@@ -258,7 +265,8 @@ def ExcelReport(folder_path, excel_file_name):
                 sum = 0
                 j = k - (fpsint*10)
                 while (j < k):
-                    sum = sum + gbl_fmd.class_list[img_num].diameter_arr[j]
+                    if pixdiam[j] is not None:
+                        sum = sum + pixdiam[j]
                     j = j + 1
                 avg.append(sum / (fpsint*10))
                 k = k + 1
@@ -280,8 +288,8 @@ def ExcelReport(folder_path, excel_file_name):
         sumb.write('G16', 'Time to peak (s)', tablefb)
 
         # %FMD's, Allo Scaled, TTP
-        sumb.write('F17', ((np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize)/(np.power((np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize),0.89))), tablef)
-        sumb.write('E17', ((np.max(pixdiam)*pixelsize-np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize)/(np.mean(gbl_fmd.class_list[0].diameter_arr)*pixelsize)*100), tablef)
+        sumb.write('F17', ((np.max(cleaned_pixdiam)*pixelsize)/(np.power((np.mean(first_file_cleaned_pixdiam)*pixelsize),0.89))), tablef)
+        sumb.write('E17', ((np.max(cleaned_pixdiam)*pixelsize-np.mean(first_file_cleaned_pixdiam)*pixelsize)/(np.mean(first_file_cleaned_pixdiam)*pixelsize)*100), tablef)
         sumb.write('G17', (ttp[img_num]), tablef)
         if (avg3[img_num] is not None):
             sumb.write('E18', (((avg3max[img_num]-avg3[0])/avg3[0])*100), tablef)
@@ -312,10 +320,10 @@ def ExcelReport(folder_path, excel_file_name):
         subsum.write(11, 3, 'MEAN', tablefb)
         subsum.write(11, 4, 'DILATION', tablefb)
         subsum.write(img_num+12, 0, gbl_fmd.class_list[img_num].test_name, tablefb)
-        subsum.write(img_num+12, 1, np.max(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
-        subsum.write(img_num+12, 2, np.min(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
-        subsum.write(img_num+12, 3, np.mean(gbl_fmd.class_list[img_num].diameter_arr)*pixelsize, tablef)
-        subsum.write(img_num+12, 4, ((np.mean(gbl_fmd.class_list[img_num].diameter_arr)/(np.mean(gbl_fmd.class_list[0].diameter_arr)))-1.0) * 100, tablef) #percent dilation, not working for some reason
+        subsum.write(img_num+12, 1, np.max(cleaned_pixdiam)*pixelsize, tablef)
+        subsum.write(img_num+12, 2, np.min(cleaned_pixdiam)*pixelsize, tablef)
+        subsum.write(img_num+12, 3, np.mean(cleaned_pixdiam)*pixelsize, tablef)
+        subsum.write(img_num+12, 4, ((np.mean(cleaned_pixdiam)/(np.mean(first_file_cleaned_pixdiam)))-1.0) * 100, tablef) #percent dilation, not working for some reason
         print('out of loop')
 
     wb.close()

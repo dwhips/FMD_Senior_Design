@@ -30,8 +30,6 @@ class Ui_confidence_screen(QWidget):
         width = QDesktopWidget().screenGeometry(-1).width()
         height = QDesktopWidget().screenGeometry(-1).height()
 
-
-
         # width and height of the created window
         windowwidth = width / 2
         windowheight = height / 1.5
@@ -152,7 +150,6 @@ class Ui_confidence_screen(QWidget):
             print("old diam [",i_list, "]: ", gbl_fmd.class_list[i_file].real_diam_arr[i_frame])
             print("New diam: ", new_diam_real)
 
-
             # now replace the diam with the proper diam
             gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = new_diam_real
             gbl_fmd.class_list[i_file].diameter_arr[i_frame] = new_diam_pixel
@@ -179,11 +176,36 @@ class Ui_confidence_screen(QWidget):
 
     # removes i index of widget framelist
     def RemoveiList(self, i):
-        curItem = self.frame_list.currentItem()
         self.frame_list.takeItem(i)
 
     def DiscardClicked(self):
-        print("Discard Clicked")
+        framefile_list = gbl_fmd.framefile_list
+        if len(framefile_list[0]) != 0:
+            print("Remove clicked")
+            i_list = self.frame_list.currentRow()
+            i_file = framefile_list[0][i_list]
+            i_frame = framefile_list[1][i_list]
+
+            # now remove the diam (Keep None for excel.py)
+            gbl_fmd.class_list[i_file].real_diam_arr[i_frame] = None
+            gbl_fmd.class_list[i_file].diameter_arr[i_frame] = None
+
+            # remove the accepted list from widget list and framefile list
+            self.RemoveiList(i_list)
+            gbl_fmd.framefile_list[0].pop(i_list)
+            gbl_fmd.framefile_list[1].pop(i_list)
+            # remove saved diam from sorted pix frames
+            gbl_fmd.pix_frames_sorted.pop(i_list)
+            pix_array = gbl_fmd.pix_frames_sorted
+
+            # load next frame
+            if len(gbl_fmd.framefile_list) > 0:
+                if i_list < len(pix_array):
+                    # now go to next index and load image
+                    self.frame_list.setCurrentRow(i_list)
+                    self.LoadFailedFrame(pix_array[i_list])
+        else:
+            print("No more conf errors")
 
     # TODO later just have pix arr values stored in gbl class? too big?
     # gets pixvalues of failed frames
