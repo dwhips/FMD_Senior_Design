@@ -44,7 +44,7 @@ class Ui_start_screen(QWidget):
 
         # Choose FMD Button
         self.fmd_button = QtWidgets.QPushButton(self.start_screen)
-        self.fmd_button.setGeometry(QtCore.QRect(windowwidth*0.4, windowheight*0.3, windowwidth*0.2, windowheight*0.2))
+        self.fmd_button.setGeometry(QtCore.QRect(windowwidth*0.35, windowheight*0.35, windowwidth*0.3, windowheight*0.2))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.fmd_button.setFont(font)

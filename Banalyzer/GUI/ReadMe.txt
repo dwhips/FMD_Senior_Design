@@ -1,4 +1,5 @@
-MU Brachial Analyzer for Research
+MU Brachial Analyzer for Research   ***This file is not read-only and if you make (and save) changes
+					  they will be permanent!!!
 
 Created by: Haley Kleinhans, Allison Goetz, Emma Moravec, Daniel Pederson & Daniel Pederson
 Last Edit: 04/28/2020
