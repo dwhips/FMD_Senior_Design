@@ -44,7 +44,7 @@ class Ui_start_screen(QWidget):
 
         # Choose FMD Button
         self.fmd_button = QtWidgets.QPushButton(self.start_screen)
-        self.fmd_button.setGeometry(QtCore.QRect(windowwidth*0.1, windowheight*0.3, windowwidth*0.25, windowheight*0.2))
+        self.fmd_button.setGeometry(QtCore.QRect(windowwidth*0.4, windowheight*0.3, windowwidth*0.2, windowheight*0.2))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.fmd_button.setFont(font)
@@ -53,7 +53,7 @@ class Ui_start_screen(QWidget):
 
         # Choose Flow Integral Button
         self.integral_btn = QtWidgets.QPushButton(self.start_screen)
-        self.integral_btn.setGeometry(QtCore.QRect(windowwidth*0.6, windowheight*0.3, windowwidth*0.25, windowheight*0.2))
+        self.integral_btn.setGeometry(QtCore.QRect(windowwidth*0.85, windowheight*0.9, windowwidth*0.1, windowheight*0.05))
         self.integral_btn.setFont(font)
         self.integral_btn.setStyleSheet("background:rgb(255, 255, 255)")
         self.integral_btn.setObjectName("integral_btn")
