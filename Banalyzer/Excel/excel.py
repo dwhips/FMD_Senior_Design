@@ -7,7 +7,7 @@ sys.path.append('../')  # could be hacky, need to figure out how to share betwee
 import Global.gbl_fmd_class_list as gbl_fmd
 import xlsxwriter
 
-def PrintHi():
+def PrintHi():  #This can be used for Debugging
     print("printing %dif")
     print(gbl_fmd.i_class)
 
@@ -327,33 +327,3 @@ def ExcelReport(folder_path, excel_file_name):
         print('out of loop')
 
     wb.close()
-
-def ExcelTemplate():
-    #Another workbook created for template
-
-    wb1 = xlsxwriter.Workbook('fmd_template_example.xlsx')
-
-    sheet1 = wb1.add_worksheet('Overview')
-    sheet1.set_column('A:B',25)
-
-    tablef = wb1.add_format()
-    tablefb = wb1.add_format()
-
-    tablef.set_border()
-    tablefb.set_border()
-    tablefb.set_bold()
-
-    sheet1.write('A1','Study Name')
-    sheet1.write('A2','Protocol #')
-    sheet1.write('A3','Participant Name')
-    sheet1.write('A4','Participant ID')
-    sheet1.write('A5','Date of Study')
-    sheet1.write('A6','Type of Participant')
-
-    sheet1.write('B9','', tablef)
-    sheet1.write('C9','MAX',tablefb)
-    sheet1.write('D9','MIN',tablefb)
-    sheet1.write('E9','MEAN',tablefb)
-    sheet1.write('F9','%DILATION',tablefb)
-
-    wb1.close()

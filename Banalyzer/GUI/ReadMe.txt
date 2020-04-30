@@ -1,12 +1,12 @@
 MU Brachial Analyzer for Research   ***This file is not read-only and if you make (and save) changes
 					  they will be permanent!!!
 
-Created by: Haley Kleinhans, Allison Goetz, Emma Moravec, Daniel Pederson & Daniel Pederson
-Last Edit: 04/28/2020
+Created by: Haley Kleinhans, Allison Goetz, Emma Moravec, Daniel Pederson & Daniel Whipple
+Last Edit: 04/30/2020
 
 This program automatically calculates Brachial Flow-Mediated Dilation measurements from 
 recorded ultrasound images. The current program is able to receive AVI video file inputs, 
-and output the Flow-Mediated Dilation measurements in an excel file. 
+and outputs the Flow-Mediated Dilation measurements in an excel file. 
 
 Instructions for Use:
 Click on "Flow Mediated Dilation" to begin.
@@ -35,3 +35,4 @@ Known Bugs/Issues:
 Future Update Necessities:
 - Make compatible with Dicom.
 - Increase accuracy of manual adjustment.
+- base buttons
