@@ -212,6 +212,7 @@ def GetiFrameiFilePixels(fileframe_list):
     #  the data but 7* files with a numpy arr seems a little too demanding. We will test it out
     pixel_sorted = []
     print(len(gbl_fmd.class_list))
+
     for i in range(len(gbl_fmd.class_list)):
         pixel_nump = GetFileImage(gbl_fmd.class_list[i].file_path)
         for i_gui_list in range(len(fileframe_list[0])):
@@ -307,7 +308,6 @@ def GetFileImage(image_path):
 
 # gets file of .avi or dicom type and returns usable image type as numpy of pixel values
 def GetFileImageFrame1(image_path):
-    SetCropBounds(file_path)
     if CheckAviFile(image_path):
         artery_avi = cv2.VideoCapture(image_path)
         if not artery_avi.isOpened():

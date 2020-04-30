@@ -25,7 +25,13 @@ After flagged images are re-adjusted, the file can be saved to excel. The user c
 location for the file to be saved as well as a name for the file. 
 
 Known Bugs/Issues: 
-- Dicom files are not compatible
+- Dicom files are not compatible.
 - Width of detection can only be decreased from the edges, not adjusted individually.
 - If the excel file where the save is desired is open, the excel cannot save. 
 - Frame-Rate is hardcoded at 16 fps.
+- Number of Edited and Discarded Frames is not shown in Excel
+- Manual Adjustment is pretty inaccurate. Discarding is recommended. 
+
+Future Update Necessities:
+- Make compatible with Dicom.
+- Increase accuracy of manual adjustment.
